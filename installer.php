@@ -21,8 +21,6 @@ define('WP_UPLOADS', './wordpress/wp-content/uploads');
 
 set_time_limit(300);
 
-include_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
-
 function rights($file = __DIR__, $right = 7)
 {
     $dir = substr(sprintf('%o', fileperms($file)), -4);
@@ -41,6 +39,10 @@ function rights($file = __DIR__, $right = 7)
     return false;
 }
 
+if (rights() === false) {
+    die('directory rights needed...');
+}
+
 function chmod_recursive($path)
 {
     $dir = new DirectoryIterator($path);
@@ -54,8 +56,7 @@ function chmod_recursive($path)
     }
 }
 
-if (rights() === true) {
-
+if (file_exists(WP_CONFIG_SAMPLE) === false) {
     file_put_contents(WP_ZIP_TMP, file_get_contents(WP_ZIP_URL));
     $zip = new ZipArchive;
     $res = $zip->open(WP_ZIP_TMP);
@@ -64,25 +65,29 @@ if (rights() === true) {
         $zip->close();
     }
     unlink(WP_ZIP_TMP);
-
     mkdir(WP_UPLOADS);
+}
 
-    if (defined('WP_CONFIG_SAMPLE')) {
-        $config = file_get_contents(WP_CONFIG_SAMPLE);
-        $salt = file_get_contents(SALT_URL);
-        if (empty($salt) === false) {
-            $configFile = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm",
-                str_replace('$', '\\$', $salt), $config);
-        }
-        $config = str_replace('database_name_here', $db_name, $config);
-        $config = str_replace('username_here', $db_username, $config);
-        $config = str_replace('password_here', $db_password, $config);
-        file_put_contents(WP_CONFIG, $config);
+if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
+    $config = file_get_contents(WP_CONFIG_SAMPLE);
+    $salt = file_get_contents(SALT_URL);
+    if (empty($salt) === false) {
+        $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm", str_replace('$', '\\$', $salt), $config);
     }
+    $config = str_replace('database_name_here', $db_name, $config);
+    $config = str_replace('username_here', $db_username, $config);
+    $config = str_replace('password_here', $db_password, $config);
+    file_put_contents(WP_CONFIG, $config);
+}
 
-    chmod('./wordpress', 0777);
-    chmod_recursive('./wordpress');
+chmod('./wordpress', 0777);
+chmod_recursive('./wordpress');
 
+if (file_exists(WP_CONFIG) === false) {
+    die('something is wrong...');
+}
+
+if (file_exists('.htaccess') === false) {
     $htaccess = '<IfModule mod_rewrite.c>' . "\n";
     $htaccess .= 'RewriteEngine on' . "\n";
     $htaccess .= 'RewriteBase /' . "\n";
@@ -93,8 +98,11 @@ if (rights() === true) {
     $htaccess .= '</IfModule>' . "\n";
     file_put_contents('.htaccess', $htaccess);
     chmod('.htaccess', 0777);
+}
 
-    sleep(1);
+if (file_exists('./wordpress/.htaccess') === false) {
+
+    include_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
 
     $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
     $install->setMethod(HttpWebRequest::POST);
@@ -106,8 +114,6 @@ if (rights() === true) {
     $install->addPost('admin_email', $wp_admin_email);
     $install->addPost('blog_public', $wp_blog_public);
     $install->run();
-
-    sleep(1);
 
     include_once('./wordpress/wp-config.php');
     $wpdb->update('wp_options',
@@ -131,11 +137,10 @@ if (rights() === true) {
     $wphtaccess .= '# END WordPress' . "\n";
     file_put_contents('./wordpress/.htaccess', $wphtaccess);
     chmod('./wordpress/.htaccess', 0777);
-    
-    #unlink(__FILE__);
 
     header("Location: /wp-login.php");
+}
 
-} else {
-    echo 'rights needed...';
+if (false) {
+    unlink(__FILE__);
 }
