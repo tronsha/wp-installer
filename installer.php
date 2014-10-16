@@ -5,7 +5,7 @@ $db_name = 'wordpress';
 $db_username = 'root';
 $db_password = '';
 
-$wp_weblog_title = 'Test';
+$wp_weblog_title = 'WordPress';
 $wp_user_name = 'Admin';
 $wp_admin_password = 'password';
 $wp_admin_password2 = 'password';
