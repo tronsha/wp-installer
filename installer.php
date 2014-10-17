@@ -64,6 +64,7 @@ if (file_exists(WP_CONFIG_SAMPLE) === false) {
         $zip->extractTo('./');
         $zip->close();
     }
+    sleep(5);
     unlink(WP_ZIP_TMP);
     mkdir(WP_UPLOADS);
 }
@@ -100,10 +101,9 @@ if (file_exists('.htaccess') === false) {
     chmod('.htaccess', 0777);
 }
 
-if (file_exists('./wordpress/.htaccess') === false) {
+include_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
 
-    include_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
-
+if (class_exists('HttpWebRequest') === true) {
     $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
     $install->setMethod(HttpWebRequest::POST);
     $install->addGet('step', '2');
@@ -114,8 +114,11 @@ if (file_exists('./wordpress/.htaccess') === false) {
     $install->addPost('admin_email', $wp_admin_email);
     $install->addPost('blog_public', $wp_blog_public);
     $install->run();
+}
 
-    include_once('./wordpress/wp-config.php');
+if (file_exists('./wordpress/.htaccess') === false) {
+
+    require_once('./wordpress/wp-load.php');
     $wpdb->update('wp_options',
         array('option_value' => '/%postname%/'),
         array('option_name' => 'permalink_structure'),
@@ -137,10 +140,10 @@ if (file_exists('./wordpress/.htaccess') === false) {
     $wphtaccess .= '# END WordPress' . "\n";
     file_put_contents('./wordpress/.htaccess', $wphtaccess);
     chmod('./wordpress/.htaccess', 0777);
-
-    header("Location: /wp-login.php");
 }
 
 if (false) {
     unlink(__FILE__);
 }
+
+header("Location: /wp-login.php");
