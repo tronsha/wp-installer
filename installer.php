@@ -12,19 +12,31 @@ $wp_blog_public = '1';
 
 $newUserName = 'Member';
 $newUserPassword = 'password';
-$newUserMail = 'Member@example.org';
+$newUserMail = 'member@example.org';
 
-define('WP_ZIP_URL', 'https://de.wordpress.org/latest-de_DE.zip');
 define('SALT_URL', 'https://api.wordpress.org/secret-key/1.1/salt/');
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 define('WP_UPLOADS', './wordpress/wp-content/uploads');
 
+function __autoload($class)
+{
+    if ($class == 'HttpWebRequest') {
+        require_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
+    }
+}
+
 set_time_limit(300);
 
 class WordpressInstaller
 {
-    public function __construct() {}
+    private $wordpressSource = array();
+
+    public function __construct()
+    {
+        $this->wordpressSource['en'] = 'https://wordpress.org/latest.zip';
+        $this->wordpressSource['de'] = 'https://de.wordpress.org/latest-de_DE.zip';
+    }
 
     public function hasRights($file = __DIR__, $right = 7)
     {
@@ -62,7 +74,7 @@ class WordpressInstaller
     public function installWordpressFiles()
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
-            file_put_contents('./wp.zip', file_get_contents(WP_ZIP_URL));
+            file_put_contents('./wp.zip', file_get_contents($this->wordpressSource['de']));
             $zip = new ZipArchive;
             $res = $zip->open('./wp.zip');
             if ($res === true) {
@@ -108,9 +120,8 @@ class WordpressInstaller
         }
     }
 
-    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public) 
+    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
-        include_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
         if (class_exists('HttpWebRequest') === true) {
             $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
             $install->setMethod(HttpWebRequest::POST);
@@ -203,6 +214,11 @@ if (isset($_GET['install'])) {
     </style>
 </head>
 <body>
+<div style="text-align: center;">
+    <form action="./installer.php" method="get">
+        <input type="submit" name="install" value="Install">
+    </form>
+</div>
 <h1>WordPress Installer</h1>
 </body>
 </html>
