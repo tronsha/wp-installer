@@ -10,7 +10,10 @@ $wp_admin_password2 = 'password';
 $wp_admin_email = 'mail@example.org';
 $wp_blog_public = '1';
 
-define('WP_ZIP_TMP', './wp.zip');
+$newUserName = 'Member';
+$newUserPassword = 'password';
+$newUserMail = 'Member@example.org';
+
 define('WP_ZIP_URL', 'https://de.wordpress.org/latest-de_DE.zip');
 define('SALT_URL', 'https://api.wordpress.org/secret-key/1.1/salt/');
 define('WP_CONFIG', './wordpress/wp-config.php');
@@ -59,15 +62,15 @@ class WordpressInstaller
     public function installWordpressFiles()
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
-            file_put_contents(WP_ZIP_TMP, file_get_contents(WP_ZIP_URL));
+            file_put_contents('./wp.zip', file_get_contents(WP_ZIP_URL));
             $zip = new ZipArchive;
-            $res = $zip->open(WP_ZIP_TMP);
+            $res = $zip->open('./wp.zip');
             if ($res === true) {
                 $zip->extractTo('./');
                 $zip->close();
             }
             sleep(5);
-            unlink(WP_ZIP_TMP);
+            unlink('./wp.zip');
             mkdir(WP_UPLOADS);
         }
     }
@@ -176,14 +179,13 @@ if (isset($_GET['install'])) {
         die('something is wrong...');
     }
     $installer->rewriteSubdirectory();
-    $installer->installWordpress($wp_weblog_title, $wp_user_name, $wp_admin_password, $wp_admin_password2,
-        $wp_admin_email, $wp_blog_public);
+    $installer->installWordpress($wp_weblog_title, $wp_user_name, $wp_admin_password, $wp_admin_password2, $wp_admin_email, $wp_blog_public);
     if (file_exists('./wordpress/wp-load.php') === false) {
         die('wp-load.php not found');
     }
     require_once('./wordpress/wp-load.php');
     $installer->setPermalinkToPostname();
-    $installer->newUser($newUserName, $newUserPassword, $newUserMail, 'administrator');
+    $installer->newUser($newUserName, $newUserPassword, $newUserMail);
     if (false) {
         unlink(__FILE__);
     }
