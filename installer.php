@@ -71,16 +71,26 @@ class WordpressInstaller
         }
     }
 
+    public function downloadWordpress()
+    {
+        file_put_contents('./wp.zip', file_get_contents($this->wordpressSource['de']));
+    }
+
+    public function unzipWordpress()
+    {
+        $zip = new ZipArchive;
+        $res = $zip->open('./wp.zip');
+        if ($res === true) {
+            $zip->extractTo('./');
+            $zip->close();
+        }
+    }
+
     public function installWordpressFiles()
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
-            file_put_contents('./wp.zip', file_get_contents($this->wordpressSource['de']));
-            $zip = new ZipArchive;
-            $res = $zip->open('./wp.zip');
-            if ($res === true) {
-                $zip->extractTo('./');
-                $zip->close();
-            }
+            $this->downloadWordpress();
+            $this->unzipWordpress();
             sleep(5);
             unlink('./wp.zip');
             mkdir(WP_UPLOADS);
