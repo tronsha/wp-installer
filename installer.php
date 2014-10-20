@@ -134,6 +134,9 @@ class WordpressInstaller
         }
     }
 
+    /**
+     * @see http://httpd.apache.org/docs/current/howto/htaccess.html
+     */
     public function rewriteSubdirectory()
     {
         if (file_exists('.htaccess') === false) {
@@ -150,6 +153,10 @@ class WordpressInstaller
         }
     }
 
+    /**
+     * Create Admin User
+     * @see http://php.net/manual/en/book.curl.php
+     */
     public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
         $url = 'http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php?step=2';
@@ -175,6 +182,10 @@ class WordpressInstaller
         curl_close($ch);
     }
 
+    /**
+     * Set Permalink to Postname
+     * @see http://httpd.apache.org/docs/current/howto/htaccess.html
+     */
     public function setPermalinkToPostname()
     {
         if (file_exists('./wordpress/.htaccess') === false) {
@@ -216,7 +227,7 @@ class WordpressInstaller
             $user->set_role($role);
         }
     }
-    
+
     /**
      * Switch Theme
      * @see http://codex.wordpress.org/Function_Reference/wp_get_theme
