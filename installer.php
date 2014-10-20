@@ -214,17 +214,33 @@ class WordpressInstaller
             $user->set_role($role);
         }
     }
+    
+    /**
+     * Switch Theme
+     * @see http://codex.wordpress.org/Function_Reference/wp_get_theme
+     * @see http://codex.wordpress.org/Function_Reference/switch_theme
+     */
+    public function switchTheme($stylesheet)
+    {
+        $theme = wp_get_theme($stylesheet);
+        if ($theme->exists() && $theme->is_allowed()) {
+            switch_theme($theme->get_stylesheet());
+        }
+    }
 }
 
 $installer = new WordpressInstaller($config);
 
 if (isset($_POST['ajax'])) {
     if (file_exists('./wordpress/wp-load.php') === false) {
-        die('wp-load.php not found');
+        die;
     }
     require_once('./wordpress/wp-load.php');
+    
 //    $installer->setPermalinkToPostname();
-//    $installer->newUser($newUserName, $newUserPassword, $newUserMail);
+//    $installer->newUser($_POST['name'], $_POST['password'], $_POST['mail'], $_POST['role']);
+//    $installer->switchTheme($_POST['theme']);
+    
     die;
 }
 
@@ -234,36 +250,49 @@ if ($installer->hasRights() === false) {
     $step = 1;
 }
 
-if ($_POST['step'] == 2) {
-    if (!file_exists(WP_CONFIG_SAMPLE)) {
-        $installer->installWpZip($_POST['lang']);
-    }
-    $step = 2;
-}
+if (isset($_POST['step']) === true) {
 
-if ($_POST['step'] == 3) {
-    if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
-        $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
+    if ($_POST['step'] == 2) {
+        if (!file_exists(WP_CONFIG_SAMPLE)) {
+            $installer->installWpZip($_POST['lang']);
+        }
+        $step = 2;
     }
-    if (!file_exists('./.htaccess')) {
-        $installer->rewriteSubdirectory();
+
+    if ($_POST['step'] == 3) {
+        if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
+            $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
+        }
+        if (!file_exists('./.htaccess')) {
+            $installer->rewriteSubdirectory();
+        }
+        $step = 3;
     }
-    $step = 3;
-}
 
-if ($_POST['step'] == 4) {
-    $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
-    $step = 4;
-}
-
-if ($_POST['step'] == 5) {
-    if (false) {
-        unlink(__FILE__);
+    if ($_POST['step'] == 4) {
+        $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+        $step = 4;
     }
-    header("Location: /wp-login.php");
-    die;
-}
 
+    if ($_POST['step'] == 5) {
+        if (false) {
+            unlink(__FILE__);
+        }
+        header("Location: /wp-login.php");
+        die;
+    }
+
+} else {
+
+    if (file_exists(WP_CONFIG_SAMPLE)) {
+        $step = 3;
+    }
+
+    if (file_exists(WP_CONFIG)) {
+        $step = 4;
+    }
+
+}
 ?><!doctype html>
 <html>
 <head>
@@ -278,27 +307,33 @@ if ($_POST['step'] == 5) {
 <body>
 <div style="text-align: center;">
     <h1>WordPress Installer</h1>
-    <form action="./installer.php" method="post">
-        <?php if ($step == 0): ?>
-            Directory rights needed...<br>
-            Change the rights and <a href="javascript:location.reload();">reload</a> this page.
-        <?php elseif ($step == 1): ?>
-            <h2>Select Language</h2>
+    <?php if ($step == 0): ?>
+        Directory rights needed...<br>
+        Change the rights and <a href="javascript:location.reload();">reload</a> this page.
+    <?php elseif ($step == 1): ?>
+        <h2>Language</h2>
+        <form action="./installer.php" method="post">
             <select name="lang">
                 <option value="en">english</option>
                 <option value="de" selected>deutsch</option>
             </select>
             <input type="hidden" name="step" value="2">
             <input type="submit" name="next" value="Next">
-        <?php elseif ($step == 2): ?>
-            <h2>Set Database</h2>
+        </form>
+    <?php
+    elseif ($step == 2): ?>
+        <h2>Database</h2>
+        <form action="./installer.php" method="post">
             <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
             <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
             <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
             <input type="hidden" name="step" value="3">
             <input type="submit" name="next" value="Next">
-        <?php elseif ($step == 3): ?>
-            <h2>Setup</h2>
+        </form>
+    <?php
+    elseif ($step == 3): ?>
+        <h2>Setup</h2>
+        <form action="./installer.php" method="post">
             <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
             <input type="text" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
             <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
@@ -307,33 +342,51 @@ if ($_POST['step'] == 5) {
             <input type="checkbox" name="blog_public" value="1" <?= $default['public'] = 1 ? 'checked' : '' ?>>
             <input type="hidden" name="step" value="4">
             <input type="submit" name="next" value="Next">
-        <?php elseif ($step == 4): ?>
-            <h2>Options</h2>
-            <?php
-            require_once('./wordpress/wp-load.php');
-            require_once('./wordpress/wp-admin/includes/admin.php');
-            ?>
-            <fieldset>
-                <legend align="left">New User</legend>
-                <input type="text" placeholder="Name" name="user_name" value="<?= $default['user']['name'] ?>">
-                <input type="password" placeholder="Password" name="admin_password" value="<?= $default['user']['password'] ?>">
-                <input type="text" placeholder="E-Mail" name="admin_email" value="<?= $default['user']['email'] ?>">
-                <select name="role">
-                    <?php
-                    /**
-                     * @see http://codex.wordpress.org/Function_Reference/wp_dropdown_roles
-                     */
-                    wp_dropdown_roles($default['user']['role']);
-                    ?>
-                </select>
-                <input type="submit" name="newuser" value="Add">
-            </fieldset>
+        </form>
+    <?php
+    elseif ($step == 4): ?>
+        <h2>Options</h2>
+        <?php
+        require_once('./wordpress/wp-load.php');
+        require_once('./wordpress/wp-admin/includes/admin.php');
+        ?>
+        <fieldset>
+            <legend align="left">New User</legend>
+            <input type="text" placeholder="Name" name="user_name" value="<?= $default['user']['name'] ?>">
+            <input type="password" placeholder="Password" name="admin_password" value="<?= $default['user']['password'] ?>">
+            <input type="text" placeholder="E-Mail" name="admin_email" value="<?= $default['user']['email'] ?>">
+            <select name="role">
+                <?php
+                /**
+                 * @see http://codex.wordpress.org/Function_Reference/wp_dropdown_roles
+                 */
+                wp_dropdown_roles($default['user']['role']);
+                ?>
+            </select>
+            <input type="submit" name="newuser" value="Add">
+        </fieldset>
+        <fieldset>
+            <legend align="left">Activate Theme</legend>
+            <select>
+                <?php 
+                foreach (new DirectoryIterator('./wordpress/wp-content/themes/') as $item) {
+                    if ($item->isDir() && !$item->isDot()) {
+                        echo '<option>' . $item->getFilename() . '</option>';
+                    }
+                }
+                ?>
+            </select>
+            <input type="submit" name="newuser" value="Activate">
+        </fieldset>
+
+        <br><br>
+        <form action="./installer.php" method="post">
             <input type="hidden" name="step" value="5">
             <input type="submit" name="next" value="Next">
-        <?php else: ?>
-            <!-- -->
-        <?php endif; ?>
-    </form>
+        </form>
+    <?php else: ?>
+        <!-- -->
+    <?php endif; ?>
 </div>
 </body>
 </html>
