@@ -3,28 +3,8 @@ $db_name = 'wordpress';
 $db_username = 'root';
 $db_password = '';
 
-$wp_weblog_title = 'WordPress';
-$wp_user_name = 'Admin';
-$wp_admin_password = 'password';
-$wp_admin_password2 = 'password';
-$wp_admin_email = 'mail@example.org';
-$wp_blog_public = '1';
-
-$newUserName = 'Member';
-$newUserPassword = 'password';
-$newUserMail = 'member@example.org';
-
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
-define('WP_UPLOADS', './wordpress/wp-content/uploads');
-
-$config = array(
-    'src' => array(
-        'en' => 'https://wordpress.org/latest.zip',
-        'de' => 'https://de.wordpress.org/latest-de_DE.zip'
-    ),
-    'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/'
-);
 
 function __autoload($class)
 {
@@ -34,6 +14,29 @@ function __autoload($class)
 }
 
 set_time_limit(300);
+
+$config = array(
+    'src' => array(
+        'en' => 'https://wordpress.org/latest.zip',
+        'de' => 'https://de.wordpress.org/latest-de_DE.zip'
+    ),
+    'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/'
+);
+
+$default = array(
+    'title' => 'WordPress',
+    'admin' => array(
+        'name' => 'Admin',
+        'password' => 'password',
+        'email' => 'mail@example.org',
+    ),
+    'public' => '1',
+    'user' => array(
+        'name' => '',
+        'password' => '',
+        'email' => '',
+    )
+);
 
 class WordpressInstaller
 {
@@ -79,7 +82,7 @@ class WordpressInstaller
         }
     }
 
-    public function downloadWordpress($lang = 'en')
+    public function downloadWpZip($lang = 'en')
     {
         if (isset($this->wpSrc[$lang]) === true) {
             $file = $this->wpSrc[$lang];
@@ -89,7 +92,7 @@ class WordpressInstaller
         file_put_contents('./wp.zip', file_get_contents($file));
     }
 
-    public function unzipWordpress()
+    public function unzipWpZip()
     {
         $zip = new ZipArchive;
         $res = $zip->open('./wp.zip');
@@ -99,14 +102,25 @@ class WordpressInstaller
         }
     }
 
-    public function installWordpressFiles()
+    public function removeWpZip()
+    {
+        unlink('./wp.zip');
+    }
+
+    public function createMediaUploadDir()
+    {
+        mkdir('./wordpress/wp-content/uploads');
+    }
+
+    public function installWpZip($lang = 'en')
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
-            $this->downloadWordpress();
-            $this->unzipWordpress();
+            $this->downloadWpZip($lang);
+            $this->unzipWpZip();
             sleep(5);
-            unlink('./wp.zip');
-            mkdir(WP_UPLOADS);
+            $this->removeWpZip();
+            $this->createMediaUploadDir();
+            $this->chmod('./wordpress', true);
         }
     }
 
@@ -122,7 +136,7 @@ class WordpressInstaller
             $config = str_replace('username_here', $username, $config);
             $config = str_replace('password_here', $password, $config);
             file_put_contents(WP_CONFIG, $config);
-            $this->chmod('./wordpress', true);
+            $this->chmod(WP_CONFIG);
         }
     }
 
@@ -142,7 +156,7 @@ class WordpressInstaller
         }
     }
 
-    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public) 
+    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
         if (class_exists('HttpWebRequest') === true) {
             $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
@@ -201,31 +215,54 @@ class WordpressInstaller
     }
 }
 
-if (isset($_POST['install'])) {
-    $installer = new WordpressInstaller($config);
-    if ($installer->hasRights() === false) {
-        die('directory rights needed...');
-    }
-    $installer->installWordpressFiles();
-    $installer->createConfig($db_name, $db_username, $db_password);
-    if (file_exists(WP_CONFIG) === false) {
-        die('something is wrong...');
-    }
-    $installer->rewriteSubdirectory();
-    $installer->installWordpress($wp_weblog_title, $wp_user_name, $wp_admin_password, $wp_admin_password2,
-        $wp_admin_email, $wp_blog_public);
+$installer = new WordpressInstaller($config);
+
+if (isset($_POST['ajax'])) {
     if (file_exists('./wordpress/wp-load.php') === false) {
         die('wp-load.php not found');
     }
     require_once('./wordpress/wp-load.php');
-    $installer->setPermalinkToPostname();
-    $installer->newUser($newUserName, $newUserPassword, $newUserMail);
+//    $installer->setPermalinkToPostname();
+//    $installer->newUser($newUserName, $newUserPassword, $newUserMail);
+    die;
+}
+
+if ($installer->hasRights() === false) {
+    $step = 0;
+} else {
+    $step = 1;
+}
+
+if ($_POST['step'] == 2) {
+    if (!file_exists(WP_CONFIG_SAMPLE)) {
+        $installer->installWpZip($_POST['lang']);
+    }
+    $step = 2;
+}
+
+if ($_POST['step'] == 3) {
+    if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
+        $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
+    }
+    if (!file_exists('./.htaccess')) {
+        $installer->rewriteSubdirectory();
+    }
+    $step = 3;
+}
+
+if ($_POST['step'] == 4) {
+    $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+    $step = 4;
+}
+
+if ($_POST['step'] == 5) {
     if (false) {
         unlink(__FILE__);
     }
     header("Location: /wp-login.php");
     die;
 }
+
 ?><!doctype html>
 <html>
 <head>
@@ -233,17 +270,57 @@ if (isset($_POST['install'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/javascript" href="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <style>
     </style>
 </head>
 <body>
 <div style="text-align: center;">
+    <h1>WordPress Installer</h1>
     <form action="./installer.php" method="post">
-        <?php if(true): ?>
-            <input type="submit" name="install" value="Install">
+        <?php if ($step == 0): ?>
+            Directory rights needed...<br>
+            Change the rights and <a href="javascript:location.reload();">reload</a> this page.
+        <?php elseif ($step == 1): ?>
+            <h2>Select Language</h2>
+            <select name="lang">
+                <option value="en">english</option>
+                <option value="de" selected>deutsch</option>
+            </select>
+            <input type="hidden" name="step" value="2">
+            <input type="submit" name="next" value="Next">
+        <?php elseif ($step == 2): ?>
+            <h2>Set Database</h2>
+            <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
+            <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
+            <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
+            <input type="hidden" name="step" value="3">
+            <input type="submit" name="next" value="Next">
+        <?php elseif ($step == 3): ?>
+            <h2>Setup</h2>
+            <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
+            <input type="text" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
+            <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
+            <input type="password" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
+            <input type="text" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
+            <input type="checkbox" name="blog_public" value="1" <?= $default['public'] = 1 ? 'checked' : '' ?>>
+            <input type="hidden" name="step" value="4">
+            <input type="submit" name="next" value="Next">
+        <?php elseif ($step == 4): ?>
+            <h2>Options</h2>
+            <?php
+            require_once('./wordpress/wp-load.php');
+            require_once('./wordpress/wp-admin/includes/admin.php');
+            ?>
+            <select name="role">
+                <?php wp_dropdown_roles(get_option('default_role')); ?>
+            </select>
+            <input type="hidden" name="step" value="5">
+            <input type="submit" name="next" value="Next">
+        <?php else: ?>
+            <!-- -->
         <?php endif; ?>
     </form>
 </div>
-<h1>WordPress Installer</h1>
 </body>
 </html>
