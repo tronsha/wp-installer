@@ -299,8 +299,8 @@ if (isset($_POST['step']) === true) {
         $step = 5;
     }
     
-    if ($_POST['step'] == 5) {
-        $step = 5;
+    if ($_POST['step'] == 6) {
+        $step = 6;
     }
 
 } else {
