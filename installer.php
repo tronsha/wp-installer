@@ -6,13 +6,6 @@ $db_password = '';
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 
-function __autoload($class)
-{
-    if ($class == 'HttpWebRequest') {
-        require_once 'https://raw.githubusercontent.com/tronsha/httpwebrequest/master/HttpWebRequest.php';
-    }
-}
-
 set_time_limit(300);
 
 $config = array(
@@ -159,18 +152,27 @@ class WordpressInstaller
 
     public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
-        if (class_exists('HttpWebRequest') === true) {
-            $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
-            $install->setMethod(HttpWebRequest::POST);
-            $install->addGet('step', '2');
-            $install->addPost('weblog_title', $weblog_title);
-            $install->addPost('user_name', $user_name);
-            $install->addPost('admin_password', $admin_password);
-            $install->addPost('admin_password2', $admin_password2);
-            $install->addPost('admin_email', $admin_email);
-            $install->addPost('blog_public', $blog_public);
-            $install->run();
+        $url = 'http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php?step=2';
+        $fields = array(
+            'weblog_title' => urlencode($weblog_title),
+            'user_name' => urlencode($user_name),
+            'admin_password' => urlencode($admin_password),
+            'admin_password2' => urlencode($admin_password2),
+            'admin_email' => urlencode($admin_email),
+            'blog_public' => urlencode($blog_public)
+        );
+        $fieldsString = '';
+        foreach ($fields as $key => $value) {
+            $fieldsString .= $key . '=' . $value . '&';
         }
+        rtrim($fieldsString, '&');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsString);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     public function setPermalinkToPostname()
