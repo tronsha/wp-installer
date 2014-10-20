@@ -14,10 +14,17 @@ $newUserName = 'Member';
 $newUserPassword = 'password';
 $newUserMail = 'member@example.org';
 
-define('SALT_URL', 'https://api.wordpress.org/secret-key/1.1/salt/');
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 define('WP_UPLOADS', './wordpress/wp-content/uploads');
+
+$config = array(
+    'src' => array(
+        'en' => 'https://wordpress.org/latest.zip',
+        'de' => 'https://de.wordpress.org/latest-de_DE.zip'
+    ),
+    'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/'
+);
 
 function __autoload($class)
 {
@@ -30,12 +37,13 @@ set_time_limit(300);
 
 class WordpressInstaller
 {
-    private $wordpressSource = array();
+    private $wpSrc;
+    private $wpSalt;
 
-    public function __construct()
+    public function __construct($config)
     {
-        $this->wordpressSource['en'] = 'https://wordpress.org/latest.zip';
-        $this->wordpressSource['de'] = 'https://de.wordpress.org/latest-de_DE.zip';
+        $this->wpSrc = $config['src'];
+        $this->wpSalt = $config['salt'];
     }
 
     public function hasRights($file = __DIR__, $right = 7)
@@ -71,9 +79,14 @@ class WordpressInstaller
         }
     }
 
-    public function downloadWordpress()
+    public function downloadWordpress($lang = 'en')
     {
-        file_put_contents('./wp.zip', file_get_contents($this->wordpressSource['de']));
+        if (isset($this->wpSrc[$lang]) === true) {
+            $file = $this->wpSrc[$lang];
+        } else {
+            $file = $this->wpSrc['en'];
+        }
+        file_put_contents('./wp.zip', file_get_contents($file));
     }
 
     public function unzipWordpress()
@@ -101,10 +114,9 @@ class WordpressInstaller
     {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
-            $salt = file_get_contents(SALT_URL);
+            $salt = file_get_contents($this->wpSalt);
             if (empty($salt) === false) {
-                $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm",
-                    str_replace('$', '\\$', $salt), $config);
+                $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm", str_replace('$', '\\$', $salt), $config);
             }
             $config = str_replace('database_name_here', $database_name, $config);
             $config = str_replace('username_here', $username, $config);
@@ -130,7 +142,7 @@ class WordpressInstaller
         }
     }
 
-    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
+    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public) 
     {
         if (class_exists('HttpWebRequest') === true) {
             $install = new HttpWebRequest('http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php');
@@ -190,7 +202,7 @@ class WordpressInstaller
 }
 
 if (isset($_POST['install'])) {
-    $installer = new WordpressInstaller;
+    $installer = new WordpressInstaller($config);
     if ($installer->hasRights() === false) {
         die('directory rights needed...');
     }
@@ -200,7 +212,8 @@ if (isset($_POST['install'])) {
         die('something is wrong...');
     }
     $installer->rewriteSubdirectory();
-    $installer->installWordpress($wp_weblog_title, $wp_user_name, $wp_admin_password, $wp_admin_password2, $wp_admin_email, $wp_blog_public);
+    $installer->installWordpress($wp_weblog_title, $wp_user_name, $wp_admin_password, $wp_admin_password2,
+        $wp_admin_email, $wp_blog_public);
     if (file_exists('./wordpress/wp-load.php') === false) {
         die('wp-load.php not found');
     }
