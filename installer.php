@@ -381,11 +381,10 @@ if (isset($_POST['step']) === true) {
         <fieldset>
             <legend align="left">Activate Theme</legend>
             <select>
-                <?php 
-                foreach (new DirectoryIterator('./wordpress/wp-content/themes/') as $item) {
-                    if ($item->isDir() && !$item->isDot()) {
-                        echo '<option>' . $item->getFilename() . '</option>';
-                    }
+                <?php
+                $themes = wp_prepare_themes_for_js();
+                foreach ($themes as $theme) {
+                    echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
                 }
                 ?>
             </select>
