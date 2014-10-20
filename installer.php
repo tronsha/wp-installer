@@ -341,7 +341,7 @@ if (isset($_POST['step']) === true) {
             <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
             <input type="password" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
             <input type="text" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
-            <input type="checkbox" name="blog_public" value="1" <?= $default['public'] = 1 ? 'checked' : '' ?>>
+            <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
             <input type="hidden" name="step" value="4">
             <input type="submit" name="next" value="Next">
         </form>
