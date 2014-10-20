@@ -32,6 +32,14 @@ $default = array(
     )
 );
 
+if (isset($_POST['ready']) === true) {
+    if (isset($_POST['delete']) === true) {
+        unlink(__FILE__);
+    }
+    header("Location: /wp-login.php");
+    die;
+}
+
 class WordpressInstaller
 {
     private $wpSrc;
@@ -294,6 +302,10 @@ if (isset($_POST['step']) === true) {
         header("Location: /wp-login.php");
         die;
     }
+    
+    if ($_POST['step'] == 5) {
+        $step = 5;
+    }
 
 } else {
 
@@ -397,7 +409,11 @@ if (isset($_POST['step']) === true) {
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
-        <!-- -->
+        <form action="./installer.php" method="post">
+            <input type="checkbox" name="delete" value="1" checked>
+            <input type="hidden" name="ready" value="1">
+            <input type="submit" name="next" value="Ready">
+        </form>
     <?php endif; ?>
 </div>
 </body>
