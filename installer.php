@@ -321,7 +321,7 @@ if (isset($_POST['step']) === true) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="application/javascript" href="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="application/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <style>
     </style>
 </head>
@@ -363,10 +363,15 @@ if (isset($_POST['step']) === true) {
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 4): ?>
-        <form action="./installer.php" method="post">
+        <form id="step4" action="./installer.php" method="post">
             <input type="hidden" name="step" value="5">
             <input type="submit" name="next" value="Next">
         </form>
+        <script type="application/javascript">
+            jQuery(document).ready(function() {
+                jQuery('#step4').submit();
+            });
+        </script>
     <?php elseif ($step == 5): ?>
         <h2>Options</h2>
         <?php
