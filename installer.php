@@ -296,11 +296,7 @@ if (isset($_POST['step']) === true) {
     }
 
     if ($_POST['step'] == 5) {
-        if (false) {
-            unlink(__FILE__);
-        }
-        header("Location: /wp-login.php");
-        die;
+        $step = 5;
     }
     
     if ($_POST['step'] == 5) {
@@ -345,8 +341,7 @@ if (isset($_POST['step']) === true) {
             <input type="hidden" name="step" value="2">
             <input type="submit" name="next" value="Next">
         </form>
-    <?php
-    elseif ($step == 2): ?>
+    <?php elseif ($step == 2): ?>
         <h2>Database</h2>
         <form action="./installer.php" method="post">
             <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
@@ -355,8 +350,7 @@ if (isset($_POST['step']) === true) {
             <input type="hidden" name="step" value="3">
             <input type="submit" name="next" value="Next">
         </form>
-    <?php
-    elseif ($step == 3): ?>
+    <?php elseif ($step == 3): ?>
         <h2>Setup</h2>
         <form action="./installer.php" method="post">
             <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
@@ -368,8 +362,12 @@ if (isset($_POST['step']) === true) {
             <input type="hidden" name="step" value="4">
             <input type="submit" name="next" value="Next">
         </form>
-    <?php
-    elseif ($step == 4): ?>
+    <?php elseif ($step == 4): ?>
+        <form action="./installer.php" method="post">
+            <input type="hidden" name="step" value="5">
+            <input type="submit" name="next" value="Next">
+        </form>
+    <?php elseif ($step == 5): ?>
         <h2>Options</h2>
         <?php
         require_once('./wordpress/wp-load.php');
@@ -402,10 +400,9 @@ if (isset($_POST['step']) === true) {
             </select>
             <input type="submit" name="newuser" value="Activate">
         </fieldset>
-
         <br><br>
         <form action="./installer.php" method="post">
-            <input type="hidden" name="step" value="5">
+            <input type="hidden" name="step" value="6">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
