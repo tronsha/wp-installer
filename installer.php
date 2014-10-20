@@ -189,7 +189,7 @@ class WordpressInstaller
     }
 }
 
-if (isset($_GET['install'])) {
+if (isset($_POST['install'])) {
     $installer = new WordpressInstaller;
     if ($installer->hasRights() === false) {
         die('directory rights needed...');
@@ -225,8 +225,10 @@ if (isset($_GET['install'])) {
 </head>
 <body>
 <div style="text-align: center;">
-    <form action="./installer.php" method="get">
-        <input type="submit" name="install" value="Install">
+    <form action="./installer.php" method="post">
+        <?php if(true): ?>
+            <input type="submit" name="install" value="Install">
+        <?php endif; ?>
     </form>
 </div>
 <h1>WordPress Installer</h1>
