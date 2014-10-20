@@ -35,6 +35,7 @@ $default = array(
         'name' => '',
         'password' => '',
         'email' => '',
+        'role' => 'author',
     )
 );
 
@@ -312,9 +313,21 @@ if ($_POST['step'] == 5) {
             require_once('./wordpress/wp-load.php');
             require_once('./wordpress/wp-admin/includes/admin.php');
             ?>
-            <select name="role">
-                <?php wp_dropdown_roles(get_option('default_role')); ?>
-            </select>
+            <fieldset>
+                <legend align="left">New User</legend>
+                <input type="text" placeholder="Name" name="user_name" value="<?= $default['user']['name'] ?>">
+                <input type="password" placeholder="Password" name="admin_password" value="<?= $default['user']['password'] ?>">
+                <input type="text" placeholder="E-Mail" name="admin_email" value="<?= $default['user']['email'] ?>">
+                <select name="role">
+                    <?php
+                    /**
+                     * @see http://codex.wordpress.org/Function_Reference/wp_dropdown_roles
+                     */
+                    wp_dropdown_roles($default['user']['role']);
+                    ?>
+                </select>
+                <input type="submit" name="newuser" value="Add">
+            </fieldset>
             <input type="hidden" name="step" value="5">
             <input type="submit" name="next" value="Next">
         <?php else: ?>
