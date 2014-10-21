@@ -32,6 +32,13 @@ $default = array(
     )
 );
 
+$plugins = array(
+    array('name' => 'wpSEO', 'url' => 'http://cdn.wpseo.de/plugin/v3/zip/latest/wpseo.zip'),
+    array('name' => 'Contact Form 7', 'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.4.0.1.zip'),
+    array('name' => 'InfiniteWP', 'url' => 'https://downloads.wordpress.org/plugin/iwp-client.zip'),
+    array('name' => 'Members', 'url' => 'https://downloads.wordpress.org/plugin/members.0.2.4.zip'),
+);
+
 if (isset($_POST['ready']) === true) {
     if (isset($_POST['delete']) === true) {
         unlink(__FILE__);
@@ -84,6 +91,10 @@ class WordpressInstaller
         }
     }
 
+    public function download($file, $zip = './tmp.zip'){
+        file_put_contents($zip, file_get_contents($file));
+    }
+
     public function downloadWpZip($lang = 'en')
     {
         if (isset($this->wpSrc[$lang]) === true) {
@@ -91,47 +102,56 @@ class WordpressInstaller
         } else {
             $file = $this->wpSrc['en'];
         }
-        file_put_contents('./wp.zip', file_get_contents($file));
+        $this->download($file, './wp.zip');
     }
 
-    public function unzipWpZip($path = './')
+    public function unzip($file = './wp.zip', $path = './')
     {
         $zip = new ZipArchive;
-        $res = $zip->open('./wp.zip');
+        $res = $zip->open($file);
         if ($res === true) {
             $zip->extractTo($path);
             $zip->close();
         }
     }
 
-    public function removeWpZip()
+    public function removeZip($file = './wp.zip')
     {
-        unlink('./wp.zip');
+        unlink($file);
     }
 
-    public function createMediaUploadDir()
+    public function createUploadDir()
     {
         mkdir('./wordpress/wp-content/uploads');
     }
 
-    public function installWpZip($lang = 'en')
+    public function installZip($file = './wp.zip', $path = './')
+    {
+        $this->unzip($file, $path);
+        sleep(5);
+        $this->removeZip($file);
+    }
+
+    public function installWordpress($lang = 'en')
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
             $this->downloadWpZip($lang);
-            $this->unzipWpZip();
-            sleep(5);
-            $this->removeWpZip();
-            $this->createMediaUploadDir();
+            $this->installZip('./wp.zip', './');
+            $this->createUploadDir();
             $this->chmod('./wordpress', true);
         }
     }
 
-    public function installWpThemeZip()
+    public function installTheme()
     {
-        $this->unzipWpZip('./wordpress/wp-content/themes/');
-        sleep(5);
-        $this->removeWpZip();
+        $this->installZip('./theme.zip', './wordpress/wp-content/themes/');
         $this->chmod('./wordpress/wp-content/themes/', true);
+    }
+
+    public function installPlugin()
+    {
+        $this->installZip('./plugin.zip', './wordpress/wp-content/plugins/');
+        $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
     public function createConfig($database_name = 'wordpress', $username = 'root', $password = '')
@@ -173,7 +193,7 @@ class WordpressInstaller
      * Create Admin User
      * @see http://php.net/manual/en/book.curl.php
      */
-    public function installWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
+    public function setupWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
         $url = 'http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php?step=2';
         $fields = array(
@@ -234,7 +254,7 @@ class WordpressInstaller
      * @see http://codex.wordpress.org/Function_Reference/wp_create_user
      * @see http://codex.wordpress.org/Class_Reference/WP_User
      */
-    public function newUser($name, $password, $email, $role = 'subscriber')
+    public function addUser($name, $password, $email, $role = 'subscriber')
     {
         if (username_exists($name) === null) {
             wp_create_user($name, $password, $email);
@@ -270,7 +290,7 @@ if (isset($_GET['step']) === true) {
 
     if ($_GET['step'] == 2) {
         if (!file_exists(WP_CONFIG_SAMPLE)) {
-            $installer->installWpZip($_POST['lang']);
+            $installer->installWordpress($_POST['lang']);
         }
         $step = 2;
     }
@@ -287,11 +307,11 @@ if (isset($_GET['step']) === true) {
 
     if ($_GET['step'] == 4) {
         if ($_GET['install'] == 'wp') {
-            $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+            $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
         }
         if ($_GET['action'] == 'upload-theme') {
-            if (move_uploaded_file($_FILES['themezip']['tmp_name'], './wp.zip')) {
-                $installer->installWpThemeZip();
+            if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
+                $installer->installTheme();
             }
         }
         $step = 4;
@@ -301,7 +321,7 @@ if (isset($_GET['step']) === true) {
         require_once('./wordpress/wp-load.php');
 
         if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
-            $installer->newUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
+            $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
         }
 
         if ($_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
@@ -434,6 +454,13 @@ if (isset($_GET['step']) === true) {
             <fieldset>
                 <legend align="left">Permalink</legend>
                 <input type="submit" name="permalink" value="Postname">
+            </fieldset>
+        </form>
+        <br><br>
+        <form id="step5plugins" action="./installer.php?step=5&amp;plugins=install" method="post">
+            <fieldset>
+                <legend align="left">Plugins</legend>
+                <input type="submit" name="plugins" value="Install">
             </fieldset>
         </form>
         <br><br>
