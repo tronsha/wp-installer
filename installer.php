@@ -255,7 +255,6 @@ class WordpressInstaller
         if ($theme->exists() && $theme->is_allowed()) {
             switch_theme($theme->get_stylesheet());
         }
-        var_dump($theme);
     }
 }
 
