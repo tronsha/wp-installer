@@ -148,8 +148,9 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/themes/', true);
     }
 
-    public function installPlugin()
+    public function installPlugin($src)
     {
+        $this->download($src, './plugin.zip');
         $this->installZip('./plugin.zip', './wordpress/wp-content/plugins/');
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
@@ -328,6 +329,12 @@ if (isset($_GET['step']) === true) {
             $installer->switchTheme($_POST['theme']);
         }
 
+        if ($_GET['plugin'] == 'install') {
+            foreach ($_POST['plugins'] as $plugin) {
+                $installer->installPlugin($plugin);
+            }
+        }
+
         if ($_GET['permalink'] == 'postname') {
             $installer->setPermalinkToPostname();
         }
@@ -457,10 +464,18 @@ if (isset($_GET['step']) === true) {
             </fieldset>
         </form>
         <br><br>
-        <form id="step5plugins" action="./installer.php?step=5&amp;plugins=install" method="post">
+        <form id="step5plugins" action="./installer.php?step=5&amp;plugin=install" method="post">
             <fieldset>
                 <legend align="left">Plugins</legend>
-                <input type="submit" name="plugins" value="Install">
+                <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
+                    <?php
+                    foreach ($plugins as $plugin) {
+                        echo '<option value="' . $plugin['url'] . '" selected>' . $plugin['name'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <br>
+                <input type="submit" name="plugin" value="Install">
             </fieldset>
         </form>
         <br><br>
