@@ -306,11 +306,12 @@ if (isset($_GET['step']) === true) {
         $step = 3;
     }
 
+    if ($_GET['install'] == 'wp') {
+        $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+    }
+
     if ($_GET['step'] == 4) {
-        if ($_GET['install'] == 'wp') {
-            $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
-        }
-        if ($_GET['action'] == 'upload-theme') {
+        if ($_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
             if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
                 $installer->installTheme();
             }
@@ -319,31 +320,35 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 5) {
-        require_once('./wordpress/wp-load.php');
-
-        if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
-            $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
-        }
-
         if ($_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
+            require_once('./wordpress/wp-load.php');
             $installer->switchTheme($_POST['theme']);
         }
-
-        if ($_GET['plugin'] == 'install') {
-            foreach ($_POST['plugins'] as $plugin) {
-                $installer->installPlugin($plugin);
-            }
-        }
-
-        if ($_GET['permalink'] == 'postname') {
-            $installer->setPermalinkToPostname();
-        }
-
         $step = 5;
     }
 
     if ($_GET['step'] == 6) {
+        if ($_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
+            foreach ($_POST['plugins'] as $plugin) {
+                $installer->installPlugin($plugin);
+            }
+        }
         $step = 6;
+    }
+
+    if ($_GET['step'] == 7) {
+        require_once('./wordpress/wp-load.php');
+        if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
+            $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
+        }
+        if ($_GET['permalink'] == 'postname') {
+            $installer->setPermalinkToPostname();
+        }
+        $step = 7;
+    }
+
+    if ($_GET['step'] == 8) {
+        $step = 8;
     }
 
 } else {
@@ -403,6 +408,7 @@ if (isset($_GET['step']) === true) {
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 4): ?>
+        <h2>Install Theme</h2>
         <?php
         require_once('./wordpress/wp-load.php');
         require_once('./wordpress/wp-admin/includes/admin.php');
@@ -415,16 +421,54 @@ if (isset($_GET['step']) === true) {
         </form>
         <script type="application/javascript">
             jQuery(document).ready(function() {
-                jQuery('.wp-upload-form').attr('action', './installer.php?step=4&action=upload-theme');
+                jQuery('.wp-upload-form').attr('action', './installer.php?step=4&theme=upload');
             });
         </script>
     <?php elseif ($step == 5): ?>
+        <h2>Activate Theme</h2>
+        <?php
+        require_once('./wordpress/wp-load.php');
+        require_once('./wordpress/wp-admin/includes/admin.php');
+        ?>
+        <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
+            <select name="theme">
+                <?php
+                $themes = wp_prepare_themes_for_js();
+                foreach ($themes as $theme) {
+                    echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
+                }
+                ?>
+            </select>
+            <input type="submit" value="Activate">
+        </form>
+        <br><br>
+        <form id="step5" action="./installer.php?step=6" method="post">
+            <input type="submit" name="next" value="Next">
+        </form>
+    <?php elseif ($step == 6): ?>
+        <h2>Install Plugins</h2>
+        <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
+            <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
+                <?php
+                foreach ($plugins as $plugin) {
+                    echo '<option value="' . $plugin['url'] . '" selected>' . $plugin['name'] . '</option>';
+                }
+                ?>
+            </select>
+            <br>
+            <input type="submit" value="Install">
+        </form>
+        <br><br>
+        <form id="step6" action="./installer.php?step=7" method="post">
+            <input type="submit" name="next" value="Next">
+        </form>
+        <?php elseif ($step == 7): ?>
         <h2>Options</h2>
         <?php
         require_once('./wordpress/wp-load.php');
         require_once('./wordpress/wp-admin/includes/admin.php');
         ?>
-        <form id="step5user" action="./installer.php?step=5&amp;user=add" method="post">
+        <form id="step7user" action="./installer.php?step=7&amp;user=add" method="post">
             <fieldset>
                 <legend align="left">New User</legend>
                 <input type="text" placeholder="Name" name="name" value="<?= $default['user']['name'] ?>">
@@ -438,48 +482,18 @@ if (isset($_GET['step']) === true) {
                     wp_dropdown_roles($default['user']['role']);
                     ?>
                 </select>
-                <input type="submit" name="newuser" value="Add">
+                <input type="submit" value="Add">
             </fieldset>
         </form>
         <br><br>
-        <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
-            <fieldset>
-                <legend align="left">Activate Theme</legend>
-                <select name="theme">
-                    <?php
-                    $themes = wp_prepare_themes_for_js();
-                    foreach ($themes as $theme) {
-                        echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
-                    }
-                    ?>
-                </select>
-                <input type="submit" name="newuser" value="Activate">
-            </fieldset>
-        </form>
-        <br><br>
-        <form id="step5permalink" action="./installer.php?step=5&amp;permalink=postname" method="post">
+        <form id="step7permalink" action="./installer.php?step=7&amp;permalink=postname" method="post">
             <fieldset>
                 <legend align="left">Permalink</legend>
-                <input type="submit" name="permalink" value="Postname">
+                <input type="submit" value="Postname">
             </fieldset>
         </form>
         <br><br>
-        <form id="step5plugins" action="./installer.php?step=5&amp;plugin=install" method="post">
-            <fieldset>
-                <legend align="left">Plugins</legend>
-                <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
-                    <?php
-                    foreach ($plugins as $plugin) {
-                        echo '<option value="' . $plugin['url'] . '" selected>' . $plugin['name'] . '</option>';
-                    }
-                    ?>
-                </select>
-                <br>
-                <input type="submit" name="plugin" value="Install">
-            </fieldset>
-        </form>
-        <br><br>
-        <form action="./installer.php?step=6" method="post">
+        <form id="step7" action="./installer.php?step=8" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
