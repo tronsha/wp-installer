@@ -463,7 +463,7 @@ if (isset($_GET['step']) === true) {
         <form id="step6" action="./installer.php?step=7" method="post">
             <input type="submit" name="next" value="Next">
         </form>
-        <?php elseif ($step == 7): ?>
+    <?php elseif ($step == 7): ?>
         <h2>Options</h2>
         <?php
         require_once('./wordpress/wp-load.php');
