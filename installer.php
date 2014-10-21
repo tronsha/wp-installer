@@ -94,12 +94,12 @@ class WordpressInstaller
         file_put_contents('./wp.zip', file_get_contents($file));
     }
 
-    public function unzipWpZip()
+    public function unzipWpZip($path = './')
     {
         $zip = new ZipArchive;
         $res = $zip->open('./wp.zip');
         if ($res === true) {
-            $zip->extractTo('./');
+            $zip->extractTo($path);
             $zip->close();
         }
     }
@@ -124,6 +124,14 @@ class WordpressInstaller
             $this->createMediaUploadDir();
             $this->chmod('./wordpress', true);
         }
+    }
+
+    public function installWpThemeZip()
+    {
+        $this->unzipWpZip('./wordpress/wp-content/themes/');
+        sleep(5);
+        $this->removeWpZip();
+        $this->chmod('./wordpress/wp-content/themes/', true);
     }
 
     public function createConfig($database_name = 'wordpress', $username = 'root', $password = '')
@@ -226,10 +234,10 @@ class WordpressInstaller
      * @see http://codex.wordpress.org/Function_Reference/wp_create_user
      * @see http://codex.wordpress.org/Class_Reference/WP_User
      */
-    public function newUser($name, $password, $mail, $role = 'subscriber')
+    public function newUser($name, $password, $email, $role = 'subscriber')
     {
         if (username_exists($name) === null) {
-            wp_create_user($name, $password, $mail);
+            wp_create_user($name, $password, $email);
             $userId = username_exists($name);
             $user = new WP_User($userId);
             $user->set_role($role);
@@ -247,23 +255,11 @@ class WordpressInstaller
         if ($theme->exists() && $theme->is_allowed()) {
             switch_theme($theme->get_stylesheet());
         }
+        var_dump($theme);
     }
 }
 
 $installer = new WordpressInstaller($config);
-
-if (isset($_POST['ajax'])) {
-    if (file_exists('./wordpress/wp-load.php') === false) {
-        die;
-    }
-    require_once('./wordpress/wp-load.php');
-    
-//    $installer->setPermalinkToPostname();
-//    $installer->newUser($_POST['name'], $_POST['password'], $_POST['mail'], $_POST['role']);
-//    $installer->switchTheme($_POST['theme']);
-    
-    die;
-}
 
 if ($installer->hasRights() === false) {
     $step = 0;
@@ -271,16 +267,16 @@ if ($installer->hasRights() === false) {
     $step = 1;
 }
 
-if (isset($_POST['step']) === true) {
+if (isset($_GET['step']) === true) {
 
-    if ($_POST['step'] == 2) {
+    if ($_GET['step'] == 2) {
         if (!file_exists(WP_CONFIG_SAMPLE)) {
             $installer->installWpZip($_POST['lang']);
         }
         $step = 2;
     }
 
-    if ($_POST['step'] == 3) {
+    if ($_GET['step'] == 3) {
         if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
             $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
         }
@@ -290,27 +286,48 @@ if (isset($_POST['step']) === true) {
         $step = 3;
     }
 
-    if ($_POST['step'] == 4) {
-        $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+    if ($_GET['step'] == 4) {
+        if ($_GET['install'] == 'wp') {
+            $installer->installWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+        }
+        if ($_GET['action'] == 'upload-theme') {
+            if (move_uploaded_file($_FILES['themezip']['tmp_name'], './wp.zip')) {
+                $installer->installWpThemeZip();
+            }
+        }
         $step = 4;
     }
 
-    if ($_POST['step'] == 5) {
+    if ($_GET['step'] == 5) {
+        require_once('./wordpress/wp-load.php');
+
+        if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
+            $installer->newUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
+        }
+
+        if ($_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
+            $installer->switchTheme($_POST['theme']);
+        }
+
+        if ($_GET['permalink'] == 'postname') {
+            $installer->setPermalinkToPostname();
+        }
+
         $step = 5;
     }
-    
-    if ($_POST['step'] == 6) {
+
+    if ($_GET['step'] == 6) {
         $step = 6;
     }
 
 } else {
 
     if (file_exists(WP_CONFIG_SAMPLE)) {
-        $step = 3;
+        $step = 2;
     }
 
     if (file_exists(WP_CONFIG)) {
-        $step = 4;
+        $step = 3;
     }
 
 }
@@ -333,43 +350,46 @@ if (isset($_POST['step']) === true) {
         Change the rights and <a href="javascript:location.reload();">reload</a> this page.
     <?php elseif ($step == 1): ?>
         <h2>Language</h2>
-        <form action="./installer.php" method="post">
+        <form id="step1" action="./installer.php?step=2" method="post">
             <select name="lang">
                 <option value="en">english</option>
                 <option value="de" selected>deutsch</option>
             </select>
-            <input type="hidden" name="step" value="2">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 2): ?>
         <h2>Database</h2>
-        <form action="./installer.php" method="post">
+        <form id="step2" action="./installer.php?step=3" method="post">
             <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
             <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
             <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
-            <input type="hidden" name="step" value="3">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 3): ?>
         <h2>Setup</h2>
-        <form action="./installer.php" method="post">
+        <form id="step3" action="./installer.php?step=4&amp;install=wp" method="post">
             <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
             <input type="text" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
             <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
             <input type="password" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
             <input type="text" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
             <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
-            <input type="hidden" name="step" value="4">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 4): ?>
-        <form id="step4" action="./installer.php" method="post">
-            <input type="hidden" name="step" value="5">
+        <?php
+        require_once('./wordpress/wp-load.php');
+        require_once('./wordpress/wp-admin/includes/admin.php');
+        require_once('./wordpress/wp-admin/includes/theme-install.php');
+        install_themes_upload();
+        ?>
+        <br><br>
+        <form id="step4" action="./installer.php?step=5" method="post">
             <input type="submit" name="next" value="Next">
         </form>
         <script type="application/javascript">
             jQuery(document).ready(function() {
-                jQuery('#step4').submit();
+                jQuery('.wp-upload-form').attr('action', './installer.php?step=4&action=upload-theme');
             });
         </script>
     <?php elseif ($step == 5): ?>
@@ -378,36 +398,47 @@ if (isset($_POST['step']) === true) {
         require_once('./wordpress/wp-load.php');
         require_once('./wordpress/wp-admin/includes/admin.php');
         ?>
-        <fieldset>
-            <legend align="left">New User</legend>
-            <input type="text" placeholder="Name" name="user_name" value="<?= $default['user']['name'] ?>">
-            <input type="password" placeholder="Password" name="admin_password" value="<?= $default['user']['password'] ?>">
-            <input type="text" placeholder="E-Mail" name="admin_email" value="<?= $default['user']['email'] ?>">
-            <select name="role">
-                <?php
-                /**
-                 * @see http://codex.wordpress.org/Function_Reference/wp_dropdown_roles
-                 */
-                wp_dropdown_roles($default['user']['role']);
-                ?>
-            </select>
-            <input type="submit" name="newuser" value="Add">
-        </fieldset>
-        <fieldset>
-            <legend align="left">Activate Theme</legend>
-            <select>
-                <?php
-                $themes = wp_prepare_themes_for_js();
-                foreach ($themes as $theme) {
-                    echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
-                }
-                ?>
-            </select>
-            <input type="submit" name="newuser" value="Activate">
-        </fieldset>
+        <form id="step5user" action="./installer.php?step=5&amp;user=add" method="post">
+            <fieldset>
+                <legend align="left">New User</legend>
+                <input type="text" placeholder="Name" name="name" value="<?= $default['user']['name'] ?>">
+                <input type="password" placeholder="Password" name="password" value="<?= $default['user']['password'] ?>">
+                <input type="text" placeholder="E-Mail" name="email" value="<?= $default['user']['email'] ?>">
+                <select name="role">
+                    <?php
+                    /**
+                     * @see http://codex.wordpress.org/Function_Reference/wp_dropdown_roles
+                     */
+                    wp_dropdown_roles($default['user']['role']);
+                    ?>
+                </select>
+                <input type="submit" name="newuser" value="Add">
+            </fieldset>
+        </form>
         <br><br>
-        <form action="./installer.php" method="post">
-            <input type="hidden" name="step" value="6">
+        <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
+            <fieldset>
+                <legend align="left">Activate Theme</legend>
+                <select name="theme">
+                    <?php
+                    $themes = wp_prepare_themes_for_js();
+                    foreach ($themes as $theme) {
+                        echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <input type="submit" name="newuser" value="Activate">
+            </fieldset>
+        </form>
+        <br><br>
+        <form id="step5permalink" action="./installer.php?step=5&amp;permalink=postname" method="post">
+            <fieldset>
+                <legend align="left">Permalink</legend>
+                <input type="submit" name="permalink" value="Postname">
+            </fieldset>
+        </form>
+        <br><br>
+        <form action="./installer.php?step=6" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
