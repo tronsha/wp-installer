@@ -337,11 +337,12 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 7) {
-        require_once('./wordpress/wp-load.php');
         if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
+            require_once('./wordpress/wp-load.php');
             $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
         }
         if ($_GET['permalink'] == 'postname') {
+            require_once('./wordpress/wp-load.php');
             $installer->setPermalinkToPostname();
         }
         $step = 7;
