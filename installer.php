@@ -290,14 +290,14 @@ if ($installer->hasRights() === false) {
 if (isset($_GET['step']) === true) {
 
     if ($_GET['step'] == 2) {
-        if (!file_exists(WP_CONFIG_SAMPLE)) {
+        if (!file_exists(WP_CONFIG_SAMPLE && isset($_POST['lang']) === true)) {
             $installer->installWordpress($_POST['lang']);
         }
         $step = 2;
     }
 
     if ($_GET['step'] == 3) {
-        if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
+        if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
             $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
         }
         if (!file_exists('./.htaccess')) {
@@ -306,12 +306,12 @@ if (isset($_GET['step']) === true) {
         $step = 3;
     }
 
-    if ($_GET['install'] == 'wp') {
+    if (isset($_GET['install']) === true && $_GET['install'] == 'wp') {
         $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
     }
 
     if ($_GET['step'] == 4) {
-        if ($_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
+        if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
             if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
                 $installer->installTheme();
             }
@@ -320,7 +320,7 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 5) {
-        if ($_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
+        if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
             require_once('./wordpress/wp-load.php');
             $installer->switchTheme($_POST['theme']);
         }
@@ -328,7 +328,7 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 6) {
-        if ($_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
+        if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
             foreach ($_POST['plugins'] as $plugin) {
                 $installer->installPlugin($plugin);
             }
@@ -337,7 +337,7 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 7) {
-        if ($_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
+        if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
             require_once('./wordpress/wp-load.php');
             $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
         }
@@ -345,7 +345,7 @@ if (isset($_GET['step']) === true) {
     }
 
     if ($_GET['step'] == 8) {
-        if ($_GET['permalink'] == 'postname') {
+        if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
             require_once('./wordpress/wp-load.php');
             $installer->setPermalinkToPostname();
         }
@@ -382,11 +382,15 @@ if (isset($_GET['step']) === true) {
             color: #ffffff;
             font-family: verdana, tahoma, sans-serif;
         }
+        body {
+            margin: 0;
+            padding: 0;
+        }
         h1 {
             font-family: 'Playball';
             font-size: 42px;
             font-weight: 100;
-            text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,1), 0 0 40px #21759B, 0 0 70px #21759B, 0 0 80px #21759B, 0 0 100px #21759B;
+            text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #21759B, 0 0 70px #21759B, 0 0 80px #21759B, 0 0 100px #21759B;
             display: inline;
         }
         fieldset {
@@ -395,6 +399,7 @@ if (isset($_GET['step']) === true) {
             border-radius: 10px;
             margin-left: auto;
             margin-right: auto;
+            max-width: 100%;
             padding: 30px;
             width: 300px;
         }
@@ -444,7 +449,7 @@ if (isset($_GET['step']) === true) {
                 <legend align="left">Database</legend>
                 <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
                 <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
-                <input type="text" required="required" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
+                <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
                 <input type="submit" name="next" value="Next">
             </fieldset>
         </form>
@@ -457,7 +462,9 @@ if (isset($_GET['step']) === true) {
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
                 <input type="email" required="required" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
-                <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
+                <label for="blog_public">Blog Public</label>
+                <input type="checkbox" name="blog_public" id="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
+                <br>
                 <input type="submit" name="next" value="Next">
             </fieldset>
         </form>
@@ -560,8 +567,9 @@ if (isset($_GET['step']) === true) {
         </form>
     <?php else: ?>
         <form action="./installer.php" method="post">
-            <input type="checkbox" name="delete" value="1" checked>
+            <label for="delete">Remove Script</label> <input type="checkbox" name="delete" id="delete" value="1" checked>
             <input type="hidden" name="ready" value="1">
+            <br><br>
             <input type="submit" name="next" value="Ready">
         </form>
     <?php endif; ?>
