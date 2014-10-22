@@ -442,9 +442,9 @@ if (isset($_GET['step']) === true) {
         <form id="step2" action="./installer.php?step=3" method="post">
             <fieldset>
                 <legend align="left">Database</legend>
-                <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
-                <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
-                <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
+                <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
+                <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
+                <input type="text" required="required" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
                 <input type="submit" name="next" value="Next">
             </fieldset>
         </form>
@@ -453,10 +453,10 @@ if (isset($_GET['step']) === true) {
             <fieldset>
                 <legend align="left">Setup</legend>
                 <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
-                <input type="text" required="" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
-                <input type="password" required="" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
-                <input type="password" required="" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
-                <input type="email" required="" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
+                <input type="text" required="required" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
+                <input type="password" required="required" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
+                <input type="password" required="required" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
+                <input type="email" required="required" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
                 <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
                 <input type="submit" name="next" value="Next">
             </fieldset>
