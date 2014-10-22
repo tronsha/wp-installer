@@ -371,100 +371,140 @@ if (isset($_GET['step']) === true) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="application/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
     <style>
+        html {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: verdana, tahoma, sans-serif;
+        }
+        h1 {
+            font-family: 'Playball';
+            font-size: 42px;
+            font-weight: 100;
+            text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,1), 0 0 40px #21759B, 0 0 70px #21759B, 0 0 80px #21759B, 0 0 100px #21759B;
+            display: inline;
+        }
+        fieldset {
+            border-radius: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 900px;
+        }
+        #logo {
+            height: 70px;
+            position: relative;
+            top: 15px;
+            width: 70px;
+        }
     </style>
 </head>
 <body>
 <div style="text-align: center;">
-    <h1>WordPress Installer</h1>
+    <h1>
+        <img id="logo" alt="WordPress" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAABuCAMAAADxhdbJAAAC8VBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8xx/ZkAAAA+nRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISktMTU5PUFFSU1RVVldYWVpbXF1e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">
+        Installer
+    </h1>
+    <br><br>
     <?php if ($step == 0): ?>
         Directory rights needed...<br>
         Change the rights and <a href="javascript:location.reload();">reload</a> this page.
     <?php elseif ($step == 1): ?>
-        <h2>Language</h2>
         <form id="step1" action="./installer.php?step=2" method="post">
-            <select name="lang">
-                <option value="en">english</option>
-                <option value="de" selected>deutsch</option>
-            </select>
+            <fieldset>
+                <legend align="left">Language</legend>
+                <select name="lang">
+                    <option value="en">english</option>
+                    <option value="de" selected>deutsch</option>
+                </select>
+            </fieldset>
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 2): ?>
-        <h2>Database</h2>
         <form id="step2" action="./installer.php?step=3" method="post">
-            <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
-            <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
-            <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
-            <input type="submit" name="next" value="Next">
+            <fieldset>
+                <legend align="left">Database</legend>
+                <input type="text" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
+                <input type="text" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
+                <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
+                <input type="submit" name="next" value="Next">
+            </fieldset>
         </form>
     <?php elseif ($step == 3): ?>
-        <h2>Setup</h2>
         <form id="step3" action="./installer.php?step=4&amp;install=wp" method="post">
-            <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
-            <input type="text" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
-            <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
-            <input type="password" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
-            <input type="text" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
-            <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
-            <input type="submit" name="next" value="Next">
+            <fieldset>
+                <legend align="left">Setup</legend>
+                <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
+                <input type="text" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
+                <input type="password" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
+                <input type="password" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
+                <input type="text" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
+                <input type="checkbox" name="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
+                <input type="submit" name="next" value="Next">
+            </fieldset>
         </form>
     <?php elseif ($step == 4): ?>
-        <h2>Install Theme</h2>
-        <?php
-        require_once('./wordpress/wp-load.php');
-        require_once('./wordpress/wp-admin/includes/admin.php');
-        require_once('./wordpress/wp-admin/includes/theme-install.php');
-        install_themes_upload();
-        ?>
+        <fieldset>
+            <legend align="left">Install Theme</legend>
+            <?php
+            require_once('./wordpress/wp-load.php');
+            require_once('./wordpress/wp-admin/includes/admin.php');
+            require_once('./wordpress/wp-admin/includes/theme-install.php');
+            install_themes_upload();
+            ?>
+            <script type="application/javascript">
+                jQuery(document).ready(function() {
+                    jQuery('.wp-upload-form').attr('action', './installer.php?step=4&theme=upload');
+                });
+            </script>
+        </fieldset>
         <br><br>
         <form id="step4" action="./installer.php?step=5" method="post">
             <input type="submit" name="next" value="Next">
         </form>
-        <script type="application/javascript">
-            jQuery(document).ready(function() {
-                jQuery('.wp-upload-form').attr('action', './installer.php?step=4&theme=upload');
-            });
-        </script>
     <?php elseif ($step == 5): ?>
-        <h2>Activate Theme</h2>
         <?php
         require_once('./wordpress/wp-load.php');
         require_once('./wordpress/wp-admin/includes/admin.php');
         ?>
         <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
-            <select name="theme">
-                <?php
-                $themes = wp_prepare_themes_for_js();
-                foreach ($themes as $theme) {
-                    echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
-                }
-                ?>
-            </select>
-            <input type="submit" value="Activate">
+            <fieldset>
+                <legend align="left">Activate Theme</legend>
+                <select name="theme">
+                    <?php
+                    $themes = wp_prepare_themes_for_js();
+                    foreach ($themes as $theme) {
+                        echo '<option value="' . $theme['id'] . '"' . ($theme['active'] ? ' selected' : '') . '>' . $theme['name'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <input type="submit" value="Activate">
+            </fieldset>
         </form>
         <br><br>
         <form id="step5" action="./installer.php?step=6" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 6): ?>
-        <h2>Install Plugins</h2>
         <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
-            <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
-                <?php
-                foreach ($plugins as $plugin) {
-                    echo '<option value="' . $plugin['url'] . '"' . ($plugin['selected'] == '1' ? ' selected' : '') . '>' . $plugin['name'] . '</option>';
-                }
-                ?>
-            </select>
-            <br>
-            <input type="submit" value="Install">
+            <fieldset>
+                <legend align="left">Install Plugins</legend>
+                <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
+                    <?php
+                    foreach ($plugins as $plugin) {
+                        echo '<option value="' . $plugin['url'] . '"' . ($plugin['selected'] == '1' ? ' selected' : '') . '>' . $plugin['name'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <br>
+                <input type="submit" value="Install">
+            </fieldset>
         </form>
         <br><br>
         <form id="step6" action="./installer.php?step=7" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 7): ?>
-        <h2>Options</h2>
         <?php
         require_once('./wordpress/wp-load.php');
         require_once('./wordpress/wp-admin/includes/admin.php');
