@@ -95,7 +95,7 @@ class WordpressInstaller
         file_put_contents($zip, file_get_contents($file));
     }
 
-    public function downloadWpZip($lang = 'en')
+    public function downloadWordpress($lang = 'en')
     {
         if (isset($this->wpSrc[$lang]) === true) {
             $file = $this->wpSrc[$lang];
@@ -115,7 +115,7 @@ class WordpressInstaller
         }
     }
 
-    public function removeZip($file = './wp.zip')
+    public function removeFile($file = './wp.zip')
     {
         unlink($file);
     }
@@ -129,13 +129,13 @@ class WordpressInstaller
     {
         $this->unzip($file, $path);
         sleep(5);
-        $this->removeZip($file);
+        $this->removeFile($file);
     }
 
     public function installWordpress($lang = 'en')
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
-            $this->downloadWpZip($lang);
+            $this->downloadWordpress($lang);
             $this->installZip('./wp.zip', './');
             $this->createUploadDir();
             $this->chmod('./wordpress', true);
@@ -452,7 +452,7 @@ if (isset($_GET['step']) === true) {
             <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
                 <?php
                 foreach ($plugins as $plugin) {
-                    echo '<option value="' . $plugin['url'] . '" selected>' . $plugin['name'] . '</option>';
+                    echo '<option value="' . $plugin['url'] . '"' . ($plugin['selected'] == '1' ? ' selected' : '') . '>' . $plugin['name'] . '</option>';
                 }
                 ?>
             </select>
