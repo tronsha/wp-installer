@@ -290,7 +290,7 @@ if ($installer->hasRights() === false) {
 if (isset($_GET['step']) === true) {
 
     if ($_GET['step'] == 2) {
-        if (!file_exists(WP_CONFIG_SAMPLE && isset($_POST['lang']) === true)) {
+        if (!file_exists(WP_CONFIG_SAMPLE) && isset($_POST['lang']) === true) {
             $installer->installWordpress($_POST['lang']);
         }
         $step = 2;
