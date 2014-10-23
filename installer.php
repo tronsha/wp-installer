@@ -288,14 +288,12 @@ if ($installer->hasRights() === false) {
 }
 
 if (isset($_GET['step']) === true) {
-
     if ($_GET['step'] == 2) {
         if (!file_exists(WP_CONFIG_SAMPLE) && isset($_POST['lang']) === true) {
             $installer->installWordpress($_POST['lang']);
         }
         $step = 2;
     }
-
     if ($_GET['step'] == 3) {
         if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
             $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
@@ -305,11 +303,9 @@ if (isset($_GET['step']) === true) {
         }
         $step = 3;
     }
-
     if (isset($_GET['install']) === true && $_GET['install'] == 'wp') {
         $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
     }
-
     if ($_GET['step'] == 4) {
         if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
             if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
@@ -318,7 +314,6 @@ if (isset($_GET['step']) === true) {
         }
         $step = 4;
     }
-
     if ($_GET['step'] == 5) {
         if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
             require_once('./wordpress/wp-load.php');
@@ -326,7 +321,6 @@ if (isset($_GET['step']) === true) {
         }
         $step = 5;
     }
-
     if ($_GET['step'] == 6) {
         if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
             foreach ($_POST['plugins'] as $plugin) {
@@ -335,7 +329,6 @@ if (isset($_GET['step']) === true) {
         }
         $step = 6;
     }
-
     if ($_GET['step'] == 7) {
         if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
             require_once('./wordpress/wp-load.php');
@@ -343,7 +336,6 @@ if (isset($_GET['step']) === true) {
         }
         $step = 7;
     }
-
     if ($_GET['step'] == 8) {
         if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
             require_once('./wordpress/wp-load.php');
@@ -351,21 +343,15 @@ if (isset($_GET['step']) === true) {
         }
         $step = 8;
     }
-
     if ($_GET['step'] == 9) {
         $step = 9;
     }
-
-} else {
-
-    if (file_exists(WP_CONFIG_SAMPLE)) {
-        $step = 2;
-    }
-
-    if (file_exists(WP_CONFIG)) {
-        $step = 3;
-    }
-
+}
+if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
+    $step = 2;
+}
+if (file_exists(WP_CONFIG) && $step < 3) {
+    $step = 3;
 }
 ?><!doctype html>
 <html>
