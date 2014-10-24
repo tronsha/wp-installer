@@ -105,6 +105,9 @@ class WordpressInstaller
         $this->download($file, './wp.zip');
     }
 
+    /**
+     * @see http://php.net/manual/en/class.ziparchive.php
+     */
     public function unzip($file = './wp.zip', $path = './')
     {
         $zip = new ZipArchive;
@@ -352,6 +355,35 @@ if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
 }
 if (file_exists(WP_CONFIG) && $step < 3) {
     $step = 3;
+}
+if (file_exists(WP_CONFIG) && $step >= 3) {
+    $configFile = file_get_contents(WP_CONFIG);
+    preg_match("/define\('DB_NAME', '([^']+)'\);/", $configFile, $matches);
+    $config_db_name = $matches[1];
+    preg_match("/define\('DB_USER', '([^']+)'\);/", $configFile, $matches);
+    $config_db_user = $matches[1];
+    preg_match("/define\('DB_PASSWORD', '([^']+)'\);/", $configFile, $matches);
+    $config_db_password = $matches[1];
+    preg_match("/define\('DB_HOST', '([^']+)'\);/", $configFile, $matches);
+    $config_db_host = $matches[1];
+    preg_match("/table_prefix\s*\=\s*'([^']+)';/", $configFile, $matches);
+    $config_table_prefix = $matches[1];
+    /**
+     * @see http://php.net/manual/en/ref.pdo-mysql.php
+     */
+    $db = new PDO(
+        'mysql:host=' . $config_db_host . ';dbname=' . $config_db_name,
+        $config_db_user,
+        $config_db_password,
+        array(PDO::ATTR_PERSISTENT => false)
+    );
+    $stmt = $db->prepare('SHOW TABLES LIKE "' . $config_table_prefix . 'options"');
+    $stmt->execute();
+    if ($stmt->rowCount() == 0) {
+        $step = 3;
+    } elseif ($step == 3) {
+        $step = 4;
+    }
 }
 ?><!doctype html>
 <html>
