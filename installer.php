@@ -181,7 +181,7 @@ class WordpressInstaller
             if (empty($this->wpTablePrefix) === true) {
                 $table_prefix = $this->getRandomTablePrefix();
             } else {
-                $table_prefix = $this->$this->wpTablePrefix;
+                $table_prefix = $this->wpTablePrefix;
             }
             $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $table_prefix . '\';', $config);
             file_put_contents(WP_CONFIG, $config);
