@@ -3,19 +3,6 @@ $db_name = 'wordpress';
 $db_username = 'root';
 $db_password = '';
 
-define('WP_CONFIG', './wordpress/wp-config.php');
-define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
-
-set_time_limit(300);
-
-$config = array(
-    'src' => array(
-        'en' => 'https://wordpress.org/latest.zip',
-        'de' => 'https://de.wordpress.org/latest-de_DE.zip'
-    ),
-    'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/'
-);
-
 $default = array(
     'title' => 'WordPress',
     'admin' => array(
@@ -39,6 +26,20 @@ $plugins = array(
     array('name' => 'Members', 'url' => 'https://downloads.wordpress.org/plugin/members.0.2.4.zip', 'selected' => '1'),
 );
 
+$config = array(
+    'src' => array(
+        'en' => 'https://wordpress.org/latest.zip',
+        'de' => 'https://de.wordpress.org/latest-de_DE.zip',
+    ),
+    'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
+    'table_prefix' => 'wp_',
+);
+
+set_time_limit(300);
+
+define('WP_CONFIG', './wordpress/wp-config.php');
+define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
+
 if (isset($_POST['ready']) === true) {
     if (isset($_POST['delete']) === true) {
         unlink(__FILE__);
@@ -51,11 +52,13 @@ class WordpressInstaller
 {
     private $wpSrc;
     private $wpSalt;
+    private $wpTablePrefix;
 
     public function __construct($config)
     {
         $this->wpSrc = $config['src'];
         $this->wpSalt = $config['salt'];
+        $this->wpTablePrefix = $config['table_prefix'];
     }
 
     public function hasRights($file = __DIR__, $right = 7)
@@ -158,6 +161,12 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
+    public function getRandomTablePrefix()
+    {
+        $prefix = substr(md5(time()), 0, 4);
+        return $prefix . '_';
+    }
+
     public function createConfig($database_name = 'wordpress', $username = 'root', $password = '')
     {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
@@ -166,9 +175,15 @@ class WordpressInstaller
             if (empty($salt) === false) {
                 $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm", str_replace('$', '\\$', $salt), $config);
             }
-            $config = str_replace('database_name_here', $database_name, $config);
-            $config = str_replace('username_here', $username, $config);
-            $config = str_replace('password_here', $password, $config);
+            $config = str_replace('define(\'DB_NAME\', \'database_name_here\');', 'define(\'DB_NAME\', \'' . $database_name . '\');', $config);
+            $config = str_replace('define(\'DB_USER\', \'username_here\');', 'define(\'DB_USER\', \'' . $username . '\');', $config);
+            $config = str_replace('define(\'DB_PASSWORD\', \'password_here\');', 'define(\'DB_PASSWORD\', \'' . $password . '\');', $config);
+            if (empty($this->wpTablePrefix) === true) {
+                $table_prefix = $this->getRandomTablePrefix();
+            } else {
+                $table_prefix = $this->$this->wpTablePrefix;
+            }
+            $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $table_prefix . '\';', $config);
             file_put_contents(WP_CONFIG, $config);
             $this->chmod(WP_CONFIG);
         }
@@ -280,7 +295,7 @@ class WordpressInstaller
             switch_theme($theme->get_stylesheet());
         }
     }
-    
+
     /**
      * @see http://php.net/manual/en/ref.pdo-mysql.php
      */
