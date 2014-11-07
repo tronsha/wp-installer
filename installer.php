@@ -395,6 +395,9 @@ if (isset($_GET['step']) === true) {
         $step = 9;
     }
 }
+if (!file_exists(WP_CONFIG_SAMPLE)) {
+    $step = 1;
+}
 if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
     $step = 2;
 }
