@@ -1,7 +1,4 @@
 <?php
-$db_name = 'wordpress';
-$db_username = 'root';
-$db_password = '';
 
 $login = array(
     'user' => 'Installer',
@@ -21,7 +18,12 @@ $default = array(
         'password' => '',
         'email' => '',
         'role' => 'author',
-    )
+    ),
+    'db' => array (
+        'name' => 'wordpress',
+        'username' => 'root',
+        'password' => '',
+    ),
 );
 
 $plugins = array(
@@ -504,9 +506,9 @@ if (file_exists(WP_CONFIG) && $step >= 3) {
         <form id="step2" action="./installer.php?step=3" method="post">
             <fieldset>
                 <legend align="left">Database</legend>
-                <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $db_name ?>">
-                <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $db_username ?>">
-                <input type="text" placeholder="Database Password" name="db_password" value="<?= $db_password ?>">
+                <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $default['db']['name'] ?>">
+                <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $default['db']['username'] ?>">
+                <input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
                 <input type="submit" name="next" value="Next">
             </fieldset>
         </form>
