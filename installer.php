@@ -23,6 +23,8 @@ $default = array(
         'name' => 'wordpress',
         'username' => 'root',
         'password' => '',
+        'host' => 'localhost',
+        'port' => '3306',
     ),
 );
 
@@ -182,7 +184,7 @@ class WordpressInstaller
         return $prefix . '_';
     }
 
-    public function createConfig($database_name = 'wordpress', $username = 'root', $password = '')
+    public function createConfig($databasename = 'wordpress', $username = 'root', $password = '', $host = 'localhost', $port = '3306')
     {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
@@ -190,9 +192,10 @@ class WordpressInstaller
             if (empty($salt) === false) {
                 $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm", str_replace('$', '\\$', $salt), $config);
             }
-            $config = str_replace('define(\'DB_NAME\', \'database_name_here\');', 'define(\'DB_NAME\', \'' . $database_name . '\');', $config);
+            $config = str_replace('define(\'DB_NAME\', \'database_name_here\');', 'define(\'DB_NAME\', \'' . $databasename . '\');', $config);
             $config = str_replace('define(\'DB_USER\', \'username_here\');', 'define(\'DB_USER\', \'' . $username . '\');', $config);
             $config = str_replace('define(\'DB_PASSWORD\', \'password_here\');', 'define(\'DB_PASSWORD\', \'' . $password . '\');', $config);
+            $config = str_replace('define(\'DB_HOST\', \'localhost\');', 'define(\'DB_HOST\', \'' . $host . ($port != '3306' ? ':' . $port : '') . '\');', $config);
             if (empty($this->wpTablePrefix) === true) {
                 $table_prefix = $this->getRandomTablePrefix();
             } else {
@@ -359,7 +362,7 @@ if (isset($_GET['step']) === true) {
     }
     if ($_GET['step'] == 3) {
         if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
-            $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
+            $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password'], $_POST['db_host'], $_POST['db_port']);
         }
         if (!file_exists('./.htaccess')) {
             $installer->rewriteSubdirectory();
@@ -509,6 +512,8 @@ if (file_exists(WP_CONFIG) && $step >= 3) {
                 <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $default['db']['name'] ?>">
                 <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $default['db']['username'] ?>">
                 <input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
+                <input type="text" required="required" placeholder="Host" name="db_host" value="<?= $default['db']['host'] ?>">
+                <input type="text" required="required" placeholder="Port" name="db_port" value="<?= $default['db']['port'] ?>">
                 <input type="submit" name="next" value="Next">
             </fieldset>
         </form>
