@@ -1,10 +1,5 @@
 <?php
 
-//$login = array(
-//    'user' => 'Installer',
-//    'password' => 'wordpress'
-//);
-
 $default = array(
     'title' => 'WordPress',
     'admin' => array(
@@ -49,6 +44,11 @@ set_time_limit(300);
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 
+//$login = array(
+//    'user' => 'Installer',
+//    'password' => 'wordpress'
+//);
+//
 //if (isset($_SERVER['REDIRECT_REMOTE_USER']) === false && isset($_SERVER['REMOTE_USER']) === false) {
 //    if (empty($login['user']) === false && empty($login['password']) === false && $_SERVER['PHP_AUTH_USER'] != $login['user'] && $_SERVER['PHP_AUTH_PW'] != $login['password']) {
 //        header('WWW-Authenticate: Basic realm="Login"');
