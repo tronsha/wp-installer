@@ -350,83 +350,81 @@ $installer = new WordpressInstaller($config);
 if ($installer->hasRights() === false) {
     $step = 0;
 } else {
-    $step = 1;
-}
-
-if (isset($_GET['step']) === true) {
-    if ($_GET['step'] == 2) {
-        if (!file_exists(WP_CONFIG_SAMPLE) && isset($_POST['lang']) === true) {
-            $installer->installWordpress($_POST['lang']);
+    if (isset($_GET['step']) === true) {
+        if ($_GET['step'] == 2) {
+            if (!file_exists(WP_CONFIG_SAMPLE) && isset($_POST['lang']) === true) {
+                $installer->installWordpress($_POST['lang']);
+            }
+            $step = 2;
         }
+        if ($_GET['step'] == 3) {
+            if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
+                $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password'], $_POST['db_host'], $_POST['db_port']);
+            }
+            if (!file_exists('./.htaccess')) {
+                $installer->rewriteSubdirectory();
+            }
+            $step = 3;
+        }
+        if (isset($_GET['install']) === true && $_GET['install'] == 'wp') {
+            $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+        }
+        if ($_GET['step'] == 4) {
+            if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
+                if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
+                    $installer->installTheme();
+                }
+            }
+            $step = 4;
+        }
+        if ($_GET['step'] == 5) {
+            if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
+                require_once('./wordpress/wp-load.php');
+                $installer->switchTheme($_POST['theme']);
+            }
+            $step = 5;
+        }
+        if ($_GET['step'] == 6) {
+            if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
+                foreach ($_POST['plugins'] as $plugin) {
+                    $installer->installPlugin($plugin);
+                }
+            }
+            $step = 6;
+        }
+        if ($_GET['step'] == 7) {
+            if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
+                require_once('./wordpress/wp-load.php');
+                $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
+            }
+            $step = 7;
+        }
+        if ($_GET['step'] == 8) {
+            if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
+                require_once('./wordpress/wp-load.php');
+                $installer->setPermalinkToPostname();
+            }
+            $step = 8;
+        }
+        if ($_GET['step'] == 9) {
+            $step = 9;
+        }
+    }
+    if (!file_exists(WP_CONFIG_SAMPLE)) {
+        $step = 1;
+    }
+    if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
         $step = 2;
     }
-    if ($_GET['step'] == 3) {
-        if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
-            $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password'], $_POST['db_host'], $_POST['db_port']);
-        }
-        if (!file_exists('./.htaccess')) {
-            $installer->rewriteSubdirectory();
-        }
+    if (file_exists(WP_CONFIG) && $step < 3) {
         $step = 3;
     }
-    if (isset($_GET['install']) === true && $_GET['install'] == 'wp') {
-        $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
-    }
-    if ($_GET['step'] == 4) {
-        if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
-            if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
-                $installer->installTheme();
-            }
+    if (file_exists(WP_CONFIG) && $step >= 3) {
+        if ($installer->isInstalled() === false) {
+            $step = 3;
+        } elseif ($step == 3) {
+            $step = 4;
         }
-        $step = 4;
-    }
-    if ($_GET['step'] == 5) {
-        if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
-            require_once('./wordpress/wp-load.php');
-            $installer->switchTheme($_POST['theme']);
-        }
-        $step = 5;
-    }
-    if ($_GET['step'] == 6) {
-        if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
-            foreach ($_POST['plugins'] as $plugin) {
-                $installer->installPlugin($plugin);
-            }
-        }
-        $step = 6;
-    }
-    if ($_GET['step'] == 7) {
-        if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
-            require_once('./wordpress/wp-load.php');
-            $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
-        }
-        $step = 7;
-    }
-    if ($_GET['step'] == 8) {
-        if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
-            require_once('./wordpress/wp-load.php');
-            $installer->setPermalinkToPostname();
-        }
-        $step = 8;
-    }
-    if ($_GET['step'] == 9) {
-        $step = 9;
-    }
-}
-if (!file_exists(WP_CONFIG_SAMPLE)) {
-    $step = 1;
-}
-if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG)) {
-    $step = 2;
-}
-if (file_exists(WP_CONFIG) && $step < 3) {
-    $step = 3;
-}
-if (file_exists(WP_CONFIG) && $step >= 3) {
-    if ($installer->isInstalled() === false) {
-        $step = 3;
-    } elseif ($step == 3) {
-        $step = 4;
     }
 }
 ?><!doctype html>
