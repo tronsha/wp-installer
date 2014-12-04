@@ -24,10 +24,8 @@ $default = array(
 );
 
 $plugins = array(
-    array('name' => 'wpSEO', 'url' => 'http://cdn.wpseo.de/plugin/v3/zip/latest/wpseo.zip', 'selected' => '1'),
-    array('name' => 'Contact Form 7', 'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.4.0.1.zip', 'selected' => '1'),
-    array('name' => 'InfiniteWP', 'url' => 'https://downloads.wordpress.org/plugin/iwp-client.zip', 'selected' => '1'),
-    array('name' => 'Members', 'url' => 'https://downloads.wordpress.org/plugin/members.0.2.4.zip', 'selected' => '1'),
+    array('name' => 'WordPress SEO', 'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip', 'selected' => '1'),
+    array('name' => 'Contact Form 7', 'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.latest-stable.zip', 'selected' => '1'),
 );
 
 $config = array(
