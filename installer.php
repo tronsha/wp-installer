@@ -14,7 +14,7 @@ $default = array(
         'email' => '',
         'role' => 'author',
     ),
-    'db' => array (
+    'db' => array(
         'name' => 'wordpress',
         'username' => 'root',
         'password' => '',
@@ -24,8 +24,16 @@ $default = array(
 );
 
 $plugins = array(
-    array('name' => 'WordPress SEO', 'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip', 'selected' => '1'),
-    array('name' => 'Contact Form 7', 'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.latest-stable.zip', 'selected' => '1'),
+    array(
+        'name' => 'WordPress SEO',
+        'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Contact Form 7',
+        'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.latest-stable.zip',
+        'selected' => '1'
+    ),
 );
 
 $config = array(
@@ -38,6 +46,7 @@ $config = array(
 );
 
 set_time_limit(300);
+error_reporting(E_ALL ^ E_NOTICE);
 
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
@@ -118,7 +127,8 @@ class WordpressInstaller
         }
     }
 
-    public function download($file, $zip = './tmp.zip'){
+    public function download($file, $zip = './tmp.zip')
+    {
         file_put_contents($zip, file_get_contents($file));
     }
 
@@ -191,18 +201,43 @@ class WordpressInstaller
         return $prefix . '_';
     }
 
-    public function createConfig($databasename = 'wordpress', $username = 'root', $password = '', $host = 'localhost', $port = '3306')
-    {
+    public function createConfig(
+        $databasename = 'wordpress',
+        $username = 'root',
+        $password = '',
+        $host = 'localhost',
+        $port = '3306'
+    ) {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
             $salt = file_get_contents($this->wpSalt);
             if (empty($salt) === false) {
-                $config = preg_replace("/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm", str_replace('$', '\\$', $salt), $config);
+                $config = preg_replace(
+                    "/define\('AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_KEY',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_KEY',\s*'put your unique phrase here'\);\s*define\('NONCE_KEY',\s*'put your unique phrase here'\);\s*define\('AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('SECURE_AUTH_SALT',\s*'put your unique phrase here'\);\s*define\('LOGGED_IN_SALT',\s*'put your unique phrase here'\);\s*define\('NONCE_SALT',\s*'put your unique phrase here'\);/sm",
+                    str_replace('$', '\\$', $salt),
+                    $config
+                );
             }
-            $config = str_replace('define(\'DB_NAME\', \'database_name_here\');', 'define(\'DB_NAME\', \'' . $databasename . '\');', $config);
-            $config = str_replace('define(\'DB_USER\', \'username_here\');', 'define(\'DB_USER\', \'' . $username . '\');', $config);
-            $config = str_replace('define(\'DB_PASSWORD\', \'password_here\');', 'define(\'DB_PASSWORD\', \'' . $password . '\');', $config);
-            $config = str_replace('define(\'DB_HOST\', \'localhost\');', 'define(\'DB_HOST\', \'' . $host . ($port != '3306' ? ':' . $port : '') . '\');', $config);
+            $config = str_replace(
+                'define(\'DB_NAME\', \'database_name_here\');',
+                'define(\'DB_NAME\', \'' . $databasename . '\');',
+                $config
+            );
+            $config = str_replace(
+                'define(\'DB_USER\', \'username_here\');',
+                'define(\'DB_USER\', \'' . $username . '\');',
+                $config
+            );
+            $config = str_replace(
+                'define(\'DB_PASSWORD\', \'password_here\');',
+                'define(\'DB_PASSWORD\', \'' . $password . '\');',
+                $config
+            );
+            $config = str_replace(
+                'define(\'DB_HOST\', \'localhost\');',
+                'define(\'DB_HOST\', \'' . $host . ($port != '3306' ? ':' . $port : '') . '\');',
+                $config
+            );
             if (empty($this->wpTablePrefix) === true) {
                 $table_prefix = $this->getRandomTablePrefix();
             } else {
@@ -237,8 +272,14 @@ class WordpressInstaller
      * Create Admin User
      * @see http://php.net/manual/en/book.curl.php
      */
-    public function setupWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
-    {
+    public function setupWordpress(
+        $weblog_title,
+        $user_name,
+        $admin_password,
+        $admin_password2,
+        $admin_email,
+        $blog_public
+    ) {
         $path = dirname($_SERVER['PHP_SELF']);
         $url = 'http://' . $_SERVER["HTTP_HOST"] . ($path == '/' ? '' : $path) . '/wp-admin/install.php?step=2';
         $fields = array(
@@ -270,7 +311,8 @@ class WordpressInstaller
     public function setPermalinkToPostname()
     {
         if (file_exists('./wordpress/.htaccess') === false) {
-            $GLOBALS['wpdb']->update('wp_options',
+            $GLOBALS['wpdb']->update(
+                'wp_options',
                 array('option_value' => '/%postname%/'),
                 array('option_name' => 'permalink_structure'),
                 array('%s'),
@@ -371,7 +413,13 @@ if ($installer->hasRights() === false) {
         }
         if ($_GET['step'] == 3) {
             if (file_exists(WP_CONFIG_SAMPLE) && !file_exists(WP_CONFIG) && isset($_POST['db_name']) === true && isset($_POST['db_username']) === true && isset($_POST['db_password']) === true) {
-                $installer->createConfig($_POST['db_name'], $_POST['db_username'], $_POST['db_password'], $_POST['db_host'], $_POST['db_port']);
+                $installer->createConfig(
+                    $_POST['db_name'],
+                    $_POST['db_username'],
+                    $_POST['db_password'],
+                    $_POST['db_host'],
+                    $_POST['db_port']
+                );
             }
             if (!file_exists('./.htaccess')) {
                 $installer->rewriteSubdirectory();
@@ -379,7 +427,14 @@ if ($installer->hasRights() === false) {
             $step = 3;
         }
         if (isset($_GET['install']) === true && $_GET['install'] == 'wp') {
-            $installer->setupWordpress($_POST['weblog_title'], $_POST['user_name'], $_POST['admin_password'], $_POST['admin_password2'], $_POST['admin_email'], $_POST['blog_public']);
+            $installer->setupWordpress(
+                $_POST['weblog_title'],
+                $_POST['user_name'],
+                $_POST['admin_password'],
+                $_POST['admin_password2'],
+                $_POST['admin_email'],
+                $_POST['blog_public']
+            );
         }
         if ($_GET['step'] == 4) {
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
@@ -454,10 +509,12 @@ if ($installer->hasRights() === false) {
             color: #ffffff;
             font-family: verdana, tahoma, sans-serif;
         }
+
         body {
             margin: 0;
             padding: 0;
         }
+
         h1 {
             font-family: 'Playball';
             font-size: 42px;
@@ -465,6 +522,7 @@ if ($installer->hasRights() === false) {
             text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #21759B, 0 0 70px #21759B, 0 0 80px #21759B, 0 0 100px #21759B;
             display: inline;
         }
+
         fieldset {
             background: linear-gradient(#000000, #21759B);
             border: none;
@@ -475,6 +533,7 @@ if ($installer->hasRights() === false) {
             padding: 30px;
             width: 300px;
         }
+
         fieldset select,
         fieldset input[type="text"],
         fieldset input[type="email"],
@@ -483,9 +542,11 @@ if ($installer->hasRights() === false) {
             margin-bottom: 6px;
             width: 100%;
         }
+
         fieldset input[type="submit"] {
             margin-top: 20px;
         }
+
         #logo {
             height: 70px;
             position: relative;
@@ -551,7 +612,7 @@ if ($installer->hasRights() === false) {
             install_themes_upload();
             ?>
             <script type="application/javascript">
-                jQuery(document).ready(function() {
+                jQuery(document).ready(function () {
                     jQuery('.wp-upload-form').attr('action', './installer.php?step=4&theme=upload');
                 });
             </script>
