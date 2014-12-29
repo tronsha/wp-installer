@@ -230,7 +230,8 @@ class WordpressInstaller
      */
     public function setupWordpress($weblog_title, $user_name, $admin_password, $admin_password2, $admin_email, $blog_public)
     {
-        $url = 'http://' . $_SERVER["HTTP_HOST"] . '/wp-admin/install.php?step=2';
+        $path = dirname($_SERVER['PHP_SELF']);
+        $url = 'http://' . $_SERVER["HTTP_HOST"] . ($path == '/' ? '' : $path) . '/wp-admin/install.php?step=2';
         $fields = array(
             'weblog_title' => urlencode($weblog_title),
             'user_name' => urlencode($user_name),
