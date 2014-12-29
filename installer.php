@@ -93,6 +93,15 @@ class WordpressInstaller
         return false;
     }
 
+    public function existsCurl()
+    {
+        if (extension_loaded('curl')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function chmod($path, $recursive = false)
     {
         chmod($path, is_file($path) ? 0666 : 0777);
@@ -348,6 +357,10 @@ $installer = new WordpressInstaller($config);
 
 if ($installer->hasRights() === false) {
     $step = 0;
+    $step0message = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
+} elseif ($installer->existsCurl() === false) {
+    $step = 0;
+    $step0message = 'Curl extension is not loaded.';
 } else {
     if (isset($_GET['step']) === true) {
         if ($_GET['step'] == 2) {
@@ -489,8 +502,7 @@ if ($installer->hasRights() === false) {
     </h1>
     <br><br><br>
     <?php if ($step == 0): ?>
-        Directory rights needed...<br>
-        Change the rights and <a href="javascript:location.reload();">reload</a> this page.
+        <?php echo $step0message; ?>
     <?php elseif ($step == 1): ?>
         <form id="step1" action="./installer.php?step=2" method="post">
             <fieldset>
