@@ -187,7 +187,7 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
-    public function getRandomTablePrefix ($prefix = null, $length = 3, $algo = 'sha256', $count = 0)
+    public function getRandomTablePrefix($prefix = null, $length = 3, $algo = 'sha256', $count = 0)
     {
         if (empty($prefix) === true) {
             $prefix = time();
@@ -195,7 +195,7 @@ class WordpressInstaller
 
         if ($algo !== false) {
             $prefix = hash($algo, $prefix);
-            $prefix = base_convert ($prefix, 16, 36);
+            $prefix = base_convert($prefix, 16, 36);
             $prefix = preg_replace('/[0-9]/', '', $prefix);
         }
 
