@@ -187,9 +187,26 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
-    public function getRandomTablePrefix()
+    public function getRandomTablePrefix ($prefix = null, $length = 3, $algo = 'sha256', $count = 0)
     {
-        $prefix = substr(md5(time()), 0, 4);
+        if (empty($prefix) === true) {
+            $prefix = time();
+        }
+
+        if ($algo !== false) {
+            $prefix = hash($algo, $prefix);
+            $prefix = base_convert ($prefix, 16, 36);
+            $prefix = preg_replace('/[0-9]/', '', $prefix);
+        }
+
+        if ($length > 0) {
+            $prefix = substr($prefix, 0, $length);
+
+            if (strlen($prefix) != $length && $count < 100) {
+                return $this->getRandomTablePrefix($prefix, $length, $algo, ++$count);
+            }
+        }
+
         return $prefix . '_';
     }
 
