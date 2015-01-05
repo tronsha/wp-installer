@@ -64,14 +64,6 @@ define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 //    }
 //}
 
-if (isset($_POST['ready']) === true) {
-    if (isset($_POST['delete']) === true) {
-        unlink(__FILE__);
-    }
-    header("Location: /wp-login.php");
-    die;
-}
-
 class WordpressInstaller
 {
     private $wpSrc;
@@ -260,12 +252,18 @@ class WordpressInstaller
             $htaccess .= 'RewriteBase /' . "\n";
             $htaccess .= 'RewriteCond %{REQUEST_FILENAME} !-f' . "\n";
             $htaccess .= 'RewriteCond %{REQUEST_FILENAME} !-d [OR]' . "\n";
-            $htaccess .= 'RewriteCond %{REQUEST_URI} ^/$' . "\n";
-            $htaccess .= 'RewriteRule ^(.*) /wordpress/$1 [L]' . "\n";
+            $htaccess .= 'RewriteCond %{REQUEST_URI} ^' . $this->getUrlPath() . '/$' . "\n";
+            $htaccess .= 'RewriteRule ^(.*)$ ' . $this->getUrlPath() . '/wordpress/$1 [L]' . "\n";
             $htaccess .= '</IfModule>' . "\n";
             file_put_contents('.htaccess', $htaccess);
             chmod('.htaccess', 0666);
         }
+    }
+
+    public function getUrlPath()
+    {
+        $path = dirname($_SERVER['PHP_SELF']);
+        return ($path == '/' ? '' : $path);
     }
 
     /**
@@ -280,8 +278,8 @@ class WordpressInstaller
         $admin_email,
         $blog_public
     ) {
-        $path = dirname($_SERVER['PHP_SELF']);
-        $url = 'http://' . $_SERVER["HTTP_HOST"] . ($path == '/' ? '' : $path) . '/wp-admin/install.php?step=2';
+
+        $url = 'http://' . $_SERVER["HTTP_HOST"] . $this->getUrlPath() . '/wp-admin/install.php?step=2';
         $fields = array(
             'weblog_title' => urlencode($weblog_title),
             'user_name' => urlencode($user_name),
@@ -326,7 +324,7 @@ class WordpressInstaller
             $htaccess .= 'RewriteRule ^index\.php$ - [L]' . "\n";
             $htaccess .= 'RewriteCond %{REQUEST_FILENAME} !-f' . "\n";
             $htaccess .= 'RewriteCond %{REQUEST_FILENAME} !-d' . "\n";
-            $htaccess .= 'RewriteRule . /index.php [L]' . "\n";
+            $htaccess .= 'RewriteRule . ' . $this->getUrlPath() . '/index.php [L]' . "\n";
             $htaccess .= '</IfModule>' . "\n";
             $htaccess .= '' . "\n";
             $htaccess .= '# END WordPress' . "\n";
@@ -396,6 +394,14 @@ class WordpressInstaller
 }
 
 $installer = new WordpressInstaller($config);
+
+if (isset($_POST['ready']) === true) {
+    if (isset($_POST['delete']) === true) {
+        unlink(__FILE__);
+    }
+    header('Location: ' . $installer->getUrlPath() . '/wp-login.php');
+    die;
+}
 
 if ($installer->hasRights() === false) {
     $step = 0;
