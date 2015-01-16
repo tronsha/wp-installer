@@ -70,6 +70,7 @@ class WordpressInstaller
     private $wpSrc;
     private $wpSalt;
     private $wpTablePrefix;
+    private $wpPhpVersion;
 
     public function __construct($config)
     {
