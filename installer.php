@@ -336,6 +336,11 @@ class WordpressInstaller
         curl_close($ch);
     }
 
+    public function setBlogDescription($description = '')
+    {
+        update_option('blogdescription', $description);
+    }
+
     /**
      * Set Permalink to Postname
      * @see http://httpd.apache.org/docs/current/howto/htaccess.html
@@ -475,6 +480,8 @@ if ($installer->checkServer() === false) {
                 $_POST['admin_email'],
                 $_POST['blog_public']
             );
+            require_once './wordpress/wp-load.php';
+            $installer->setBlogDescription($_POST['weblog_description']);
         }
         if ($_GET['step'] == 4) {
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
@@ -486,7 +493,7 @@ if ($installer->checkServer() === false) {
         }
         if ($_GET['step'] == 5) {
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
-                require_once('./wordpress/wp-load.php');
+                require_once './wordpress/wp-load.php';
                 $installer->switchTheme($_POST['theme']);
             }
             $step = 5;
@@ -501,14 +508,14 @@ if ($installer->checkServer() === false) {
         }
         if ($_GET['step'] == 7) {
             if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
-                require_once('./wordpress/wp-load.php');
+                require_once './wordpress/wp-load.php';
                 $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
             }
             $step = 7;
         }
         if ($_GET['step'] == 8) {
             if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
-                require_once('./wordpress/wp-load.php');
+                require_once './wordpress/wp-load.php';
                 $installer->setPermalinkToPostname();
             }
             $step = 8;
@@ -631,7 +638,8 @@ if ($installer->checkServer() === false) {
         <form id="step3" action="./installer.php?step=4&amp;install=wp" method="post">
             <fieldset>
                 <legend align="left">Setup</legend>
-                <input type="text" placeholder="Website Title" name="weblog_title" value="<?= $default['title'] ?>">
+                <input type="text" placeholder="Site Title" name="weblog_title" value="<?= $default['title'] ?>">
+                <input type="text" placeholder="Site Description" name="weblog_description" value="">
                 <input type="text" required="required" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
@@ -646,9 +654,9 @@ if ($installer->checkServer() === false) {
         <fieldset>
             <legend align="left">Install Theme</legend>
             <?php
-            require_once('./wordpress/wp-load.php');
-            require_once('./wordpress/wp-admin/includes/admin.php');
-            require_once('./wordpress/wp-admin/includes/theme-install.php');
+            require_once './wordpress/wp-load.php';
+            require_once './wordpress/wp-admin/includes/admin.php';
+            require_once './wordpress/wp-admin/includes/theme-install.php';
             install_themes_upload();
             ?>
             <script type="application/javascript">
@@ -663,8 +671,8 @@ if ($installer->checkServer() === false) {
         </form>
     <?php elseif ($step == 5): ?>
         <?php
-        require_once('./wordpress/wp-load.php');
-        require_once('./wordpress/wp-admin/includes/admin.php');
+        require_once './wordpress/wp-load.php';
+        require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
             <fieldset>
@@ -704,8 +712,8 @@ if ($installer->checkServer() === false) {
         </form>
     <?php elseif ($step == 7): ?>
         <?php
-        require_once('./wordpress/wp-load.php');
-        require_once('./wordpress/wp-admin/includes/admin.php');
+        require_once './wordpress/wp-load.php';
+        require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step7user" action="./installer.php?step=7&amp;user=add" method="post">
             <fieldset>
