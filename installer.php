@@ -43,6 +43,7 @@ $config = array(
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'table_prefix' => 'wp_',
+    'php_version' => '5.2.4',
 );
 
 set_time_limit(300);
@@ -75,6 +76,7 @@ class WordpressInstaller
         $this->wpSrc = $config['src'];
         $this->wpSalt = $config['salt'];
         $this->wpTablePrefix = $config['table_prefix'];
+        $this->wpPhpVersion = $config['php_version'];
     }
 
     public function hasRights($file = __DIR__, $right = 7)
@@ -92,6 +94,24 @@ class WordpressInstaller
             }
         }
         return false;
+    }
+
+    public function checkServer()
+    {
+        if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function checkPhpVersion()
+    {
+        if (version_compare(PHP_VERSION, $this->wpPhpVersion, '>=')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function existsCurl()
@@ -410,12 +430,18 @@ if (isset($_POST['ready']) === true) {
     die;
 }
 
-if ($installer->hasRights() === false) {
+if ($installer->checkServer() === false) {
     $step = 0;
-    $step0message = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
+    $step0message = 'Apache Server is required.';
+} elseif ($installer->checkPhpVersion() === false) {
+    $step = 0;
+    $step0message = 'PHP ' . $config['php_version'] . ' or higher is required.';
 } elseif ($installer->existsCurl() === false) {
     $step = 0;
-    $step0message = 'Curl extension is not loaded.';
+    $step0message = 'Curl extension is required and not loaded.';
+} elseif ($installer->hasRights() === false) {
+    $step = 0;
+    $step0message = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
 } else {
     if (isset($_GET['step']) === true) {
         if ($_GET['step'] == 2) {
@@ -591,7 +617,7 @@ if ($installer->hasRights() === false) {
     <?php elseif ($step == 2): ?>
         <form id="step2" action="./installer.php?step=3" method="post">
             <fieldset>
-                <legend align="left">Database</legend>
+                <legend align="left">MySQL Database</legend>
                 <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $default['db']['name'] ?>">
                 <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $default['db']['username'] ?>">
                 <input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
