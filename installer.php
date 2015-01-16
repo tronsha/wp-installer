@@ -322,13 +322,7 @@ class WordpressInstaller
     public function setPermalinkToPostname()
     {
         if (file_exists('./wordpress/.htaccess') === false) {
-            $GLOBALS['wpdb']->update(
-                'wp_options',
-                array('option_value' => '/%postname%/'),
-                array('option_name' => 'permalink_structure'),
-                array('%s'),
-                array('%s')
-            );
+            $GLOBALS['wp_rewrite']->set_permalink_structure('/%postname%/');
             $htaccess = '' . "\n";
             $htaccess .= '# BEGIN WordPress' . "\n";
             $htaccess .= '<IfModule mod_rewrite.c>' . "\n";
