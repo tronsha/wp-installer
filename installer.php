@@ -80,21 +80,24 @@ class WordpressInstaller
         $this->wpPhpVersion = $config['php_version'];
     }
 
-    public function hasRights($file = __DIR__, $right = 7)
+    public function checkSystem()
     {
-        $dir = substr(sprintf('%o', fileperms($file)), -4);
-        $meArray = posix_getpwuid(posix_geteuid());
-        $fileArray = posix_getpwuid(fileowner($file));
-        if ($meArray['name'] == $fileArray['name']) {
-            if ($dir[1] == $right) {
-                return true;
-            }
-        } else {
-            if ($dir[3] == $right) {
-                return true;
-            }
+        $error = null;
+
+        if ($this->checkServer() === false) {
+            $error[] = 'Apache Server is required.';
         }
-        return false;
+        if ($this->checkPhpVersion() === false) {
+            $error[] = 'PHP ' . $this->wpPhpVersion . ' or higher is required.';
+        }
+        if ($this->existsCurl() === false) {
+            $error[] = 'Curl extension is required and not loaded.';
+        }
+        if ($this->hasRights() === false) {
+            $error[] = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
+        }
+
+        return $error === null ? true : implode('<br><br>', $error);
     }
 
     public function checkServer()
@@ -122,6 +125,23 @@ class WordpressInstaller
         } else {
             return false;
         }
+    }
+
+    public function hasRights($file = __DIR__, $right = 7)
+    {
+        $dir = substr(sprintf('%o', fileperms($file)), -4);
+        $meArray = posix_getpwuid(posix_geteuid());
+        $fileArray = posix_getpwuid(fileowner($file));
+        if ($meArray['name'] == $fileArray['name']) {
+            if ($dir[1] == $right) {
+                return true;
+            }
+        } else {
+            if ($dir[3] == $right) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function chmod($path, $recursive = false)
@@ -436,18 +456,8 @@ if (isset($_POST['ready']) === true) {
     die;
 }
 
-if ($installer->checkServer() === false) {
+if (($errormessage = $installer->checkSystem()) !== true) {
     $step = 0;
-    $step0message = 'Apache Server is required.';
-} elseif ($installer->checkPhpVersion() === false) {
-    $step = 0;
-    $step0message = 'PHP ' . $config['php_version'] . ' or higher is required.';
-} elseif ($installer->existsCurl() === false) {
-    $step = 0;
-    $step0message = 'Curl extension is required and not loaded.';
-} elseif ($installer->hasRights() === false) {
-    $step = 0;
-    $step0message = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
 } else {
     if (isset($_GET['step']) === true) {
         if ($_GET['step'] == 2) {
@@ -610,7 +620,7 @@ if ($installer->checkServer() === false) {
     </h1>
     <br><br><br>
     <?php if ($step == 0): ?>
-        <?php echo $step0message; ?>
+        <?php echo $errormessage; ?>
     <?php elseif ($step == 1): ?>
         <form id="step1" action="./installer.php?step=2" method="post">
             <fieldset>
