@@ -97,7 +97,7 @@ class WordpressInstaller
             $error[] = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
         }
 
-        return $error === null ? true : implode('<br><br>', $error);
+        return $error === null ? null : implode('<br><br>', $error);
     }
 
     public function checkServer()
@@ -456,7 +456,7 @@ if (isset($_POST['ready']) === true) {
     die;
 }
 
-if (($errormessage = $installer->checkSystem()) !== true) {
+if (($errormessage = $installer->checkSystem()) !== null) {
     $step = 0;
 } else {
     if (isset($_GET['step']) === true) {
