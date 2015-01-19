@@ -437,14 +437,16 @@ class WordpressInstaller
     {
         update_option('show_on_front', $show);
         update_option('page_on_front', $show == 'page' ? '2' : '0');
-        wp_update_post(
-            array(
-                'ID' => 2,
-                'post_content' => $content,
-                'post_title' => 'Home',
-                'post_name' => 'home'
-            )
-        );
+        if ($show == 'page') {
+            wp_update_post(
+                array(
+                    'ID' => 2,
+                    'post_content' => $content,
+                    'post_title' => 'Home',
+                    'post_name' => 'home'
+                )
+            );
+        }
     }
 
     /**
@@ -565,7 +567,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         if ($_GET['step'] == 9) {
             if (isset($_POST['frontpage'])) {
                 require_once './wordpress/wp-load.php';
-                $installer->setFrontPage($_POST['frontpage']);
+                $installer->setFrontPage($_POST['frontpage'], $_POST['content']);
             }
             $step = 9;
         }
@@ -800,17 +802,34 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <?php
         require_once './wordpress/wp-load.php';
         $frontpage = get_option('show_on_front');
+        $query = new WP_Query('page_id=2');
+        while ($query->have_posts()) :
+            $query->the_post();
+            $content = get_the_content();
+        endwhile;
         ?>
         <form id="step9frontpage" action="./installer.php?step=9" method="post">
             <fieldset>
-                <legend align="left">Frontpage</legend>
-                <select name="frontpage">
-                    <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>Page</option>
-                    <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Posts</option>
+                <legend align="left">Static Front Page</legend>
+                <select id="frontpage" name="frontpage" onchange="contenttoggle();">
+                    <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts
+                    </option>
+                    <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
                 </select>
+                <textarea id="content" name="content" rows="10"><?php echo htmlentities($content); ?></textarea>
                 <input type="submit" value="Save">
             </fieldset>
         </form>
+        <script>
+            function contenttoggle() {
+                if (document.getElementById('frontpage').value == 'page') {
+                    document.getElementById('content').setAttribute ('style', 'display: block;');
+                } else {
+                    document.getElementById('content').setAttribute ('style', 'display: none;');
+                }
+            }
+            contenttoggle();
+        </script>
         <br>
         <form id="step9" action="./installer.php?step=10" method="post">
             <input type="submit" name="next" value="Next">
