@@ -8,7 +8,7 @@ WordPress Installer
   * MySQL 5.0 or greater
   * Apache HTTP Server
 * [cURL][4] must be installed
-* [allow_url_fopen][4] must be enabled
+* [allow_url_fopen][5] must be enabled
 
 ## Creator
 
