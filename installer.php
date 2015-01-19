@@ -416,10 +416,18 @@ class WordpressInstaller
     }
     
     /* page or posts */
-    public function setFrontPage($type = 'page')
+    public function setFrontPage()
     {
-        update_option('show_on_front', $type);
-        update_option('page_on_front', $type == 'page' ? '2' : '0');
+        update_option('show_on_front', 'page');
+        update_option('page_on_front', '2');
+        wp_update_post(
+            array(
+                'ID' => 2,
+                'post_content' => '',
+                'post_title' => 'Home',
+                'post_name' => 'home'
+            )
+        );
     }
 
     /**
