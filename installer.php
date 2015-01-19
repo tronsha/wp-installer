@@ -632,10 +632,12 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             width: 300px;
         }
 
+        fieldset textarea,
         fieldset select,
         fieldset input[type="text"],
         fieldset input[type="email"],
         fieldset input[type="password"] {
+            box-sizing: border-box;
             display: block;
             margin-bottom: 6px;
             width: 100%;
