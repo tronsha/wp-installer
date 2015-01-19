@@ -197,7 +197,7 @@ class WordpressInstaller
         }
     }
 
-    public function removeFile($file = './wp.zip')
+    public function unlink($file = './wp.zip')
     {
         unlink($file);
     }
@@ -207,18 +207,13 @@ class WordpressInstaller
         mkdir('./wordpress/wp-content/uploads');
     }
 
-    public function installZip($file = './wp.zip', $path = './')
-    {
-        $this->unzip($file, $path);
-        sleep(5);
-        $this->removeFile($file);
-    }
-
     public function installWordpress($lang = 'en')
     {
         if (file_exists(WP_CONFIG_SAMPLE) === false) {
             $this->downloadWordpress($lang);
-            $this->installZip('./wp.zip', './');
+            $this->unzip('./wp.zip', './');
+            sleep(5);
+            $this->unlink('./wp.zip');
             $this->createUploadDir();
             $this->chmod('./wordpress', true);
         }
@@ -226,14 +221,18 @@ class WordpressInstaller
 
     public function installTheme()
     {
-        $this->installZip('./theme.zip', './wordpress/wp-content/themes/');
+        $this->unzip('./theme.zip', './wordpress/wp-content/themes/');
+        sleep(5);
+        $this->unlink('./theme.zip');
         $this->chmod('./wordpress/wp-content/themes/', true);
     }
 
     public function installPlugin($src)
     {
         $this->download($src, './plugin.zip');
-        $this->installZip('./plugin.zip', './wordpress/wp-content/plugins/');
+        $this->unzip('./plugin.zip', './wordpress/wp-content/plugins/');
+        sleep(5);
+        $this->unlink('./plugin.zip');
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
