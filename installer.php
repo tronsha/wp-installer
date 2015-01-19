@@ -375,6 +375,7 @@ class WordpressInstaller
     /**
      * Set Permalink to Postname
      * @see http://httpd.apache.org/docs/current/howto/htaccess.html
+     * @see https://developer.wordpress.org/reference/classes/wp_rewrite/set_permalink_structure/
      */
     public function setPermalinkToPostname()
     {
