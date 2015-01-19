@@ -49,6 +49,10 @@ $config = array(
 set_time_limit(300);
 error_reporting(E_ALL ^ E_NOTICE);
 
+if (!defined('__DIR__')) {
+    define('__DIR__', dirname(__FILE__));
+}
+
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 
@@ -84,23 +88,23 @@ class WordpressInstaller
     {
         $error = null;
 
-        if ($this->checkServer() === false) {
+        if ($this->isApache() === false) {
             $error[] = 'Apache Server is required.';
         }
         if ($this->checkPhpVersion() === false) {
             $error[] = 'PHP ' . $this->wpPhpVersion . ' or higher is required.';
         }
-        if ($this->existsCurl() === false) {
+        if ($this->hasCurl() === false) {
             $error[] = 'Curl extension is required and not loaded.';
         }
-        if ($this->hasRights() === false) {
-            $error[] = 'Directory rights needed...<br>Change the rights and <a href="javascript:location.reload();">reload</a> this page.';
+        if ($this->isWritable() === false) {
+            $error[] = 'Directory write permissions are required...<br>Change the permissions and <a href="javascript:location.reload();">reload</a> this page.';
         }
 
         return $error === null ? null : implode('<br><br>', $error);
     }
 
-    public function checkServer()
+    public function isApache()
     {
         if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
             return false;
@@ -118,7 +122,7 @@ class WordpressInstaller
         }
     }
 
-    public function existsCurl()
+    public function hasCurl()
     {
         if (extension_loaded('curl')) {
             return true;
@@ -127,22 +131,27 @@ class WordpressInstaller
         }
     }
 
-    public function hasRights($file = __DIR__, $right = 7)
+    public function isWritable()
     {
-        $dir = substr(sprintf('%o', fileperms($file)), -4);
-        $meArray = posix_getpwuid(posix_geteuid());
-        $fileArray = posix_getpwuid(fileowner($file));
-        if ($meArray['name'] == $fileArray['name']) {
-            if ($dir[1] == $right) {
-                return true;
-            }
-        } else {
-            if ($dir[3] == $right) {
-                return true;
-            }
-        }
-        return false;
+        return is_writable(__DIR__);
     }
+
+//    public function hasRights($file = __DIR__, $right = 7)
+//    {
+//        $dir = substr(sprintf('%o', fileperms($file)), -4);
+//        $meArray = posix_getpwuid(posix_geteuid());
+//        $fileArray = posix_getpwuid(fileowner($file));
+//        if ($meArray['name'] == $fileArray['name']) {
+//            if ($dir[1] == $right) {
+//                return true;
+//            }
+//        } else {
+//            if ($dir[3] == $right) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public function chmod($path, $recursive = false)
     {
