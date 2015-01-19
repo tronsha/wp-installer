@@ -569,6 +569,9 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             }
             $step = 9;
         }
+        if ($_GET['step'] == 10) {
+            $step = 10;
+        }
     }
     if (!file_exists(WP_CONFIG_SAMPLE)) {
         $step = 1;
