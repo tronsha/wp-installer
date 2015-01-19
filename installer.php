@@ -797,13 +797,13 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 9): ?>
+        <?php
+        require_once './wordpress/wp-load.php';
+        $frontpage = get_option('show_on_front');
+        ?>
         <form id="step9frontpage" action="./installer.php?step=9" method="post">
             <fieldset>
                 <legend align="left">Frontpage</legend>
-                <?php
-                require_once './wordpress/wp-load.php';
-                $frontpage = get_option('show_on_front');
-                ?>
                 <select name="frontpage">
                     <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>Page</option>
                     <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Posts</option>
