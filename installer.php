@@ -814,8 +814,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             <fieldset>
                 <legend align="left">Static Front Page</legend>
                 <select id="frontpage" name="frontpage" onchange="contenttoggle();">
-                    <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts
-                    </option>
+                    <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts</option>
                     <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
                 </select>
                 <textarea id="content" name="content" rows="10"><?php echo htmlentities($content); ?></textarea>
