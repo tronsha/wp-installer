@@ -364,6 +364,9 @@ class WordpressInstaller
         curl_close($ch);
     }
 
+    /** 
+     * @see http://codex.wordpress.org/Function_Reference/update_option
+     */
     public function setBlogDescription($description = '')
     {
         update_option('blogdescription', $description);
@@ -423,15 +426,19 @@ class WordpressInstaller
         }
     }
     
-    /* page or posts */
-    public function setFrontPage()
+    /** 
+     * Page or posts 
+     * @see http://codex.wordpress.org/Function_Reference/update_option
+     * @see http://codex.wordpress.org/Function_Reference/wp_update_post
+     */
+    public function setFrontPage($show = 'page', $content = '')
     {
-        update_option('show_on_front', 'page');
-        update_option('page_on_front', '2');
+        update_option('show_on_front', $show);
+        update_option('page_on_front', $show == 'page' ? '2' : '0');
         wp_update_post(
             array(
                 'ID' => 2,
-                'post_content' => '',
+                'post_content' => $content,
                 'post_title' => 'Home',
                 'post_name' => 'home'
             )
@@ -554,6 +561,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 8;
         }
         if ($_GET['step'] == 9) {
+            if (isset($_POST['frontpage'])) {
+                require_once './wordpress/wp-load.php';
+                $installer->setFrontPage($_POST['frontpage']);
+            }
             $step = 9;
         }
     }
@@ -778,6 +789,25 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
         <br>
         <form id="step8" action="./installer.php?step=9" method="post">
+            <input type="submit" name="next" value="Next">
+        </form>
+    <?php elseif ($step == 9): ?>
+        <form id="step9frontpage" action="./installer.php?step=9" method="post">
+            <fieldset>
+                <legend align="left">Frontpage</legend>
+                <?php
+                require_once './wordpress/wp-load.php';
+                $frontpage = get_option('show_on_front');
+                ?>
+                <select name="frontpage">
+                    <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>Page</option>
+                    <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Posts</option>
+                </select>
+                <input type="submit" value="Save">
+            </fieldset>
+        </form>
+        <br>
+        <form id="step9" action="./installer.php?step=10" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
