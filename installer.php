@@ -414,6 +414,13 @@ class WordpressInstaller
             switch_theme($theme->get_stylesheet());
         }
     }
+    
+    /* page or posts */
+    public function setFrontPage($type = 'page')
+    {
+        update_option('show_on_front', $type);
+        update_option('page_on_front', $type == 'page' ? '2' : '0');
+    }
 
     /**
      * @see http://php.net/manual/en/ref.pdo-mysql.php
