@@ -49,6 +49,7 @@ $config = array(
 set_time_limit(300);
 error_reporting(E_ALL ^ E_NOTICE);
 
+/* Makes the Script PHP 5.2.x compatible */
 if (!defined('__DIR__')) {
     define('__DIR__', dirname(__FILE__));
 }
