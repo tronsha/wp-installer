@@ -85,7 +85,7 @@ class WordpressInstaller
         $this->wpSalt = $config['salt'];
         $this->wpTablePrefix = $config['table_prefix'];
         $this->wpPhpVersion = $config['php_version'];
-        $this->wpUploadDir = $config['upload_dir'];
+        $this->wpUploadDir = empty($config['upload_dir']) ? 'wp-content/uploads' : $config['upload_dir'];
     }
 
     public function checkSystem()
