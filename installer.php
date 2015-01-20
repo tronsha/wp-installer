@@ -804,6 +804,9 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <?php
         require_once './wordpress/wp-load.php';
         $frontpage = get_option('show_on_front');
+        /**
+         * @see http://codex.wordpress.org/Class_Reference/WP_Query 
+         */
         $query = new WP_Query('page_id=2');
         while ($query->have_posts()) :
             $query->the_post();
