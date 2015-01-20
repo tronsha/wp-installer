@@ -43,6 +43,7 @@ $config = array(
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'table_prefix' => 'wp_',
+    'upload_dir' => 'files',
     'php_version' => '5.2.4',
 );
 
@@ -76,6 +77,7 @@ class WordpressInstaller
     private $wpSalt;
     private $wpTablePrefix;
     private $wpPhpVersion;
+    private $wpUploadDir;
 
     public function __construct($config)
     {
@@ -83,6 +85,7 @@ class WordpressInstaller
         $this->wpSalt = $config['salt'];
         $this->wpTablePrefix = $config['table_prefix'];
         $this->wpPhpVersion = $config['php_version'];
+        $this->wpUploadDir = $config['upload_dir'];
     }
 
     public function checkSystem()
@@ -205,7 +208,7 @@ class WordpressInstaller
 
     public function createUploadDir()
     {
-        mkdir('./wordpress/wp-content/uploads');
+        mkdir('./wordpress/' . $this->wpUploadDir);
     }
 
     public function installWordpress($lang = 'en')
@@ -293,6 +296,13 @@ class WordpressInstaller
                 'define(\'DB_HOST\', \'' . $host . ($port != '3306' ? ':' . $port : '') . '\');',
                 $config
             );
+            if (empty($this->wpUploadDir) === false && $this->wpUploadDir != 'wp-content/uploads') {
+                $config = str_replace(
+                    'define(\'WP_DEBUG\', false);',
+                    'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** The upload directory */' . PHP_EOL . 'define(\'UPLOADS\', \'' . $this->wpUploadDir . '\' );',
+                    $config
+                );
+            }
             if (empty($this->wpTablePrefix) === true) {
                 $table_prefix = $this->getRandomTablePrefix();
             } else {
