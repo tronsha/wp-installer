@@ -299,16 +299,16 @@ class WordpressInstaller
             if (empty($this->wpUploadDir) === false && $this->wpUploadDir != 'wp-content/uploads') {
                 $config = str_replace(
                     'define(\'WP_DEBUG\', false);',
-                    'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** The upload directory */' . PHP_EOL . 'define(\'UPLOADS\', \'' . $this->wpUploadDir . '\' );',
+                    'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** The upload directory */' . PHP_EOL . 'define(\'UPLOADS\', \'' . $this->wpUploadDir . '\');',
                     $config
                 );
             }
             if (empty($this->wpTablePrefix) === true) {
-                $table_prefix = $this->getRandomTablePrefix();
-            } else {
-                $table_prefix = $this->wpTablePrefix;
+                $this->wpTablePrefix = $this->getRandomTablePrefix();
+            } 
+            if ($this->wpTablePrefix != 'wp_') {
+                $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $this->wpTablePrefix . '\';', $config);
             }
-            $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $table_prefix . '\';', $config);
             file_put_contents(WP_CONFIG, $config);
             $this->chmod(WP_CONFIG);
         }
