@@ -2,6 +2,7 @@
 
 $default = array(
     'title' => 'WordPress',
+    'description' => 'Just another WordPress site"',
     'admin' => array(
         'name' => 'Admin',
         'password' => 'password',
@@ -42,9 +43,9 @@ $config = array(
         'de' => 'https://de.wordpress.org/latest-de_DE.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
+    'php_version' => '5.2.4',
     'table_prefix' => 'wp_',
     'upload_dir' => 'files',
-    'php_version' => '5.2.4',
 );
 
 set_time_limit(300);
@@ -683,7 +684,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             <div class="box">
                 <h2>Setup</h2>
                 <input type="text" placeholder="Site Title" name="weblog_title" value="<?= $default['title'] ?>">
-                <input type="text" placeholder="Site Description" name="weblog_description" value="">
+                <input type="text" placeholder="Site Description" name="weblog_description" value="<?= $default['description'] ?>">
                 <input type="text" required="required" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
                 <input type="password" required="required" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
@@ -837,6 +838,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             <input type="submit" name="next" value="Ready">
         </form>
     <?php endif; ?>
+    <br>
 </div>
 </body>
 </html>
