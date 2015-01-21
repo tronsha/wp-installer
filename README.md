@@ -14,8 +14,9 @@ WordPress Installer
 
 **Stefan Hüsges**
 
-* [GitHub][1]
-* [Homepage][2]
+:octocat: [GitHub][1]
+
+:computer: [Homepage][2]
 
 ## License
 
