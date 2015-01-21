@@ -583,9 +583,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
     <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
     <style>
         html {
-            background-color: #000000;
+            background: linear-gradient(#000000, #052B2D) repeat scroll 0% 0% #000000;
             color: #ffffff;
             font-family: verdana, tahoma, sans-serif;
+            height: 100%;
         }
 
         body {
@@ -602,7 +603,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         }
 
         .box {
-            background: linear-gradient(#000000, #21759B);
+            background: linear-gradient(#340048, #21759B) repeat scroll 0% 0% #21759B;
             border: 3px outset #888888;
             border-radius: 10px;
             box-sizing: border-box;
