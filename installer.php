@@ -611,7 +611,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             margin-left: auto;
             margin-right: auto;
             max-width: 90%;
-            padding: 30px;
+            padding: 5px 30px 20px 30px;
             width: 600px;
         }
 
