@@ -29,7 +29,7 @@ Then, use the `create-project` command to generate a new project:
 
 ## Creator
 
-**Stefan Hüsges**
+**Stefan H&uuml;sges**
 
 :computer: [Homepage][1]
 
