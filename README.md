@@ -14,13 +14,12 @@ WordPress Installer :ant:
 
 **Stefan Hüsges**
 
-:octocat: [GitHub][1]
-
-:computer: [Homepage][2]
+* :octocat: [GitHub][1]
+* :computer: [Homepage][2]
 
 ## License
 
-:scroll: [MIT License](LICENSE)
+[MIT License](LICENSE)
 
 [1]: https://github.com/tronsha
 [2]: http://www.mpcx.net
