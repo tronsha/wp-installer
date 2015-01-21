@@ -58,19 +58,6 @@ if (!defined('__DIR__')) {
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 
-//$login = array(
-//    'user' => 'Installer',
-//    'password' => 'wordpress'
-//);
-//
-//if (isset($_SERVER['REDIRECT_REMOTE_USER']) === false && isset($_SERVER['REMOTE_USER']) === false) {
-//    if (empty($login['user']) === false && empty($login['password']) === false && $_SERVER['PHP_AUTH_USER'] != $login['user'] && $_SERVER['PHP_AUTH_PW'] != $login['password']) {
-//        header('WWW-Authenticate: Basic realm="Login"');
-//        header('HTTP/1.0 401 Unauthorized');
-//        die ('Not authorized');
-//    }
-//}
-
 class WordpressInstaller
 {
     private $wpSrc;
@@ -139,23 +126,6 @@ class WordpressInstaller
     {
         return is_writable(__DIR__);
     }
-
-//    public function hasRights($file = __DIR__, $right = 7)
-//    {
-//        $dir = substr(sprintf('%o', fileperms($file)), -4);
-//        $meArray = posix_getpwuid(posix_geteuid());
-//        $fileArray = posix_getpwuid(fileowner($file));
-//        if ($meArray['name'] == $fileArray['name']) {
-//            if ($dir[1] == $right) {
-//                return true;
-//            }
-//        } else {
-//            if ($dir[3] == $right) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     public function chmod($path, $recursive = false)
     {
