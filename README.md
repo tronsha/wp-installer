@@ -1,4 +1,4 @@
-WordPress Installer
+WordPress Installer :ant:
 ===================
 
 ## Requirements
@@ -20,7 +20,7 @@ WordPress Installer
 
 ## License
 
-[MIT License](LICENSE)
+:scroll: [MIT License](LICENSE)
 
 [1]: https://github.com/tronsha
 [2]: http://www.mpcx.net
