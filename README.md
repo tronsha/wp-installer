@@ -1,6 +1,19 @@
 WordPress Installer :ant:
 ===================
 
+## Install
+
+### Use Composer
+
+If you don't have Composer yet, download it following the instructions on
+http://getcomposer.org/ or just run the following command:
+
+    curl -s http://getcomposer.org/installer | php
+
+Then, use the `create-project` command to generate a new project:
+
+    php composer.phar create-project tronsha/wp-installer --stability=dev
+
 ## Requirements
 
 * [WordPress Requirements][3]
