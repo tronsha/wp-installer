@@ -601,30 +601,36 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             display: inline;
         }
 
-        fieldset {
+        .box {
             background: linear-gradient(#000000, #21759B);
-            border: none;
+            border: 3px outset #888888;
             border-radius: 10px;
+            box-sizing: border-box;
             margin-left: auto;
             margin-right: auto;
-            max-width: 100%;
+            max-width: 90%;
             padding: 30px;
-            width: 300px;
+            width: 600px;
         }
 
-        fieldset textarea,
-        fieldset select,
-        fieldset input[type="text"],
-        fieldset input[type="email"],
-        fieldset input[type="password"] {
+        textarea,
+        select,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
             box-sizing: border-box;
             display: block;
             margin-bottom: 6px;
             width: 100%;
         }
 
-        fieldset input[type="submit"] {
+        input[type="submit"] {
+            background: linear-gradient(#CCCCCC, #888888, #CCCCCC) repeat scroll 0% 0% #CCCCCC;
+            border-radius: 6px;
+            color: #000000;
+            font-weight: bolder;
             margin-top: 20px;
+            padding: 6px 18px;
         }
 
         #logo {
@@ -632,6 +638,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             position: relative;
             top: 15px;
             width: 70px;
+        }
+
+        .wp-upload-form {
+            overflow: hidden;
         }
     </style>
 </head>
@@ -646,31 +656,31 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <?php echo $errormessage; ?>
     <?php elseif ($step == 1): ?>
         <form id="step1" action="./installer.php?step=2" method="post">
-            <fieldset>
-                <legend align="left">Language</legend>
+            <div class="box">
+                <h2>Language</h2>
                 <select name="lang">
                     <option value="en">english</option>
                     <option value="de" selected>deutsch</option>
                 </select>
                 <input type="submit" name="next" value="Next">
-            </fieldset>
+            </div>
         </form>
     <?php elseif ($step == 2): ?>
         <form id="step2" action="./installer.php?step=3" method="post">
-            <fieldset>
-                <legend align="left">MySQL Database</legend>
+            <div class="box">
+                <h2>MySQL Database</h2>
                 <input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $default['db']['name'] ?>">
                 <input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $default['db']['username'] ?>">
                 <input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
                 <input type="text" required="required" placeholder="Host" name="db_host" value="<?= $default['db']['host'] ?>">
                 <input type="text" required="required" placeholder="Port" name="db_port" value="<?= $default['db']['port'] ?>">
                 <input type="submit" name="next" value="Next">
-            </fieldset>
+            </div>
         </form>
     <?php elseif ($step == 3): ?>
         <form id="step3" action="./installer.php?step=4&amp;install=wp" method="post">
-            <fieldset>
-                <legend align="left">Setup</legend>
+            <div class="box">
+                <h2>Setup</h2>
                 <input type="text" placeholder="Site Title" name="weblog_title" value="<?= $default['title'] ?>">
                 <input type="text" placeholder="Site Description" name="weblog_description" value="">
                 <input type="text" required="required" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
@@ -681,11 +691,11 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 <input type="checkbox" name="blog_public" id="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
                 <br>
                 <input type="submit" name="next" value="Next">
-            </fieldset>
+            </div>
         </form>
     <?php elseif ($step == 4): ?>
-        <fieldset>
-            <legend align="left">Install Theme</legend>
+        <div class="box">
+            <h2>Install Theme</h2>
             <?php
             require_once './wordpress/wp-load.php';
             require_once './wordpress/wp-admin/includes/admin.php';
@@ -697,7 +707,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     jQuery('.wp-upload-form').attr('action', './installer.php?step=4&theme=upload');
                 });
             </script>
-        </fieldset>
+        </div>
         <br>
         <form id="step4" action="./installer.php?step=5" method="post">
             <input type="submit" name="next" value="Next">
@@ -708,8 +718,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
-            <fieldset>
-                <legend align="left">Activate Theme</legend>
+            <div class="box">
+                <h2>Activate Theme</h2>
                 <select name="theme">
                     <?php
                     $themes = wp_prepare_themes_for_js();
@@ -719,7 +729,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     ?>
                 </select>
                 <input type="submit" value="Activate">
-            </fieldset>
+            </div>
         </form>
         <br>
         <form id="step5" action="./installer.php?step=6" method="post">
@@ -727,8 +737,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 6): ?>
         <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
-            <fieldset>
-                <legend align="left">Install Plugins</legend>
+            <div class="box">
+                <h2>Install Plugins</h2>
                 <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
                     <?php
                     foreach ($plugins as $plugin) {
@@ -737,7 +747,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     ?>
                 </select>
                 <input type="submit" value="Install">
-            </fieldset>
+            </div>
         </form>
         <br>
         <form id="step6" action="./installer.php?step=7" method="post">
@@ -749,8 +759,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step7user" action="./installer.php?step=7&amp;user=add" method="post">
-            <fieldset>
-                <legend align="left">New User</legend>
+            <div class="box">
+                <h2>New User</h2>
                 <input type="text" placeholder="Name" name="name" value="<?= $default['user']['name'] ?>">
                 <input type="password" placeholder="Password" name="password" value="<?= $default['user']['password'] ?>">
                 <input type="text" placeholder="E-Mail" name="email" value="<?= $default['user']['email'] ?>">
@@ -763,7 +773,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     ?>
                 </select>
                 <input type="submit" value="Add">
-            </fieldset>
+            </div>
         </form>
         <br>
         <form id="step7" action="./installer.php?step=8" method="post">
@@ -771,10 +781,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 8): ?>
         <form id="step8permalink" action="./installer.php?step=8&amp;permalink=postname" method="post">
-            <fieldset>
-                <legend align="left">Permalink</legend>
+            <div class="box">
+                <h2>Permalink</h2>
                 <input type="submit" value="Postname">
-            </fieldset>
+            </div>
         </form>
         <br>
         <form id="step8" action="./installer.php?step=9" method="post">
@@ -785,7 +795,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         require_once './wordpress/wp-load.php';
         $frontpage = get_option('show_on_front');
         /**
-         * @see http://codex.wordpress.org/Class_Reference/WP_Query 
+         * @see http://codex.wordpress.org/Class_Reference/WP_Query
          */
         $query = new WP_Query('page_id=2');
         while ($query->have_posts()) :
@@ -794,15 +804,15 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         endwhile;
         ?>
         <form id="step9frontpage" action="./installer.php?step=9" method="post">
-            <fieldset>
-                <legend align="left">Static Front Page</legend>
+            <div class="box">
+                <h2>Static Front Page</h2>
                 <select id="frontpage" name="frontpage" onchange="contenttoggle();">
                     <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts</option>
                     <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
                 </select>
                 <textarea id="content" name="content" rows="10"><?php echo htmlentities($content); ?></textarea>
                 <input type="submit" value="Save">
-            </fieldset>
+            </div>
         </form>
         <script>
             function contenttoggle() {
