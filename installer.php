@@ -576,10 +576,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
 <html>
 <head>
     <title>WordPress Installer</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="application/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+    <script type='application/javascript' src='//code.jquery.com/jquery-1.11.1.min.js'></script>
     <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
     <style>
         html {
