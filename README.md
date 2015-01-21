@@ -31,8 +31,9 @@ Then, use the `create-project` command to generate a new project:
 
 **Stefan Hüsges**
 
-* :octocat: [GitHub][2]
-* :computer: [Homepage][1]
+:computer: [Homepage][1]
+
+:octocat: [GitHub][2]
 
 ## License
 
