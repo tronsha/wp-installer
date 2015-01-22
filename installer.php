@@ -581,7 +581,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
     <script type='application/javascript' src='//code.jquery.com/jquery-1.11.1.min.js'></script>
-    <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Playball|Orbitron' rel='stylesheet' type='text/css'>
     <style>
         html {
             background: linear-gradient(#000000, #052B2D) repeat scroll 0% 0% #000000;
@@ -601,6 +601,12 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             font-weight: 100;
             text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #21759B, 0 0 70px #21759B, 0 0 80px #21759B, 0 0 100px #21759B;
             display: inline;
+        }
+        
+        h2 {
+            font-family: 'Orbitron';
+            font-size: 24px;
+            font-weight: 100;
         }
 
         .box {
