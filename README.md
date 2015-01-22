@@ -21,11 +21,11 @@ Then, use the `create-project` command to generate a new project:
 ## Requirements
 
 * [WordPress Requirements][5]
-  * PHP 5.2.4 or greater
-  * MySQL 5.0 or greater
-  * Apache HTTP Server
-* [cURL][6] must be installed
-* [allow_url_fopen][7] must be enabled
+  * [PHP][6] 5.2.4 or greater
+  * [MySQL][7] 5.0 or greater
+* [Apache HTTP Server][8]
+* [cURL][9] must be installed
+* [allow_url_fopen][10] must be enabled
 
 ## Creator
 
@@ -44,6 +44,9 @@ Then, use the `create-project` command to generate a new project:
 [3]: https://github.com/tronsha/wp-installer/archive/master.zip
 [4]: http://getcomposer.org
 [5]: https://wordpress.org/about/requirements/
-[6]: http://php.net/manual/en/book.curl.php
-[7]: http://php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen
+[6]: http://php.net/
+[7]: http://www.mysql.com/
+[8]: http://httpd.apache.org/
+[9]: http://php.net/manual/en/book.curl.php
+[10]: http://php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen
 
