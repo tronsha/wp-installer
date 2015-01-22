@@ -748,7 +748,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     }
                     ?>
                 </select>
-                <input type="submit" value="Install">
+                <input type="submit" value="Install Now">
             </div>
         </form>
         <br>
@@ -808,7 +808,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <form id="step9frontpage" action="./installer.php?step=9" method="post">
             <div class="box">
                 <h2>Static Front Page</h2>
-                <select id="frontpage" name="frontpage" onchange="contenttoggle();">
+                <select id="frontpage" name="frontpage" onchange="t();">
                     <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts</option>
                     <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
                 </select>
@@ -817,14 +817,14 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             </div>
         </form>
         <script>
-            function contenttoggle() {
-                if (document.getElementById('frontpage').value == 'page') {
-                    document.getElementById('content').setAttribute ('style', 'display: block;');
+            function t() {
+                if (jQuery('#frontpage').val() == 'page') {
+                    jQuery('#content').removeAttr('style');
                 } else {
-                    document.getElementById('content').setAttribute ('style', 'display: none;');
+                    jQuery('#content').attr('style', 'display: none;');
                 }
             }
-            contenttoggle();
+            t();
         </script>
         <br>
         <form id="step9" action="./installer.php?step=10" method="post">
