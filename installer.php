@@ -581,7 +581,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
     <script type='application/javascript' src='//code.jquery.com/jquery-1.11.1.min.js'></script>
-    <link href='http://fonts.googleapis.com/css?family=Playball|Orbitron' rel='stylesheet' type='text/css'>
+    <link href='//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Playball|Orbitron' rel='stylesheet' type='text/css'>
     <style>
         html {
             background: linear-gradient(#000000, #052B2D) repeat scroll 0% 0% #000000;
@@ -627,6 +628,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         input[type="email"],
         input[type="password"] {
             box-sizing: border-box;
+            color: #000000;
             display: block;
             margin-bottom: 6px;
             width: 100%;
