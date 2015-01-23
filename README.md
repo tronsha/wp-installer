@@ -32,6 +32,12 @@ Then, use the `create-project` command to generate a new project:
 * [Firefox][11]
 * [Chrome][12]
 
+## Libraries
+
+* [jQuery][13]
+* [normalize.css][14]
+* [Google Fonts][15]
+
 ## Creator
 
 **Stefan Hüsges**
@@ -39,12 +45,6 @@ Then, use the `create-project` command to generate a new project:
 :computer: [Homepage][1]
 
 :octocat: [GitHub][2]
-
-## Libraries
-
-* [jQuery][13]
-* [normalize.css][14]
-* [Google Fonts][15]
 
 ## License
 
