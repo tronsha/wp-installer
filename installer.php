@@ -1,4 +1,11 @@
 <?php
+/**
+ * WordPress Installer
+ * @author Stefan Hüsges
+ * @copyright 2014-2015 Stefan Hüsges
+ * @license MIT
+ * @see https://github.com/tronsha/wp-installer 
+ */
 
 $default = array(
     'title' => 'WordPress',
