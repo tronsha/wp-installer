@@ -1021,7 +1021,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <form id="step9frontpage" action="./installer.php?step=9" method="post">
             <div class="box">
                 <h2>Static Front Page</h2>
-                <select id="frontpage" name="frontpage" onchange="t();">
+                <select id="frontpage" name="frontpage" onchange="toggle();">
                     <option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts</option>
                     <option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
                 </select>
@@ -1030,14 +1030,14 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             </div>
         </form>
         <script>
-            function t() {
+            function toggle() {
                 if (jQuery('#frontpage').val() == 'page') {
                     jQuery('#content').removeAttr('style');
                 } else {
                     jQuery('#content').attr('style', 'display: none;');
                 }
             }
-            t();
+            toggle();
         </script>
         <br>
         <form id="step9" action="./installer.php?step=10" method="post">
