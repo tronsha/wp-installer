@@ -792,7 +792,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
     /* Installer Layout */
 
     html {
-        background: linear-gradient(#000000, #052B2D) repeat scroll 0% 0% #000000;
+        background: linear-gradient(#000000, #052B2D) repeat fixed 0% 0% #000000;
         color: #ffffff;
         font-family: verdana, tahoma, sans-serif;
         height: 100%;
