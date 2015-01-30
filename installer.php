@@ -597,7 +597,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
     <link href='//fonts.googleapis.com/css?family=Playball|Orbitron' rel='stylesheet' type='text/css'>
     <style>
 
-    * {
+    *, *:before, *:after {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
