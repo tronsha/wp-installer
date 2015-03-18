@@ -269,8 +269,11 @@ class WordpressInstaller {
 				$this->wpTablePrefix = $this->getRandomTablePrefix();
 			}
 			if ( $this->wpTablePrefix != 'wp_' ) {
-				$config = str_replace( 'table_prefix  = \'wp_\';', 'table_prefix  = \'' . $this->wpTablePrefix . '\';',
-					$config );
+				$config = str_replace(
+					'table_prefix  = \'wp_\';',
+					'table_prefix  = \'' . $this->wpTablePrefix . '\';',
+					$config
+				);
 			}
 			file_put_contents( WP_CONFIG, $config );
 			$this->chmod( WP_CONFIG );
@@ -431,13 +434,13 @@ class WordpressInstaller {
 		$config_db_password = $matches[1];
 		preg_match( "/table_prefix\s*\=\s*'([^']+)';/", $config, $matches );
 		$config_table_prefix = $matches[1];
-		$db                  = new PDO(
+		$db = new PDO(
 			'mysql:host=' . $config_db_host . ';dbname=' . $config_db_name,
 			$config_db_user,
 			$config_db_password,
 			array( PDO::ATTR_PERSISTENT => false )
 		);
-		$stmt                = $db->prepare( 'SHOW TABLES LIKE "' . $config_table_prefix . 'options"' );
+		$stmt = $db->prepare( 'SHOW TABLES LIKE "' . $config_table_prefix . 'options"' );
 		$stmt->execute();
 		if ( $stmt->rowCount() == 0 ) {
 			return false;
@@ -864,16 +867,11 @@ if ( ( $errormessage = $installer->checkSystem() ) !== null ) {
 		<form id="step2" action="./installer.php?step=3" method="post">
 			<div class="box">
 				<h2>MySQL Database</h2>
-				<input type="text" required="required" placeholder="Database Name" name="db_name"
-				       value="<?= $default['db']['name'] ?>">
-				<input type="text" required="required" placeholder="Database User" name="db_username"
-				       value="<?= $default['db']['username'] ?>">
-				<input type="text" placeholder="Database Password" name="db_password"
-				       value="<?= $default['db']['password'] ?>">
-				<input type="text" required="required" placeholder="Host" name="db_host"
-				       value="<?= $default['db']['host'] ?>">
-				<input type="text" required="required" placeholder="Port" name="db_port"
-				       value="<?= $default['db']['port'] ?>">
+				<input type="text" required="required" placeholder="Database Name" name="db_name" value="<?= $default['db']['name'] ?>">
+				<input type="text" required="required" placeholder="Database User" name="db_username" value="<?= $default['db']['username'] ?>">
+				<input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
+				<input type="text" required="required" placeholder="Host" name="db_host" value="<?= $default['db']['host'] ?>">
+				<input type="text" required="required" placeholder="Port" name="db_port" value="<?= $default['db']['port'] ?>">
 				<input type="submit" name="next" value="Next">
 			</div>
 		</form>
@@ -882,19 +880,13 @@ if ( ( $errormessage = $installer->checkSystem() ) !== null ) {
 			<div class="box">
 				<h2>Setup</h2>
 				<input type="text" placeholder="Site Title" name="weblog_title" value="<?= $default['title'] ?>">
-				<input type="text" placeholder="Site Description" name="weblog_description"
-				       value="<?= $default['description'] ?>">
-				<input type="text" required="required" placeholder="Admin Name" name="user_name"
-				       value="<?= $default['admin']['name'] ?>">
-				<input type="password" required="required" placeholder="Admin Password" name="admin_password"
-				       value="<?= $default['admin']['password'] ?>">
-				<input type="password" required="required" placeholder="Admin Password" name="admin_password2"
-				       value="<?= $default['admin']['password'] ?>">
-				<input type="email" required="required" placeholder="Admin E-Mail" name="admin_email"
-				       value="<?= $default['admin']['email'] ?>">
+				<input type="text" placeholder="Site Description" name="weblog_description" value="<?= $default['description'] ?>">
+				<input type="text" required="required" placeholder="Admin Name" name="user_name" value="<?= $default['admin']['name'] ?>">
+				<input type="password" required="required" placeholder="Admin Password" name="admin_password" value="<?= $default['admin']['password'] ?>">
+				<input type="password" required="required" placeholder="Admin Password" name="admin_password2" value="<?= $default['admin']['password'] ?>">
+				<input type="email" required="required" placeholder="Admin E-Mail" name="admin_email" value="<?= $default['admin']['email'] ?>">
 				<label for="blog_public">Blog Public</label>
-				<input type="checkbox" name="blog_public" id="blog_public"
-				       value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
+				<input type="checkbox" name="blog_public" id="blog_public" value="1" <?= $default['public'] == 1 ? 'checked' : '' ?>>
 				<br>
 				<input type="submit" name="next" value="Next">
 			</div>
@@ -968,8 +960,7 @@ if ( ( $errormessage = $installer->checkSystem() ) !== null ) {
 			<div class="box">
 				<h2>New User</h2>
 				<input type="text" placeholder="Name" name="name" value="<?= $default['user']['name'] ?>">
-				<input type="password" placeholder="Password" name="password"
-				       value="<?= $default['user']['password'] ?>">
+				<input type="password" placeholder="Password" name="password" value="<?= $default['user']['password'] ?>">
 				<input type="text" placeholder="E-Mail" name="email" value="<?= $default['user']['email'] ?>">
 				<select name="role">
 					<?php
@@ -1014,9 +1005,12 @@ if ( ( $errormessage = $installer->checkSystem() ) !== null ) {
 			<div class="box">
 				<h2>Static Front Page</h2>
 				<select id="frontpage" name="frontpage" onchange="toggle();">
-					<option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>Your latest posts
+					<option value="posts"<?php echo $frontpage == 'posts' ? ' selected' : ''; ?>>
+						Your latest posts
 					</option>
-					<option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>A static page</option>
+					<option value="page"<?php echo $frontpage == 'page' ? ' selected' : ''; ?>>
+						A static page
+					</option>
 				</select>
 				<textarea id="content" name="content" rows="10"><?php echo htmlentities( $content ); ?></textarea>
 				<input type="submit" value="Save">
@@ -1038,8 +1032,8 @@ if ( ( $errormessage = $installer->checkSystem() ) !== null ) {
 		</form>
 	<?php else: ?>
 		<form action="./installer.php" method="post">
-			<label for="delete">Remove Script</label> <input type="checkbox" name="delete" id="delete" value="1"
-			                                                 checked>
+			<label for="delete">Remove Script</label>
+			<input type="checkbox" name="delete" id="delete" value="1" checked>
 			<input type="hidden" name="ready" value="1">
 			<br><br>
 			<input type="submit" name="next" value="Ready">
