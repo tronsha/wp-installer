@@ -55,9 +55,6 @@ $config = array(
     'upload_dir' => 'files',
 );
 
-/** 
- * @see http://www.gnuterrypratchett.com/ 
- */ 
 header("X-Clacks-Overhead: GNU Terry Pratchett");
 set_time_limit(300);
 error_reporting(E_ALL ^ E_NOTICE);
