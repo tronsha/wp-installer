@@ -77,6 +77,7 @@ class WordpressInstaller
     private $wpTablePrefix;
     private $wpPhpVersion;
     private $wpUploadDir;
+    private $error = null;
 
     public function __construct($config)
     {
@@ -446,29 +447,42 @@ class WordpressInstaller
      */
     public function isInstalled()
     {
-        $config = file_get_contents(WP_CONFIG);
-        preg_match("/define\('DB_HOST', '([^']+)'\);/", $config, $matches);
-        $config_db_host = $matches[1];
-        preg_match("/define\('DB_NAME', '([^']+)'\);/", $config, $matches);
-        $config_db_name = $matches[1];
-        preg_match("/define\('DB_USER', '([^']+)'\);/", $config, $matches);
-        $config_db_user = $matches[1];
-        preg_match("/define\('DB_PASSWORD', '([^']+)'\);/", $config, $matches);
-        $config_db_password = $matches[1];
-        preg_match("/table_prefix\s*\=\s*'([^']+)';/", $config, $matches);
-        $config_table_prefix = $matches[1];
-        $db = new PDO(
-            'mysql:host=' . $config_db_host . ';dbname=' . $config_db_name,
-            $config_db_user,
-            $config_db_password,
-            array(PDO::ATTR_PERSISTENT => false)
-        );
-        $stmt = $db->prepare('SHOW TABLES LIKE "' . $config_table_prefix . 'options"');
-        $stmt->execute();
-        if ($stmt->rowCount() == 0) {
-            return false;
+        try {
+            $config = file_get_contents(WP_CONFIG);
+            preg_match("/define\('DB_HOST', '([^']+)'\);/", $config, $matches);
+            $config_db_host = $matches[1];
+            preg_match("/define\('DB_NAME', '([^']+)'\);/", $config, $matches);
+            $config_db_name = $matches[1];
+            preg_match("/define\('DB_USER', '([^']+)'\);/", $config, $matches);
+            $config_db_user = $matches[1];
+            preg_match("/define\('DB_PASSWORD', '([^']+)'\);/", $config, $matches);
+            $config_db_password = $matches[1];
+            preg_match("/table_prefix\s*\=\s*'([^']+)';/", $config, $matches);
+            $config_table_prefix = $matches[1];
+            $db = new PDO(
+                'mysql:host=' . $config_db_host . ';dbname=' . $config_db_name,
+                $config_db_user,
+                $config_db_password,
+                array(PDO::ATTR_PERSISTENT => false)
+            );
+            $stmt = $db->prepare('SHOW TABLES LIKE "' . $config_table_prefix . 'options"');
+            $stmt->execute();
+            if ($stmt->rowCount() == 0) {
+                return false;
+            }
+            return true;
+        } catch (Exception $e) {
+            unlink(WP_CONFIG);
+            $this->error = $e->getMessage();
+            return null;
         }
-        return true;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getError() {
+        return $this->error;
     }
 }
 
@@ -577,7 +591,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         $step = 3;
     }
     if (file_exists(WP_CONFIG) && $step >= 3) {
-        if ($installer->isInstalled() === false) {
+        $isInstalled = $installer->isInstalled();
+        if ($isInstalled === null) {
+            $step = 2;
+        } elseif ($isInstalled === false) {
             $step = 3;
         } elseif ($step == 3) {
             $step = 4;
@@ -831,6 +848,14 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         padding: 5px 30px 20px 30px;
         width: 600px;
     }
+    
+    .error {
+        background: linear-gradient(#FF0000, #FF0000) repeat scroll 0% 0% #FF0000;
+        color: #000000;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
 
     textarea,
     select,
@@ -885,6 +910,11 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             </div>
         </form>
     <?php elseif ($step == 2): ?>
+        <?php if (null !== ($error = $installer->getError())): ?>
+            <div class="box error">
+                <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
         <form id="step2" action="./installer.php?step=3" method="post">
             <div class="box">
                 <h2>MySQL Database</h2>
