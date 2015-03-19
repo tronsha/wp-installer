@@ -251,6 +251,11 @@ class WordpressInstaller
     ) {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
+            $config = str_replace(
+                'define(\'WP_DEBUG\', false);',
+                'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** GNU Terry Pratchet */' . PHP_EOL . 'header(\'X-Clacks-Overhead: GNU Terry Pratchett\');',
+                $config
+            );
             $salt = file_get_contents($this->wpSalt);
             if (empty($salt) === false) {
                 $config = preg_replace(
@@ -600,6 +605,9 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 4;
         }
     }
+    if ($step > 3) {
+        require_once './wordpress/wp-load.php';
+    }
 }
 ?><!doctype html>
 <html>
@@ -945,7 +953,6 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <div class="box">
             <h2>Install Theme</h2>
             <?php
-            require_once './wordpress/wp-load.php';
             require_once './wordpress/wp-admin/includes/admin.php';
             require_once './wordpress/wp-admin/includes/theme-install.php';
             install_themes_upload();
@@ -962,7 +969,6 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 5): ?>
         <?php
-        require_once './wordpress/wp-load.php';
         require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
@@ -1003,7 +1009,6 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 7): ?>
         <?php
-        require_once './wordpress/wp-load.php';
         require_once './wordpress/wp-admin/includes/admin.php';
         ?>
         <form id="step7user" action="./installer.php?step=7&amp;user=add" method="post">
@@ -1040,7 +1045,6 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 9): ?>
         <?php
-        require_once './wordpress/wp-load.php';
         $frontpage = get_option('show_on_front');
         /**
          * @see http://codex.wordpress.org/Class_Reference/WP_Query
