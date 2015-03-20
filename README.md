@@ -22,10 +22,11 @@ Then, use the `create-project` command to generate a new project:
 
 * [WordPress Requirements][5]
   * [PHP][6] 5.2.4 or greater
+    * [cURL][9] must be installed
+    * [allow_url_fopen][10] must be enabled
   * [MySQL][7] 5.0 or greater
 * [Apache HTTP Server][8]
-* [cURL][9] must be installed
-* [allow_url_fopen][10] must be enabled
+  * [mod_rewrite][16] is required
 
 ## Recommended Browser
 
@@ -58,6 +59,7 @@ Then, use the `create-project` command to generate a new project:
 [6]: http://php.net/
 [7]: http://www.mysql.com/
 [8]: http://httpd.apache.org/
+[16]: http://httpd.apache.org/docs/2.2/mod/mod_rewrite.html
 [9]: http://php.net/manual/en/book.curl.php
 [10]: http://php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen
 [11]: https://www.mozilla.org/en-US/firefox/developer/
