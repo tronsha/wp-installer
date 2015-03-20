@@ -28,6 +28,7 @@ $default = array(
         'password' => '',
         'host' => 'localhost',
         'port' => '3306',
+        'table_prefix' => 'wp_',
     ),
 );
 
@@ -51,7 +52,6 @@ $config = array(
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
-    'table_prefix' => 'wp_',
     'upload_dir' => 'files',
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
@@ -72,7 +72,6 @@ class WordpressInstaller
 {
     private $wpSrc;
     private $wpSalt;
-    private $wpTablePrefix;
     private $wpPhpVersion;
     private $wpUploadDir;
     private $clacksoverhead;
@@ -82,7 +81,6 @@ class WordpressInstaller
     {
         $this->wpSrc = $config['src'];
         $this->wpSalt = $config['salt'];
-        $this->wpTablePrefix = $config['table_prefix'];
         $this->wpPhpVersion = $config['php_version'];
         $this->wpUploadDir = empty($config['upload_dir']) ? 'wp-content/uploads' : $config['upload_dir'];
         $this->clacksoverhead = $config['clacks_overhead'];
@@ -247,7 +245,8 @@ class WordpressInstaller
         $username = 'root',
         $password = '',
         $host = 'localhost',
-        $port = '3306'
+        $port = '3306',
+        $tableprefix = ''
     ) {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
@@ -293,11 +292,11 @@ class WordpressInstaller
                     $config
                 );
             }
-            if (empty($this->wpTablePrefix) === true) {
-                $this->wpTablePrefix = $this->getRandomTablePrefix();
+            if (empty($tableprefix) === true) {
+                $tableprefix = $this->getRandomTablePrefix();
             } 
-            if ($this->wpTablePrefix != 'wp_') {
-                $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $this->wpTablePrefix . '\';', $config);
+            if ($tableprefix != 'wp_') {
+                $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $tableprefix . '\';', $config);
             }
             file_put_contents(WP_CONFIG, $config);
             $this->chmod(WP_CONFIG);
@@ -520,7 +519,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     $_POST['db_username'],
                     $_POST['db_password'],
                     $_POST['db_host'],
-                    $_POST['db_port']
+                    $_POST['db_port'],
+                    $_POST['db_table_prefix']
                 );
             }
             if (!file_exists('./.htaccess')) {
@@ -932,6 +932,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 <input type="text" placeholder="Database Password" name="db_password" value="<?= $default['db']['password'] ?>">
                 <input type="text" required="required" placeholder="Host" name="db_host" value="<?= $default['db']['host'] ?>">
                 <input type="text" required="required" placeholder="Port" name="db_port" value="<?= $default['db']['port'] ?>">
+                <input type="text" placeholder="Table Prefix" name="db_table_prefix" value="<?= $default['db']['table_prefix'] ?>">
                 <input type="submit" name="next" value="Next">
             </div>
         </form>
