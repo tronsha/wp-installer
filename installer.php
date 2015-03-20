@@ -53,6 +53,7 @@ $config = array(
     'php_version' => '5.2.4',
     'table_prefix' => 'wp_',
     'upload_dir' => 'files',
+    'clacks_overhead' => 'GNU Terry Pratchett',
 );
 
 header("X-Clacks-Overhead: GNU Terry Pratchett");
@@ -74,6 +75,7 @@ class WordpressInstaller
     private $wpTablePrefix;
     private $wpPhpVersion;
     private $wpUploadDir;
+    private $clacksoverhead;
     private $error = null;
 
     public function __construct($config)
@@ -83,6 +85,7 @@ class WordpressInstaller
         $this->wpTablePrefix = $config['table_prefix'];
         $this->wpPhpVersion = $config['php_version'];
         $this->wpUploadDir = empty($config['upload_dir']) ? 'wp-content/uploads' : $config['upload_dir'];
+        $this->clacksoverhead = $config['clacks_overhead'];
     }
 
     public function checkSystem()
@@ -248,11 +251,13 @@ class WordpressInstaller
     ) {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
-            $config = str_replace(
-                'define(\'WP_DEBUG\', false);',
-                'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** GNU Terry Pratchet */' . PHP_EOL . 'header(\'X-Clacks-Overhead: GNU Terry Pratchett\');',
-                $config
-            );
+            if (empty($this->clacksoverhead) === false) {
+                $config = str_replace(
+                    'define(\'WP_DEBUG\', false);',
+                    'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** Clacks Overhead */' . PHP_EOL . 'header(\'X-Clacks-Overhead: ' . $this->clacksoverhead . '\');',
+                    $config
+                );
+            }
             $salt = file_get_contents($this->wpSalt);
             if (empty($salt) === false) {
                 $config = preg_replace(
