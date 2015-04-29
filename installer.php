@@ -633,7 +633,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         box-sizing: border-box;
     }
 
-    /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+    /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
     html {
         font-family: sans-serif;
@@ -725,7 +725,6 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
     }
 
     hr {
-        -moz-box-sizing: content-box;
         box-sizing: content-box;
         height: 0;
     }
@@ -782,8 +781,6 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
 
     input[type="search"] {
         -webkit-appearance: textfield;
-        -moz-box-sizing: content-box;
-        -webkit-box-sizing: content-box;
         box-sizing: content-box;
     }
 
@@ -857,7 +854,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         padding: 5px 30px 20px 30px;
         width: 600px;
     }
-    
+
     .error {
         background: linear-gradient(#FF0000, #FF0000) repeat scroll 0% 0% #FF0000;
         color: #000000;
