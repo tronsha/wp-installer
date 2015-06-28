@@ -1,22 +1,23 @@
 {
-    "name": "tronsha/wp-installer",
-    "description": "WordPress Installer",
-    "version": "1.2.0-dev",
-    "type": "project",
-    "keywords": [
-        "wordpress"
-    ],
-    "homepage": "https://github.com/tronsha/wp-installer",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Stefan Hüsges",
-            "homepage": "http://www.mpcx.net",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=5.2.4"
-    },
-    "minimum-stability": "dev"
+  "name": "tronsha/wp-installer",
+  "description": "WordPress Installer",
+  "version": "1.2.0-dev",
+  "type": "project",
+  "keywords": [
+    "wordpress"
+  ],
+  "homepage": "https://github.com/tronsha/wp-installer",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stefan Hüsges",
+      "homepage": "http://www.mpcx.net",
+      "email": "tronsha@gmail.com",
+      "role": "Maintainer"
+    }
+  ],
+  "require": {
+    "php": ">=5.2.4"
+  },
+  "minimum-stability": "dev"
 }
