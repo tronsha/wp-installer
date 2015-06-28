@@ -43,6 +43,11 @@ $plugins = array(
         'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.latest-stable.zip',
         'selected' => '1'
     ),
+    array(
+        'name' => 'WP-DB-Backup',
+        'url' => 'https://downloads.wordpress.org/plugin/wp-db-backup.latest-stable.zip',
+        'selected' => '1'
+    ),
 );
 
 $config = array(
