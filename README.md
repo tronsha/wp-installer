@@ -37,7 +37,11 @@ Then, use the `create-project` command to generate a new project:
 
 * [jQuery][13]
 * [normalize.css][14]
-* [Google Fonts][15]
+
+## Fonts
+
+* __Playball__ _Copyright (c) 2011 [TypeSETit, LLC][16]_ 
+* __Orbitron__ _Copyright (c) 2009, [Matt McInerney][17]_
 
 ## Creator
 
@@ -67,3 +71,5 @@ Then, use the `create-project` command to generate a new project:
 [13]: http://jquery.com/
 [14]: http://necolas.github.io/normalize.css/
 [15]: https://www.google.com/fonts
+[16]: mailto:typesetit@att.net
+[17]: mailto:matt@pixelspread.com
