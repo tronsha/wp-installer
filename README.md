@@ -42,6 +42,7 @@ Then, use the `create-project` command to generate a new project:
 
 * Playball _Copyright (c) 2011 [TypeSETit, LLC][16]_ 
 * Orbitron _Copyright (c) 2009, [Matt McInerney][17]_
+* [Ubuntu Mono][18]
 
 ## Creator
 
@@ -73,3 +74,4 @@ Then, use the `create-project` command to generate a new project:
 [15]: https://www.google.com/fonts
 [16]: mailto:typesetit@att.net
 [17]: mailto:matt@pixelspread.com
+[18]: http://font.ubuntu.com/
