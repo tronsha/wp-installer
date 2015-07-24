@@ -40,8 +40,8 @@ Then, use the `create-project` command to generate a new project:
 
 ## Fonts
 
-* __Playball__ _Copyright (c) 2011 [TypeSETit, LLC][16]_ 
-* __Orbitron__ _Copyright (c) 2009, [Matt McInerney][17]_
+* Playball _Copyright (c) 2011 [TypeSETit, LLC][16]_ 
+* Orbitron _Copyright (c) 2009, [Matt McInerney][17]_
 
 ## Creator
 
