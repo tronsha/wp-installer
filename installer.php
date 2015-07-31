@@ -409,6 +409,15 @@ class WordpressInstaller
     }
 
     /**
+     * Organize the uploads into month- and year-based folders
+     * @param $value
+     */
+    public function setYearMonthFolders($value)
+    {
+        update_option('uploads_use_yearmonth_folders', $value);
+    }
+
+    /**
      * Create User
      * @see http://codex.wordpress.org/Function_Reference/username_exists
      * @see http://codex.wordpress.org/Function_Reference/wp_create_user
@@ -588,14 +597,21 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 8;
         }
         if ($_GET['step'] == 9) {
-            if (isset($_POST['frontpage'])) {
+            if (isset($_GET['set']) === true && $_GET['set'] == 'yearmonth') {
                 require_once './wordpress/wp-load.php';
-                $installer->setFrontPage($_POST['frontpage'], $_POST['content']);
+                $installer->setYearMonthFolders($_POST['uploads_use_yearmonth_folders']);
             }
             $step = 9;
         }
         if ($_GET['step'] == 10) {
+            if (isset($_POST['frontpage'])) {
+                require_once './wordpress/wp-load.php';
+                $installer->setFrontPage($_POST['frontpage'], $_POST['content']);
+            }
             $step = 10;
+        }
+        if ($_GET['step'] == 11) {
+            $step = 11;
         }
     }
     if (!file_exists(WP_CONFIG_SAMPLE)) {
@@ -1072,7 +1088,23 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         <form id="step8" action="./installer.php?step=9" method="post">
             <input type="submit" name="next" value="Next">
         </form>
-    <?php elseif ($step == 9): ?>
+        <?php elseif ($step == 9): ?>
+        <form id="step9yearmonth" action="./installer.php?step=9&amp;set=yearmonth" method="post">
+            <div class="box">
+                <h2>Uploads</h2>
+                <label for="uploads_use_yearmonth_folders">
+                    <input name="uploads_use_yearmonth_folders" type="checkbox" id="uploads_use_yearmonth_folders" value="1"<?php checked('1', get_option('uploads_use_yearmonth_folders')); ?> />
+                    <?php _e('Organize my uploads into month- and year-based folders'); ?>
+                </label>
+                <br>
+                <input type="submit" value="Set">
+            </div>
+        </form>
+        <br>
+        <form id="step9" action="./installer.php?step=10" method="post">
+            <input type="submit" name="next" value="Next">
+        </form>
+    <?php elseif ($step == 10): ?>
         <?php
         $frontpage = get_option('show_on_front');
         /**
