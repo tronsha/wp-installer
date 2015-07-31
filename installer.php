@@ -57,7 +57,7 @@ $config = array(
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
-    'upload_dir' => 'files',
+    'upload_dir' => 'media',
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
 
