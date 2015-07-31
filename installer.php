@@ -231,6 +231,11 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/plugins/', true);
     }
 
+    public function removePlugins($plugins)
+    {
+        delete_plugins($plugins);
+    }
+
     public function getRandomTablePrefix($prefix = null, $length = 3, $algorithm = 'sha256', $iteration = 0)
     {
         if (empty($prefix) === true) {
@@ -579,6 +584,11 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 foreach ($_POST['plugins'] as $plugin) {
                     $installer->installPlugin($plugin);
                 }
+            }
+            if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'remove' && isset($_POST['plugins']) === true) {
+                require_once './wordpress/wp-load.php';
+                require_once './wordpress/wp-admin/includes/admin.php';
+                $installer->removePlugins($_POST['plugins']);
             }
             $step = 6;
         }
@@ -1035,6 +1045,9 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 6): ?>
+        <?php
+        require_once './wordpress/wp-admin/includes/admin.php';
+        ?>
         <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
             <div class="box">
                 <h2>Install Plugins</h2>
@@ -1046,6 +1059,16 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                     ?>
                 </select>
                 <input type="submit" value="Install Now">
+            </div>
+        </form>
+        <br>
+        <form id="step6remove" action="./installer.php?step=6&amp;plugin=remove" method="post" style="display: none;">
+            <div class="box">
+                <h2>Remove Plugins</h2>
+                <?php
+                $plugins = get_plugins();
+                ?>
+                <input type="submit" value="Remove Now">
             </div>
         </form>
         <br>
