@@ -910,6 +910,20 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         width: 600px;
     }
 
+    .box table {
+        width: 100%;
+    }
+
+    .box table td {
+        line-height: 24px;
+        text-align: left;
+    }
+
+    .box table td:first-child {
+        text-align: center;
+        width: 30px;
+    }
+
     .error {
         background: linear-gradient(#FF0000, #FF0000) repeat scroll 0% 0% #FF0000;
         color: #000000;
@@ -1062,12 +1076,17 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step6remove" action="./installer.php?step=6&amp;plugin=remove" method="post" style="display: none;">
+        <form id="step6remove" action="./installer.php?step=6&amp;plugin=remove" method="post">
             <div class="box">
                 <h2>Remove Plugins</h2>
-                <?php
-                $plugins = get_plugins();
-                ?>
+                <table>
+                    <?php
+                    $plugins = get_plugins();
+                    foreach ($plugins as $plugin => $data) {
+                        echo '<tr><td><input type="checkbox" name="plugins[]" value="' . $plugin . '"></td><td>' . $data['Name'] . '</td></tr>' . "\n";
+                    }
+                    ?>
+                </table>
                 <input type="submit" value="Remove Now">
             </div>
         </form>
