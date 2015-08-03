@@ -36,7 +36,7 @@ $plugins = array(
     array(
         'name' => 'Antispam Bee',
         'url' => 'https://downloads.wordpress.org/plugin/antispam-bee.latest-stable.zip',
-        'selected' => '0'
+        'selected' => '1'
     ),
     array(
         'name' => 'Contact Form 7',
@@ -54,8 +54,23 @@ $plugins = array(
         'selected' => '1'
     ),
     array(
+        'name' => 'Limit Login Attempts',
+        'url' => 'https://downloads.wordpress.org/plugin/limit-login-attempts.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'Members',
         'url' => 'https://downloads.wordpress.org/plugin/members.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Meta Slider',
+        'url' => 'https://downloads.wordpress.org/plugin/ml-slider.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Regenerate Thumbnails',
+        'url' => 'https://downloads.wordpress.org/plugin/regenerate-thumbnails.latest-stable.zip',
         'selected' => '1'
     ),
     array(
@@ -76,7 +91,7 @@ $plugins = array(
     array(
         'name' => 'WP-DB-Backup',
         'url' => 'https://downloads.wordpress.org/plugin/wp-db-backup.latest-stable.zip',
-        'selected' => '0'
+        'selected' => '1'
     ),
     array(
         'name' => 'wpSEO',
