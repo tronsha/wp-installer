@@ -34,9 +34,9 @@ $default = array(
 
 $plugins = array(
     array(
-        'name' => 'WordPress SEO',
-        'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip',
-        'selected' => '1'
+        'name' => 'Antispam Bee',
+        'url' => 'https://downloads.wordpress.org/plugin/antispam-bee.latest-stable.zip',
+        'selected' => '0'
     ),
     array(
         'name' => 'Contact Form 7',
@@ -49,8 +49,38 @@ $plugins = array(
         'selected' => '1'
     ),
     array(
+        'name' => 'InfiniteWP',
+        'url' => 'https://downloads.wordpress.org/plugin/iwp-client.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Members',
+        'url' => 'https://downloads.wordpress.org/plugin/members.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Sitemap',
+        'url' => 'https://downloads.wordpress.org/plugin/sitemap.latest-stable.zip',
+        'selected' => '0'
+    ),
+    array(
+        'name' => 'WooCommerce',
+        'url' => 'https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip',
+        'selected' => '0'
+    ),
+    array(
+        'name' => 'WordPress SEO',
+        'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip',
+        'selected' => '0'
+    ),
+    array(
         'name' => 'WP-DB-Backup',
         'url' => 'https://downloads.wordpress.org/plugin/wp-db-backup.latest-stable.zip',
+        'selected' => '0'
+    ),
+    array(
+        'name' => 'wpSEO',
+        'url' => 'http://cdn.wpseo.de/plugin/v3/zip/latest/wpseo.zip',
         'selected' => '1'
     ),
 );
@@ -1158,7 +1188,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             $content = get_the_content();
         endwhile;
         ?>
-        <form id="step9frontpage" action="./installer.php?step=9" method="post">
+        <form id="step9frontpage" action="./installer.php?step=10" method="post">
             <div class="box">
                 <h2>Static Front Page</h2>
                 <select id="frontpage" name="frontpage" onchange="toggle();">
