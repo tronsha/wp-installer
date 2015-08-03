@@ -1210,7 +1210,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             toggle();
         </script>
         <br>
-        <form id="step9" action="./installer.php?step=10" method="post">
+        <form id="step10" action="./installer.php?step=11" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
