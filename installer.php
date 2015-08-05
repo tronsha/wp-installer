@@ -472,6 +472,14 @@ class WordpressInstaller
         update_option('uploads_use_yearmonth_folders', $value);
     }
 
+    public function cleanUpWidgets()
+    {
+        update_option(
+            'sidebars_widgets',
+            array('wp_inactive_widgets' => array(), 'sidebar-1' => array(), 'array_version' => 3)
+        );
+    }
+
     /**
      * Create User
      * @see http://codex.wordpress.org/Function_Reference/username_exists
@@ -660,6 +668,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             if (isset($_GET['set']) === true && $_GET['set'] == 'yearmonth') {
                 require_once './wordpress/wp-load.php';
                 $installer->setYearMonthFolders($_POST['uploads_use_yearmonth_folders']);
+            }
+            if (isset($_GET['set']) === true && $_GET['set'] == 'widgets') {
+                require_once './wordpress/wp-load.php';
+                $installer->cleanUpWidgets();
             }
             $step = 9;
         }
@@ -1193,6 +1205,13 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
+        <form id="step9widgets" action="./installer.php?step=9&amp;set=widgets" method="post" style="dislpay: none;">
+            <div class="box">
+                <h2>Sidebar</h2>
+                <input type="submit" value="Clean Up">
+            </div>
+        </form>
+        <br style="dislpay: none;">
         <form id="step9" action="./installer.php?step=10" method="post">
             <input type="submit" name="next" value="Next">
         </form>
