@@ -36,7 +36,12 @@ $plugins = array(
     array(
         'name' => 'Antispam Bee',
         'url' => 'https://downloads.wordpress.org/plugin/antispam-bee.latest-stable.zip',
-        'selected' => '1'
+        'selected' => '0'
+    ),
+    array(
+        'name' => 'Breadcrumb NavXT',
+        'url' => 'https://downloads.wordpress.org/plugin/breadcrumb-navxt.latest-stable.zip',
+        'selected' => '0'
     ),
     array(
         'name' => 'Contact Form 7',
