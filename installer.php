@@ -447,10 +447,10 @@ class WordpressInstaller
      * @see http://httpd.apache.org/docs/current/howto/htaccess.html
      * @see https://developer.wordpress.org/reference/classes/wp_rewrite/set_permalink_structure/
      */
-    public function setPermalinkToPostname()
+    public function setPermalinkToPostname($structure = '/%postname%/')
     {
+        $GLOBALS['wp_rewrite']->set_permalink_structure($structure);
         if (file_exists('./wordpress/.htaccess') === false) {
-            $GLOBALS['wp_rewrite']->set_permalink_structure('/%postname%/');
             $htaccess = '' . "\n";
             $htaccess .= '# BEGIN WordPress' . "\n";
             $htaccess .= '<IfModule mod_rewrite.c>' . "\n";
@@ -663,9 +663,9 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 7;
         }
         if ($_GET['step'] == 8) {
-            if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'postname') {
+            if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'save') {
                 require_once './wordpress/wp-load.php';
-                $installer->setPermalinkToPostname();
+                $installer->setPermalinkToPostname($_POST['selection']);
             }
             $step = 8;
         }
@@ -1029,6 +1029,15 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
     .wp-upload-form {
         overflow: hidden;
     }
+
+    .permalink-structure th {
+        text-align: left;
+    }
+
+    .permalink-structure td {
+        font-size: small;
+        text-align: left;
+    }
     </style>
 </head>
 <body>
@@ -1189,10 +1198,44 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 8): ?>
-        <form id="step8permalink" action="./installer.php?step=8&amp;permalink=postname" method="post">
+    <?php
+        require_once './wordpress/wp-admin/includes/admin.php';
+        $structures = array(
+            0 => '',
+            1 => $prefix . '/%year%/%monthnum%/%day%/%postname%/',
+            2 => $prefix . '/%year%/%monthnum%/%postname%/',
+            3 => $prefix . '/' . _x( 'archives', 'sample permalink base' ) . '/%post_id%',
+            4 => $prefix . '/%postname%/',
+        );
+        $permalink_structure = get_option('permalink_structure');
+    ?>
+    ?>
+        <form id="step8permalink" action="./installer.php?step=8&amp;permalink=save" method="post">
             <div class="box">
                 <h2>Permalink</h2>
-                <input type="submit" value="Postname">
+                <table class="form-table permalink-structure">
+                    <tr>
+                        <th><label><input name="selection" type="radio" value="" <?php checked('', $permalink_structure); ?> /> <?php _e('Default'); ?></label></th>
+                        <td><code><?php echo get_option('home'); ?>/?p=123</code></td>
+                    </tr>
+                    <tr>
+                        <th><label><input name="selection" type="radio" value="<?php echo esc_attr($structures[1]); ?>" <?php checked($structures[1], $permalink_structure); ?> /> <?php _e('Day and name'); ?></label></th>
+                        <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/' . _x( 'sample-post', 'sample permalink structure' ) . '/'; ?></code></td>
+                    </tr>
+                    <tr>
+                        <th><label><input name="selection" type="radio" value="<?php echo esc_attr($structures[2]); ?>" <?php checked($structures[2], $permalink_structure); ?> /> <?php _e('Month and name'); ?></label></th>
+                        <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . _x( 'sample-post', 'sample permalink structure' ) . '/'; ?></code></td>
+                    </tr>
+                    <tr>
+                        <th><label><input name="selection" type="radio" value="<?php echo esc_attr($structures[3]); ?>" <?php checked($structures[3], $permalink_structure); ?> /> <?php _e('Numeric'); ?></label></th>
+                        <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x( 'archives', 'sample permalink base' ) . '/123'; ?></code></td>
+                    </tr>
+                    <tr>
+                        <th><label><input name="selection" type="radio" value="<?php echo esc_attr($structures[4]); ?>" <?php checked($structures[4], $permalink_structure); ?> /> <?php _e('Post name'); ?></label></th>
+                        <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x( 'sample-post', 'sample permalink structure' ) . '/'; ?></code></td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
             </div>
         </form>
         <br>
