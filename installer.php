@@ -1241,7 +1241,6 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         );
         $permalink_structure = get_option('permalink_structure');
     ?>
-    ?>
         <form id="step8permalink" action="./installer.php?step=8&amp;permalink=save" method="post">
             <div class="box">
                 <h2>Permalink</h2>
