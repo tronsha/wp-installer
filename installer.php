@@ -130,6 +130,9 @@ if (!defined('__DIR__')) {
     define('__DIR__', dirname(__FILE__));
 }
 
+/* DIRECTORY_SEPARATOR */
+define('DS', DIRECTORY_SEPARATOR);
+
 define('WP_CONFIG', './wordpress/wp-config.php');
 define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
 
@@ -141,6 +144,7 @@ class WordpressInstaller
     private $wpUploadDir;
     private $clacksoverhead;
     private $error = null;
+    private $wp_filesystem = null;
 
     public function __construct($config)
     {
@@ -288,7 +292,19 @@ class WordpressInstaller
 
     public function removePlugins($plugins)
     {
-        delete_plugins($plugins);
+        foreach ($plugins as $plugin) {
+            $plugin_array = explode(DS, $plugin);
+            $this->removeFile(__DIR__ . DS . 'wordpress' . DS . 'wp-content' . DS . 'plugins' . DS . array_shift($plugin_array), true);
+        }
+        /* delete_plugins($plugins); */
+    }
+
+    public function removeFile($file, $recursive = true)
+    {
+        if ($this->wp_filesystem === null) {
+            $this->wp_filesystem = new WP_Filesystem_Direct(null);
+        }
+        $this->wp_filesystem->delete($file, $recursive);
     }
 
     public function getRandomTablePrefix($prefix = null, $length = 3, $algorithm = 'sha256', $iteration = 0)
@@ -651,6 +667,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'remove' && isset($_POST['plugins']) === true) {
                 require_once './wordpress/wp-load.php';
                 require_once './wordpress/wp-admin/includes/admin.php';
+                require_once './wordpress/wp-admin/includes/class-wp-filesystem-base.php';
+                require_once './wordpress/wp-admin/includes/class-wp-filesystem-direct.php';
                 $installer->removePlugins($_POST['plugins']);
             }
             $step = 6;
