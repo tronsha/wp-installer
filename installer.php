@@ -105,10 +105,15 @@ $plugins = array(
     ),
 );
 
+/* https://wordpress.org/download/release-archive/ */
+
 $config = array(
     'src' => array(
         'en' => 'https://wordpress.org/latest.zip',
         'de' => 'https://de.wordpress.org/latest-de_DE.zip',
+        '4.3-RC2' => 'https://wordpress.org/wordpress-4.3-RC2.zip',
+        '4.2.4' => 'https://wordpress.org/wordpress-4.2.4.zip',
+        '4.1.7' => 'https://wordpress.org/wordpress-4.1.7.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
@@ -1040,8 +1045,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             <div class="box">
                 <h2>Language</h2>
                 <select name="lang">
-                    <option value="en">english</option>
-                    <option value="de" selected>deutsch</option>
+                    <option value="en">WordPress (english)</option>
+                    <option value="de" selected>WordPress (deutsch)</option>
+                    <option value="4.3-RC2">WordPress 4.3 Release Candidate 2</option>
+                    <option value="4.1.7">WordPress 4.1.7</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
