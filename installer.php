@@ -967,7 +967,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
     body {
         font-family: 'Ubuntu Mono';
         margin: 0;
-        padding: 0;
+        padding: 0 0 20px 0;
     }
 
     h1 {
@@ -982,6 +982,11 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         font-family: 'Orbitron';
         font-size: 24px;
         font-weight: 100;
+    }
+
+    td, th {
+        font-weight: normal;
+        text-align: left;
     }
 
     .box {
@@ -1048,13 +1053,13 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         overflow: hidden;
     }
 
-    .permalink-structure th {
-        text-align: left;
+    .permalink-structure td {
+        font-size: xx-small;
     }
 
-    .permalink-structure td {
-        font-size: small;
-        text-align: left;
+    .back,
+    .next {
+        display: inline;
     }
     </style>
 </head>
@@ -1151,7 +1156,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step5" action="./installer.php?step=6" method="post">
+        <form id="step5back" class="back" action="./installer.php?step=4" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step5next" class="next" action="./installer.php?step=6" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 6): ?>
@@ -1187,7 +1195,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step6" action="./installer.php?step=7" method="post">
+        <form id="step6back" class="back" action="./installer.php?step=5" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step6next" class="next" action="./installer.php?step=7" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 7): ?>
@@ -1212,7 +1223,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step7" action="./installer.php?step=8" method="post">
+        <form id="step7back" class="back" action="./installer.php?step=6" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step7next" class="next" action="./installer.php?step=8" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 8): ?>
@@ -1257,7 +1271,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step8" action="./installer.php?step=9" method="post">
+        <form id="step8back" class="back" action="./installer.php?step=7" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step8next" class="next" action="./installer.php?step=9" method="post">
             <input type="submit" name="next" value="Next">
         </form>
         <?php elseif ($step == 9): ?>
@@ -1280,7 +1297,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br style="dislpay: none;">
-        <form id="step9" action="./installer.php?step=10" method="post">
+        <form id="step9back" class="back" action="./installer.php?step=8" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step9next" class="next" action="./installer.php?step=10" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php elseif ($step == 10): ?>
@@ -1295,7 +1315,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             $content = get_the_content();
         endwhile;
         ?>
-        <form id="step9frontpage" action="./installer.php?step=10" method="post">
+        <form id="step10frontpage" action="./installer.php?step=10" method="post">
             <div class="box">
                 <h2>Static Front Page</h2>
                 <select id="frontpage" name="frontpage" onchange="toggle();">
@@ -1317,7 +1337,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             toggle();
         </script>
         <br>
-        <form id="step10" action="./installer.php?step=11" method="post">
+        <form id="step10back" class="back" action="./installer.php?step=9" method="post">
+            <input type="submit" name="back" value="Back">
+        </form>
+        <form id="step10next" class="next" action="./installer.php?step=11" method="post">
             <input type="submit" name="next" value="Next">
         </form>
     <?php else: ?>
