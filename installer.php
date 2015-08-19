@@ -109,11 +109,12 @@ $plugins = array(
 
 $config = array(
     'src' => array(
-        'en' => 'https://wordpress.org/latest.zip',
-        'de' => 'https://de.wordpress.org/latest-de_DE.zip',
-        '4.3-RC2' => 'https://wordpress.org/wordpress-4.3-RC2.zip',
+        'latest' => 'https://wordpress.org/latest.zip',
         '4.2.4' => 'https://wordpress.org/wordpress-4.2.4.zip',
         '4.1.7' => 'https://wordpress.org/wordpress-4.1.7.zip',
+        'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
+        '4.2.4-de_DE' => 'https://de.wordpress.org/wordpress-4.2.4-de_DE.zip',
+        '4.1.7-de_DE' => 'https://de.wordpress.org/wordpress-4.1.7-de_DE.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
@@ -163,7 +164,7 @@ class WordpressInstaller
             $error[] = 'Apache Server is required.';
         }
         if ($this->checkPhpVersion() === false) {
-            $error[] = 'PHP ' . $this->wpPhpVersion . ' or higher is required.';
+            $error[] = 'PHP <strong>' . $this->wpPhpVersion . '</strong> or higher is <a href="https://wordpress.org/about/requirements/" target="_blank">required</a>.';
         }
         if ($this->hasCurl() === false) {
             $error[] = 'Curl extension is required and not loaded.';
@@ -336,6 +337,13 @@ class WordpressInstaller
     ) {
         if (file_exists(WP_CONFIG) === false && file_exists(WP_CONFIG_SAMPLE) === true) {
             $config = file_get_contents(WP_CONFIG_SAMPLE);
+
+            /* de => en */
+            $config = str_replace('datenbankname_hier_einfuegen', 'database_name_here', $config);
+            $config = str_replace('benutzername_hier_einfuegen', 'username_here', $config);
+            $config = str_replace('passwort_hier_einfuegen', 'password_here', $config);
+            $config = str_replace('Füge hier deine Zeichenkette ein', 'put your unique phrase here', $config);
+
             if (empty($this->clacksoverhead) === false) {
                 $config = str_replace(
                     'define(\'WP_DEBUG\', false);',
@@ -984,6 +992,15 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         font-weight: 100;
     }
 
+    a {
+        color: #FF9966;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
     td, th {
         font-weight: normal;
         text-align: left;
@@ -1077,10 +1094,12 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             <div class="box">
                 <h2>Language</h2>
                 <select name="lang">
-                    <option value="en">WordPress (english)</option>
-                    <option value="de" selected>WordPress (deutsch)</option>
-                    <option value="4.3-RC2">WordPress 4.3 Release Candidate 2</option>
-                    <option value="4.1.7">WordPress 4.1.7</option>
+                    <option value="latest">WordPress (english)</option>
+                    <option value="4.2.4">WordPress 4.2.4 (english)</option>
+                    <option value="4.1.7">WordPress 4.1.7 (english)</option>
+                    <option value="latest-de_DE" selected>WordPress (deutsch)</option>
+                    <option value="4.2.4-de_DE">WordPress 4.2.4 (deutsch)</option>
+                    <option value="4.1.7-de_DE">WordPress 4.1.7 (deutsch)</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
