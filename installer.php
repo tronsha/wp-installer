@@ -287,9 +287,11 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/themes/', true);
     }
 
-    public function installPlugin($src)
+    public function installPlugin($src = null)
     {
-        $this->download($src, './plugin.zip');
+        if ($src !== null) {
+            $this->download($src, './plugin.zip');
+        }
         $this->unzip('./plugin.zip', './wordpress/wp-content/plugins/');
         sleep(5);
         $this->unlink('./plugin.zip');
@@ -672,6 +674,11 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 5;
         }
         if ($_GET['step'] == 6) {
+            if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'upload' && isset($_FILES['pluginzip']['tmp_name']) === true) {
+                if (move_uploaded_file($_FILES['pluginzip']['tmp_name'], './plugin.zip')) {
+                    $installer->installPlugin();
+                }
+            }
             if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'install' && isset($_POST['plugins']) === true) {
                 foreach ($_POST['plugins'] as $plugin) {
                     $installer->installPlugin($plugin);
@@ -1190,6 +1197,19 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
         <?php
         require_once './wordpress/wp-admin/includes/admin.php';
         ?>
+        <div class="box">
+            <h2>Install Plugin</h2>
+            <?php
+            require_once './wordpress/wp-admin/includes/plugin-install.php';
+            install_plugins_upload();
+            ?>
+            <script type="application/javascript">
+                jQuery(document).ready(function () {
+                    jQuery('.wp-upload-form').attr('action', './installer.php?step=6&plugin=upload');
+                });
+            </script>
+        </div>
+    <br>
         <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
             <div class="box">
                 <h2>Install Plugins</h2>
