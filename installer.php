@@ -59,6 +59,11 @@ $plugins = array(
         'selected' => '1'
     ),
     array(
+        'name' => 'JCH Optimize',
+        'url' => 'https://downloads.wordpress.org/plugin/jch-optimize.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'Limit Login Attempts',
         'url' => 'https://downloads.wordpress.org/plugin/limit-login-attempts.latest-stable.zip',
         'selected' => '1'
