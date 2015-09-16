@@ -1109,11 +1109,13 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                 <h2>Language</h2>
                 <select name="lang">
                     <option value="latest">WordPress (english)</option>
-                    <option value="4.2.4">WordPress 4.2.4 (english)</option>
-                    <option value="4.1.7">WordPress 4.1.7 (english)</option>
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
-                    <option value="4.2.4-de_DE">WordPress 4.2.4 (deutsch)</option>
-                    <option value="4.1.7-de_DE">WordPress 4.1.7 (deutsch)</option>
+                    <option value="4.3.1">WordPress 4.3.1 (english)</option>
+                    <option value="4.2.5">WordPress 4.2.5 (english)</option>
+                    <option value="4.1.8">WordPress 4.1.8 (english)</option>
+                    <option value="4.3.1-de_DE">WordPress 4.3.1 (deutsch)</option>
+                    <option value="4.2.5-de_DE">WordPress 4.2.5 (deutsch)</option>
+                    <option value="4.1.8-de_DE">WordPress 4.1.8 (deutsch)</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
