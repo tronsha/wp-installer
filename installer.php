@@ -122,6 +122,10 @@ $config = array(
         '4.3.1-de_DE' => 'https://de.wordpress.org/wordpress-4.3.1-de_DE.zip',
         '4.2.5-de_DE' => 'https://de.wordpress.org/wordpress-4.2.5-de_DE.zip',
         '4.1.8-de_DE' => 'https://de.wordpress.org/wordpress-4.1.8-de_DE.zip',
+        'latest-nl_NL' => 'https://de.wordpress.org/latest-nl_NL.zip',
+        '4.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3-nl_NL.zip',
+        '4.2.5-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.5-nl_NL.zip',
+        '4.1.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.8-nl_NL.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
@@ -1110,12 +1114,16 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                 <select name="lang">
                     <option value="latest">WordPress (english)</option>
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
+                    <option value="latest-nl_NL">WordPress (nederlandse)</option>
                     <option value="4.3.1">WordPress 4.3.1 (english)</option>
                     <option value="4.2.5">WordPress 4.2.5 (english)</option>
                     <option value="4.1.8">WordPress 4.1.8 (english)</option>
                     <option value="4.3.1-de_DE">WordPress 4.3.1 (deutsch)</option>
                     <option value="4.2.5-de_DE">WordPress 4.2.5 (deutsch)</option>
                     <option value="4.1.8-de_DE">WordPress 4.1.8 (deutsch)</option>
+                    <option value="4.3-nl_NL">WordPress 4.3 (nederlandse)</option>
+                    <option value="4.2.5-nl_NL">WordPress 4.2.5 (nederlandse)</option>
+                    <option value="4.1.8-nl_NL">WordPress 4.1.8 (nederlandse)</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
