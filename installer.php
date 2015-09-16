@@ -110,18 +110,19 @@ $plugins = array(
     ),
 );
 
-/* https://wordpress.org/download/release-archive/ */
-
 $config = array(
     'src' => array(
+        /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
         '4.3.1' => 'https://wordpress.org/wordpress-4.3.1.zip',
         '4.2.5' => 'https://wordpress.org/wordpress-4.2.5.zip',
         '4.1.8' => 'https://wordpress.org/wordpress-4.1.8.zip',
+        /** @link https://de.wordpress.org/releases/ */
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
         '4.3.1-de_DE' => 'https://de.wordpress.org/wordpress-4.3.1-de_DE.zip',
         '4.2.5-de_DE' => 'https://de.wordpress.org/wordpress-4.2.5-de_DE.zip',
         '4.1.8-de_DE' => 'https://de.wordpress.org/wordpress-4.1.8-de_DE.zip',
+        /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://de.wordpress.org/latest-nl_NL.zip',
         '4.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3-nl_NL.zip',
         '4.2.5-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.5-nl_NL.zip',
