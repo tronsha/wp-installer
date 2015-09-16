@@ -115,11 +115,13 @@ $plugins = array(
 $config = array(
     'src' => array(
         'latest' => 'https://wordpress.org/latest.zip',
-        '4.2.4' => 'https://wordpress.org/wordpress-4.2.4.zip',
-        '4.1.7' => 'https://wordpress.org/wordpress-4.1.7.zip',
+        '4.3.1' => 'https://wordpress.org/wordpress-4.3.1.zip',
+        '4.2.5' => 'https://wordpress.org/wordpress-4.2.5.zip',
+        '4.1.8' => 'https://wordpress.org/wordpress-4.1.8.zip',
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
-        '4.2.4-de_DE' => 'https://de.wordpress.org/wordpress-4.2.4-de_DE.zip',
-        '4.1.7-de_DE' => 'https://de.wordpress.org/wordpress-4.1.7-de_DE.zip',
+        '4.3.1-de_DE' => 'https://de.wordpress.org/wordpress-4.3.1-de_DE.zip',
+        '4.2.5-de_DE' => 'https://de.wordpress.org/wordpress-4.2.5-de_DE.zip',
+        '4.1.8-de_DE' => 'https://de.wordpress.org/wordpress-4.1.8-de_DE.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
