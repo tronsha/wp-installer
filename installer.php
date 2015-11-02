@@ -294,6 +294,14 @@ class WordpressInstaller
         $this->chmod('./wordpress/wp-content/themes/', true);
     }
 
+    public function removeThemes($themes)
+    {
+        foreach ($themes as $theme) {
+            $this->removeFile(__DIR__ . DS . 'wordpress' . DS . 'wp-content' . DS . 'themes' . DS . $theme, true);
+            /* delete_theme($theme); */
+        }
+    }
+
     public function installPlugin($src = null)
     {
         if ($src !== null) {
@@ -670,6 +678,13 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
                     $installer->installTheme();
                 }
+            }
+            if (isset($_GET['theme']) === true && $_GET['theme'] == 'remove' && isset($_POST['themes']) === true) {
+                require_once './wordpress/wp-load.php';
+                require_once './wordpress/wp-admin/includes/admin.php';
+                require_once './wordpress/wp-admin/includes/class-wp-filesystem-base.php';
+                require_once './wordpress/wp-admin/includes/class-wp-filesystem-direct.php';
+                $installer->removeThemes($_POST['themes']);
             }
             $step = 4;
         }
@@ -1177,6 +1192,21 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                 });
             </script>
         </div>
+        <br>
+        <form id="step6remove" action="./installer.php?step=4&amp;theme=remove" method="post">
+            <div class="box">
+                <h2>Remove Themes</h2>
+                <table>
+                    <?php
+                    $themes = wp_prepare_themes_for_js();
+                    foreach ($themes as $theme) {
+                        echo '<tr><td><input type="checkbox" name="themes[]" value="' . $theme['id'] . '"></td><td>' . $theme['name'] . '</td></tr>' . "\n";
+                    }
+                    ?>
+                </table>
+                <input type="submit" value="Remove Now">
+            </div>
+        </form>
         <br>
         <form id="step4" action="./installer.php?step=5" method="post">
             <input type="submit" name="next" value="Next">
