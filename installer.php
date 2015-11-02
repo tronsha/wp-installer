@@ -130,6 +130,11 @@ $config = array(
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
+    'ftp' => array(
+        'host' => '',
+        'user' => '',
+        'pass' => '',
+    ),
     'upload_dir' => 'media',
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
@@ -164,6 +169,7 @@ class WordpressInstaller
         $this->wpSrc = $config['src'];
         $this->wpSalt = $config['salt'];
         $this->wpPhpVersion = $config['php_version'];
+        $this->wpFtp = empty($config['ftp']) ? null : $config['ftp'];
         $this->wpUploadDir = empty($config['upload_dir']) ? 'wp-content/uploads' : $config['upload_dir'];
         $this->clacksoverhead = $config['clacks_overhead'];
     }
@@ -405,6 +411,13 @@ class WordpressInstaller
                 $config = str_replace(
                     'define(\'WP_DEBUG\', false);',
                     'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** The upload directory */' . PHP_EOL . 'define(\'UPLOADS\', \'' . $this->wpUploadDir . '\');',
+                    $config
+                );
+            }
+            if (empty($this->wpFtp) === false && $this->wpFtp !== null && empty($this->wpFtp['host']) === false && empty($this->wpFtp['user']) === false && empty($this->wpFtp['pass']) === false) {
+                $config = str_replace(
+                    'define(\'WP_DEBUG\', false);',
+                    'define(\'WP_DEBUG\', false);' . PHP_EOL . PHP_EOL . '/** FTP */' . PHP_EOL . 'define(\'FTP_HOST\', \'' . $this->wpFtp['host'] . '\');' . PHP_EOL . 'define(\'FTP_USER\', \'' . $this->wpFtp['user'] . '\');' . PHP_EOL . 'define(\'FTP_PASS\', \'' . $this->wpFtp['pass'] . '\');',
                     $config
                 );
             }
