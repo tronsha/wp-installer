@@ -124,7 +124,7 @@ $config = array(
         '4.1.8-de_DE' => 'https://de.wordpress.org/wordpress-4.1.8-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://de.wordpress.org/latest-nl_NL.zip',
-        '4.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3-nl_NL.zip',
+        '4.3.1-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.1-nl_NL.zip',
         '4.2.5-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.5-nl_NL.zip',
         '4.1.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.8-nl_NL.zip',
     ),
@@ -402,7 +402,7 @@ class WordpressInstaller
             }
             if (empty($tableprefix) === true) {
                 $tableprefix = $this->getRandomTablePrefix();
-            } 
+            }
             if ($tableprefix != 'wp_') {
                 $config = str_replace('table_prefix  = \'wp_\';', 'table_prefix  = \'' . $tableprefix . '\';', $config);
             }
@@ -472,7 +472,7 @@ class WordpressInstaller
         curl_close($ch);
     }
 
-    /** 
+    /**
      * @see http://codex.wordpress.org/Function_Reference/update_option
      */
     public function setBlogDescription($description = '')
@@ -551,9 +551,9 @@ class WordpressInstaller
             switch_theme($theme->get_stylesheet());
         }
     }
-    
-    /** 
-     * Page or posts 
+
+    /**
+     * Page or posts
      * @see http://codex.wordpress.org/Function_Reference/update_option
      * @see http://codex.wordpress.org/Function_Reference/wp_update_post
      */
@@ -608,7 +608,7 @@ class WordpressInstaller
             return null;
         }
     }
-    
+
     /**
      * @return string
      */
@@ -1122,7 +1122,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                     <option value="4.3.1-de_DE">WordPress 4.3.1 (deutsch)</option>
                     <option value="4.2.5-de_DE">WordPress 4.2.5 (deutsch)</option>
                     <option value="4.1.8-de_DE">WordPress 4.1.8 (deutsch)</option>
-                    <option value="4.3-nl_NL">WordPress 4.3 (nederlandse)</option>
+                    <option value="4.3.1-nl_NL">WordPress 4.3.1 (nederlandse)</option>
                     <option value="4.2.5-nl_NL">WordPress 4.2.5 (nederlandse)</option>
                     <option value="4.1.8-nl_NL">WordPress 4.1.8 (nederlandse)</option>
                 </select>
