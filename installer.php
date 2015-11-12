@@ -127,6 +127,8 @@ $config = array(
         '4.3.1-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.1-nl_NL.zip',
         '4.2.5-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.5-nl_NL.zip',
         '4.1.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.8-nl_NL.zip',
+        /** Nightly Build */
+        'nightly-build' => 'https://wordpress.org/nightly-builds/wordpress-latest.zip',
     ),
     'salt' => 'https://api.wordpress.org/secret-key/1.1/salt/',
     'php_version' => '5.2.4',
@@ -1144,6 +1146,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                     <option value="latest">WordPress (english)</option>
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
                     <option value="latest-nl_NL">WordPress (nederlandse)</option>
+                    <option value="nightly-build">Nightly Build</option>
                     <option value="4.3.1">WordPress 4.3.1 (english)</option>
                     <option value="4.2.5">WordPress 4.2.5 (english)</option>
                     <option value="4.1.8">WordPress 4.1.8 (english)</option>
