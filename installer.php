@@ -9,7 +9,7 @@
 
 $default = array(
     'title' => 'WordPress',
-    'description' => 'Just another WordPress site"',
+    'description' => 'Just another WordPress site',
     'admin' => array(
         'name' => 'Admin',
         'password' => 'password',
