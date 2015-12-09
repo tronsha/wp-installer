@@ -557,7 +557,7 @@ class WordpressInstaller
      */
     public function addUser($name, $password, $email, $role = 'subscriber')
     {
-        if (username_exists($name) === null) {
+        if (username_exists($name) === null || username_exists($name) === false) {
             wp_create_user($name, $password, $email);
             $userId = username_exists($name);
             $user = new WP_User($userId);
