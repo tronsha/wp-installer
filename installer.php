@@ -122,14 +122,14 @@ $config = array(
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
         '4.4.1-de_DE' => 'https://de.wordpress.org/wordpress-4.4.1-de_DE.zip',
         '4.3.2-de_DE' => 'https://de.wordpress.org/wordpress-4.3.2-de_DE.zip',
-        '4.2.5-de_DE' => 'https://de.wordpress.org/wordpress-4.2.5-de_DE.zip',
-        '4.1.8-de_DE' => 'https://de.wordpress.org/wordpress-4.1.8-de_DE.zip',
+        '4.2.6-de_DE' => 'https://de.wordpress.org/wordpress-4.2.6-de_DE.zip',
+        '4.1.9-de_DE' => 'https://de.wordpress.org/wordpress-4.1.9-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://de.wordpress.org/latest-nl_NL.zip',
         '4.4.1-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.1-nl_NL.zip',
         '4.3.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.2-nl_NL.zip',
-        '4.2.5-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.5-nl_NL.zip',
-        '4.1.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.8-nl_NL.zip',
+        '4.2.6-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.6-nl_NL.zip',
+        '4.1.9-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.9-nl_NL.zip',
         /** Nightly Build */
         'nightly-build' => 'https://wordpress.org/nightly-builds/wordpress-latest.zip',
     ),
@@ -1156,12 +1156,12 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                     <option value="4.1.9">WordPress 4.1.9 (english)</option>
                     <option value="4.4.1-de_DE">WordPress 4.4.1 (deutsch)</option>
                     <option value="4.3.2-de_DE">WordPress 4.3.2 (deutsch)</option>
-                    <option value="4.2.5-de_DE">WordPress 4.2.5 (deutsch)</option>
-                    <option value="4.1.8-de_DE">WordPress 4.1.8 (deutsch)</option>
+                    <option value="4.2.6-de_DE">WordPress 4.2.6 (deutsch)</option>
+                    <option value="4.1.9-de_DE">WordPress 4.1.9 (deutsch)</option>
                     <option value="4.4.1-nl_NL">WordPress 4.4.1 (nederlandse)</option>
                     <option value="4.3.2-nl_NL">WordPress 4.3.2 (nederlandse)</option>
-                    <option value="4.2.5-nl_NL">WordPress 4.2.5 (nederlandse)</option>
-                    <option value="4.1.8-nl_NL">WordPress 4.1.8 (nederlandse)</option>
+                    <option value="4.2.6-nl_NL">WordPress 4.2.6 (nederlandse)</option>
+                    <option value="4.1.9-nl_NL">WordPress 4.1.9 (nederlandse)</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
