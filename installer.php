@@ -114,10 +114,10 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
-        '4.4.1' => 'https://wordpress.org/wordpress-4.4.1.zip',
-        '4.3.2' => 'https://wordpress.org/wordpress-4.3.2.zip',
-        '4.2.6' => 'https://wordpress.org/wordpress-4.2.6.zip',
-        '4.1.9' => 'https://wordpress.org/wordpress-4.1.9.zip',
+        '4.4.2' => 'https://wordpress.org/wordpress-4.4.2.zip',
+        '4.3.3' => 'https://wordpress.org/wordpress-4.3.3.zip',
+        '4.2.7' => 'https://wordpress.org/wordpress-4.2.7.zip',
+        '4.1.10' => 'https://wordpress.org/wordpress-4.1.10.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
         '4.4.1-de_DE' => 'https://de.wordpress.org/wordpress-4.4.1-de_DE.zip',
@@ -1150,10 +1150,10 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
                     <option value="latest-nl_NL">WordPress (nederlandse)</option>
                     <option value="nightly-build">Nightly Build</option>
-                    <option value="4.4.1">WordPress 4.4.1 (english)</option>
-                    <option value="4.3.2">WordPress 4.3.2 (english)</option>
-                    <option value="4.2.6">WordPress 4.2.6 (english)</option>
-                    <option value="4.1.9">WordPress 4.1.9 (english)</option>
+                    <option value="4.4.2">WordPress 4.4.2 (english)</option>
+                    <option value="4.3.3">WordPress 4.3.3 (english)</option>
+                    <option value="4.2.7">WordPress 4.2.7 (english)</option>
+                    <option value="4.1.10">WordPress 4.1.10 (english)</option>
                     <option value="4.4.1-de_DE">WordPress 4.4.1 (deutsch)</option>
                     <option value="4.3.2-de_DE">WordPress 4.3.2 (deutsch)</option>
                     <option value="4.2.6-de_DE">WordPress 4.2.6 (deutsch)</option>
