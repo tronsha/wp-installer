@@ -697,6 +697,10 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     $installer->installTheme();
                 }
             }
+            if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
+                require_once './wordpress/wp-load.php';
+                $installer->switchTheme($_POST['theme']);
+            }
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'remove' && isset($_POST['themes']) === true) {
                 require_once './wordpress/wp-load.php';
                 require_once './wordpress/wp-admin/includes/admin.php';
@@ -707,10 +711,6 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             $step = 4;
         }
         if ($_GET['step'] == 5) {
-            if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
-                require_once './wordpress/wp-load.php';
-                $installer->switchTheme($_POST['theme']);
-            }
             $step = 5;
         }
         if ($_GET['step'] == 6) {
@@ -1215,29 +1215,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </script>
         </div>
         <br>
-        <form id="step6remove" action="./installer.php?step=4&amp;theme=remove" method="post">
-            <div class="box">
-                <h2>Remove Themes</h2>
-                <table>
-                    <?php
-                    $themes = wp_prepare_themes_for_js();
-                    foreach ($themes as $theme) {
-                        echo '<tr><td><input type="checkbox" name="themes[]" value="' . $theme['id'] . '"></td><td>' . $theme['name'] . '</td></tr>' . "\n";
-                    }
-                    ?>
-                </table>
-                <input type="submit" value="Remove Now">
-            </div>
-        </form>
-        <br>
-        <form id="step4" action="./installer.php?step=5" method="post">
-            <input type="submit" name="next" value="Next">
-        </form>
-    <?php elseif ($step == 5): ?>
-        <?php
-        require_once './wordpress/wp-admin/includes/admin.php';
-        ?>
-        <form id="step5theme" action="./installer.php?step=5&amp;theme=activate" method="post">
+        <form id="step4theme" action="./installer.php?step=4&amp;theme=activate" method="post">
             <div class="box">
                 <h2>Activate Theme</h2>
                 <select name="theme">
@@ -1252,6 +1230,28 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
+        <form id="step4remove" action="./installer.php?step=4&amp;theme=remove" method="post">
+            <div class="box">
+                <h2>Remove Themes</h2>
+                <table>
+                    <?php
+                    $themes = wp_prepare_themes_for_js();
+                    foreach ($themes as $theme) {
+                        echo '<tr><td><input type="checkbox" name="themes[]" value="' . $theme['id'] . '"' . ($theme['active'] === true ? ' disabled readonly' : '') . '></td><td>' . $theme['name'] . '</td></tr>' . "\n";
+                    }
+                    ?>
+                </table>
+                <input type="submit" value="Remove Now">
+            </div>
+        </form>
+        <br>
+        <form id="step4" action="./installer.php?step=6" method="post">
+            <input type="submit" name="next" value="Next">
+        </form>
+    <?php elseif ($step == 5): ?>
+        <?php
+        require_once './wordpress/wp-admin/includes/admin.php';
+        ?>
         <form id="step5back" class="back" action="./installer.php?step=4" method="post">
             <input type="submit" name="back" value="Back">
         </form>
@@ -1304,7 +1304,7 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </div>
         </form>
         <br>
-        <form id="step6back" class="back" action="./installer.php?step=5" method="post">
+        <form id="step6back" class="back" action="./installer.php?step=4" method="post">
             <input type="submit" name="back" value="Back">
         </form>
         <form id="step6next" class="next" action="./installer.php?step=7" method="post">
