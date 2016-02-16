@@ -66,6 +66,9 @@ $config = array(
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
 
+$themes = array(
+);
+
 $plugins = array(
     array(
         'name' => 'Antispam Bee',
@@ -297,8 +300,11 @@ class WordpressInstaller
         }
     }
 
-    public function installTheme()
+    public function installTheme($src = null)
     {
+        if ($src !== null) {
+            $this->download($src, './theme.zip');
+        }
         $this->unzip('./theme.zip', './wordpress/wp-content/themes/');
         sleep(5);
         $this->unlink('./theme.zip');
@@ -695,6 +701,11 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
                 if (move_uploaded_file($_FILES['themezip']['tmp_name'], './theme.zip')) {
                     $installer->installTheme();
+                }
+            }
+            if (isset($_GET['theme']) === true && $_GET['theme'] == 'install' && isset($_POST['themes']) === true) {
+                foreach ($_POST['themes'] as $theme) {
+                    $installer->installTheme($theme);
                 }
             }
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
@@ -1215,6 +1226,20 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
             </script>
         </div>
         <br>
+        <form id="step6themes" action="./installer.php?step=4&amp;theme=install" method="post"<?php echo count($themes) == 0 ? ' style="display: none;"' : ''; ?>>
+            <div class="box">
+                <h2>Install Themes</h2>
+                <select name="themes[]" size="<?php echo count($themes); ?>" multiple>
+                    <?php
+                    foreach ($themes as $theme) {
+                        echo '<option value="' . $theme['url'] . '"' . ($theme['selected'] == '1' ? ' selected' : '') . '>' . $theme['name'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <input type="submit" value="Install Now">
+            </div>
+        <br>
+        </form>
         <form id="step4theme" action="./installer.php?step=4&amp;theme=activate" method="post">
             <div class="box">
                 <h2>Activate Theme</h2>
@@ -1274,8 +1299,8 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                 });
             </script>
         </div>
-    <br>
-        <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post">
+        <br>
+        <form id="step6plugins" action="./installer.php?step=6&amp;plugin=install" method="post"<?php echo count($plugins) == 0 ? ' style="display: none;"' : ''; ?>>
             <div class="box">
                 <h2>Install Plugins</h2>
                 <select name="plugins[]" size="<?php echo count($plugins); ?>" multiple>
@@ -1287,8 +1312,8 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
                 </select>
                 <input type="submit" value="Install Now">
             </div>
-        </form>
         <br>
+        </form>
         <form id="step6remove" action="./installer.php?step=6&amp;plugin=remove" method="post">
             <div class="box">
                 <h2>Remove Plugins</h2>
