@@ -47,10 +47,10 @@ $config = array(
         '4.2.7-de_DE' => 'https://de.wordpress.org/wordpress-4.2.7-de_DE.zip',
         '4.1.10-de_DE' => 'https://de.wordpress.org/wordpress-4.1.10-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
-        'latest-nl_NL' => 'https://de.wordpress.org/latest-nl_NL.zip',
+        'latest-nl_NL' => 'https://nl.wordpress.org/latest-nl_NL.zip',
         '4.4.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
         '4.3.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.3-nl_NL.zip',
-        '4.2.7-nl_NL' => 'https://de.wordpress.org/wordpress-4.2.7-nl_NL.zip',
+        '4.2.7-nl_NL' => 'https://nl.wordpress.org/wordpress-4.2.7-nl_NL.zip',
         '4.1.10-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.10-nl_NL.zip',
         /** Nightly Build */
         'nightly-build' => 'https://wordpress.org/nightly-builds/wordpress-latest.zip',
