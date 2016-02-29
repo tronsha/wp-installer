@@ -131,14 +131,14 @@ $plugins = array(
         'selected' => '0'
     ),
     array(
+        'name' => 'WordPress Database Backup',
+        'url' => 'https://github.com/matzko/wp-db-backup/archive/master.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'WordPress SEO',
         'url' => 'https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip',
         'selected' => '0'
-    ),
-    array(
-        'name' => 'WP-DB-Backup',
-        'url' => 'https://downloads.wordpress.org/plugin/wp-db-backup.latest-stable.zip',
-        'selected' => '1'
     ),
     array(
         'name' => 'wpSEO',
