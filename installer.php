@@ -1262,7 +1262,7 @@ e=n.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&
                     <?php
                     $themes = wp_prepare_themes_for_js();
                     foreach ($themes as $theme) {
-                        echo '<tr><td><input type="checkbox" name="themes[]" value="' . $theme['id'] . '"' . ($theme['active'] === true ? ' disabled readonly' : '') . '></td><td>' . $theme['name'] . '</td></tr>' . "\n";
+                        echo '<tr><td><input id="' . md5($theme['name']) . '"  type="checkbox" name="themes[]" value="' . $theme['id'] . '"' . ($theme['active'] === true ? ' disabled readonly' : '') . '></td><td><label for="' . md5($theme['name']) . '">' . $theme['name'] . '</label></td></tr>' . "\n";
                     }
                     ?>
                 </table>
@@ -1321,7 +1321,7 @@ e=n.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&
                     <?php
                     $plugins = get_plugins();
                     foreach ($plugins as $plugin => $data) {
-                        echo '<tr><td><input type="checkbox" name="plugins[]" value="' . $plugin . '"></td><td>' . $data['Name'] . '</td></tr>' . "\n";
+                        echo '<tr><td><input id="' . md5($data['Name']) . '" type="checkbox" name="plugins[]" value="' . $plugin . '"></td><td><label for="' . md5($data['Name']) . '">' . $data['Name'] . '</label></td></tr>' . "\n";
                     }
                     ?>
                 </table>
