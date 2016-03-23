@@ -71,6 +71,11 @@ $themes = array(
 
 $plugins = array(
     array(
+        'name' => 'Accordion',
+        'url' => 'https://downloads.wordpress.org/plugin/mpcx-accordion.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'Antispam Bee',
         'url' => 'https://downloads.wordpress.org/plugin/antispam-bee.latest-stable.zip',
         'selected' => '0'
@@ -83,6 +88,11 @@ $plugins = array(
     array(
         'name' => 'Contact Form 7',
         'url' => 'https://downloads.wordpress.org/plugin/contact-form-7.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
+        'name' => 'Google Analytics',
+        'url' => 'https://downloads.wordpress.org/plugin/mpcx-googleanalytics.latest-stable.zip',
         'selected' => '1'
     ),
     array(
@@ -113,7 +123,7 @@ $plugins = array(
     array(
         'name' => 'Meta Slider',
         'url' => 'https://downloads.wordpress.org/plugin/ml-slider.latest-stable.zip',
-        'selected' => '1'
+        'selected' => '0'
     ),
     array(
         'name' => 'Regenerate Thumbnails',
@@ -126,13 +136,18 @@ $plugins = array(
         'selected' => '0'
     ),
     array(
+        'name' => 'Slider',
+        'url' => 'https://downloads.wordpress.org/plugin/mpcx-slider.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'WooCommerce',
         'url' => 'https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip',
         'selected' => '0'
     ),
     array(
         'name' => 'WordPress Database Backup',
-        'url' => 'https://github.com/matzko/wp-db-backup/archive/master.zip',
+        'url' => 'https://downloads.wordpress.org/plugin/wp-db-backup.latest-stable.zip',
         'selected' => '1'
     ),
     array(
