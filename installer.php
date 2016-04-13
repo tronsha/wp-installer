@@ -467,12 +467,22 @@ class WordpressInstaller
     }
 
     /**
+     * @param bool $htaccess
+     * @param bool $satisfyAny
      * @see http://httpd.apache.org/docs/current/howto/htaccess.html
      */
-    public function rewriteSubdirectory()
+    public function rewriteSubdirectory($htaccess = true, $satisfyAny = true)
     {
-        if (file_exists('.htaccess') === false) {
-            $htaccess = '<IfModule mod_rewrite.c>' . "\n";
+        if ($htaccess === false) {
+            $this->unlink('.htaccess');
+        } elseif (file_exists('.htaccess') === false) {
+            $htaccess = '';
+            if ($satisfyAny === true) {
+                $htaccess .= 'Satisfy Any' . "\n";
+                $htaccess .= 'Order Deny,Allow' . "\n";
+                $htaccess .= 'Allow from all' . "\n";
+            }
+            $htaccess .= '<IfModule mod_rewrite.c>' . "\n";
             $htaccess .= 'RewriteEngine on' . "\n";
             $htaccess .= 'RewriteBase /' . "\n";
             $htaccess .= 'RewriteCond %{REQUEST_FILENAME} !-f' . "\n";
@@ -704,7 +714,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 );
             }
             if (!file_exists('./.htaccess')) {
-                $installer->rewriteSubdirectory();
+                $installer->rewriteSubdirectory(true, true);
             }
             $step = 3;
         }
@@ -719,6 +729,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             );
             require_once './wordpress/wp-load.php';
             $installer->setBlogDescription($_POST['weblog_description']);
+            $installer->rewriteSubdirectory(false);
+            $installer->rewriteSubdirectory(true, false);
         }
         if ($_GET['step'] == 4) {
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'upload' && isset($_FILES['themezip']['tmp_name']) === true) {
