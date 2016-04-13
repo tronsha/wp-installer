@@ -1,5 +1,10 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+- Plugin Lightbox
+
 ## [1.5.0] - 2016-04-12
 
 ### Added

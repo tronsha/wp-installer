@@ -114,6 +114,11 @@ $plugins = array(
         'selected' => '1'
     ),
     array(
+        'name' => 'Lightbox',
+        'url' => 'https://downloads.wordpress.org/plugin/mpcx-lightbox.latest-stable.zip',
+        'selected' => '1'
+    ),
+    array(
         'name' => 'Limit Login Attempts',
         'url' => 'https://downloads.wordpress.org/plugin/limit-login-attempts.latest-stable.zip',
         'selected' => '1'
