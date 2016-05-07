@@ -36,25 +36,25 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
-        '4.5.1' => 'https://wordpress.org/wordpress-4.5.1.zip',
-        '4.4.2' => 'https://wordpress.org/wordpress-4.4.2.zip',
-        '4.3.3' => 'https://wordpress.org/wordpress-4.3.3.zip',
-        '4.2.7' => 'https://wordpress.org/wordpress-4.2.7.zip',
-        '4.1.10' => 'https://wordpress.org/wordpress-4.1.10.zip',
+        '4.5.2' => 'https://wordpress.org/wordpress-4.5.2.zip',
+        '4.4.3' => 'https://wordpress.org/wordpress-4.4.3.zip',
+        '4.3.4' => 'https://wordpress.org/wordpress-4.3.4.zip',
+        '4.2.8' => 'https://wordpress.org/wordpress-4.2.8.zip',
+        '4.1.11' => 'https://wordpress.org/wordpress-4.1.11.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
-        '4.5.1-de_DE' => 'https://de.wordpress.org/wordpress-4.5.1-de_DE.zip',
-        '4.4.2-de_DE' => 'https://de.wordpress.org/wordpress-4.4.2-de_DE.zip',
-        '4.3.3-de_DE' => 'https://de.wordpress.org/wordpress-4.3.3-de_DE.zip',
-        '4.2.7-de_DE' => 'https://de.wordpress.org/wordpress-4.2.7-de_DE.zip',
-        '4.1.10-de_DE' => 'https://de.wordpress.org/wordpress-4.1.10-de_DE.zip',
+        '4.5.2-de_DE' => 'https://de.wordpress.org/wordpress-4.5.2-de_DE.zip',
+        '4.4.3-de_DE' => 'https://de.wordpress.org/wordpress-4.4.3-de_DE.zip',
+        '4.3.4-de_DE' => 'https://de.wordpress.org/wordpress-4.3.4-de_DE.zip',
+        '4.2.8-de_DE' => 'https://de.wordpress.org/wordpress-4.2.8-de_DE.zip',
+        '4.1.11-de_DE' => 'https://de.wordpress.org/wordpress-4.1.11-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://nl.wordpress.org/latest-nl_NL.zip',
-        '4.5.1-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.1-nl_NL.zip',
-        '4.4.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
-        '4.3.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.3-nl_NL.zip',
-        '4.2.7-nl_NL' => 'https://nl.wordpress.org/wordpress-4.2.7-nl_NL.zip',
-        '4.1.10-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.10-nl_NL.zip',
+        '4.5.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.2-nl_NL.zip',
+        '4.4.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.3-nl_NL.zip',
+        '4.3.4-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.4-nl_NL.zip',
+        '4.2.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.2.8-nl_NL.zip',
+        '4.1.11-nl_NL' => 'https://nl.wordpress.org/wordpress-4.1.11-nl_NL.zip',
         /** Nightly Build */
         'nightly-build' => 'https://wordpress.org/nightly-builds/wordpress-latest.zip',
     ),
@@ -1196,21 +1196,21 @@ e=n.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
                     <option value="latest-nl_NL">WordPress (nederlandse)</option>
                     <option value="nightly-build">Nightly Build</option>
-                    <option value="4.5.1">WordPress 4.5.1 (english)</option>
-                    <option value="4.4.2">WordPress 4.4.2 (english)</option>
-                    <option value="4.3.3">WordPress 4.3.3 (english)</option>
-                    <option value="4.2.7">WordPress 4.2.7 (english)</option>
-                    <option value="4.1.10">WordPress 4.1.10 (english)</option>
-                    <option value="4.5.1-de_DE">WordPress 4.5.1 (deutsch)</option>
-                    <option value="4.4.2-de_DE">WordPress 4.4.2 (deutsch)</option>
-                    <option value="4.3.3-de_DE">WordPress 4.3.3 (deutsch)</option>
-                    <option value="4.2.7-de_DE">WordPress 4.2.7 (deutsch)</option>
-                    <option value="4.1.10-de_DE">WordPress 4.1.10 (deutsch)</option>
-                    <option value="4.5.1-nl_NL">WordPress 4.5.1 (nederlandse)</option>
-                    <option value="4.4.2-nl_NL">WordPress 4.4.2 (nederlandse)</option>
-                    <option value="4.3.3-nl_NL">WordPress 4.3.3 (nederlandse)</option>
-                    <option value="4.2.7-nl_NL">WordPress 4.2.7 (nederlandse)</option>
-                    <option value="4.1.10-nl_NL">WordPress 4.1.10 (nederlandse)</option>
+                    <option value="4.5.2">WordPress 4.5.2 (english)</option>
+                    <option value="4.4.3">WordPress 4.4.3 (english)</option>
+                    <option value="4.3.4">WordPress 4.3.4 (english)</option>
+                    <option value="4.2.8">WordPress 4.2.8 (english)</option>
+                    <option value="4.1.11">WordPress 4.1.11 (english)</option>
+                    <option value="4.5.2-de_DE">WordPress 4.5.2 (deutsch)</option>
+                    <option value="4.4.3-de_DE">WordPress 4.4.3 (deutsch)</option>
+                    <option value="4.3.4-de_DE">WordPress 4.3.4 (deutsch)</option>
+                    <option value="4.2.8-de_DE">WordPress 4.2.8 (deutsch)</option>
+                    <option value="4.1.11-de_DE">WordPress 4.1.11 (deutsch)</option>
+                    <option value="4.5.2-nl_NL">WordPress 4.5.2 (nederlandse)</option>
+                    <option value="4.4.3-nl_NL">WordPress 4.4.3 (nederlandse)</option>
+                    <option value="4.3.4-nl_NL">WordPress 4.3.4 (nederlandse)</option>
+                    <option value="4.2.8-nl_NL">WordPress 4.2.8 (nederlandse)</option>
+                    <option value="4.1.11-nl_NL">WordPress 4.1.11 (nederlandse)</option>
                 </select>
                 <input type="submit" name="next" value="Next">
             </div>
