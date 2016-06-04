@@ -273,6 +273,32 @@ class WordpressInstaller
         }
     }
 
+    public function chown($path, $user, $group = null, $recursive = false)
+    {
+        if ($group !== null) {
+            chgrp($path, $group);
+        }
+        chown($path, $user);
+        if ($recursive === true) {
+            $dir = new DirectoryIterator($path);
+            foreach ($dir as $item) {
+                if ($item->isDir() && !$item->isDot()) {
+                    $this->chown($item->getPathname(), $user, $group, true);
+                    if ($group !== null) {
+                        chgrp($item->getPathname(), $group);
+                    }
+                    chown($item->getPathname(), $user);
+                } elseif ($item->isFile()) {
+                    if ($group !== null) {
+                        chgrp($item->getPathname(), $group);
+                    }
+                    chown($item->getPathname(), $user);
+                }
+            }
+        }
+    }
+
+
     public function download($file, $zip = './tmp.zip')
     {
         file_put_contents($zip, file_get_contents($file));
