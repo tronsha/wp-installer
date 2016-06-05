@@ -273,12 +273,17 @@ class WordpressInstaller
         }
     }
 
-    public function chown($path, $user, $group = null, $recursive = false)
+    public function chown($path, $user = null, $group = null, $recursive = false)
     {
+        if ($user === null && $group === null) {
+            return null;
+        }
         if ($group !== null) {
             chgrp($path, $group);
         }
-        chown($path, $user);
+        if ($user !== null) {
+            chown($path, $user);
+        }
         if ($recursive === true) {
             $dir = new DirectoryIterator($path);
             foreach ($dir as $item) {
@@ -287,12 +292,16 @@ class WordpressInstaller
                     if ($group !== null) {
                         chgrp($item->getPathname(), $group);
                     }
-                    chown($item->getPathname(), $user);
+                    if ($user !== null) {
+                        chown($item->getPathname(), $user);
+                    }
                 } elseif ($item->isFile()) {
                     if ($group !== null) {
                         chgrp($item->getPathname(), $group);
                     }
-                    chown($item->getPathname(), $user);
+                    if ($user !== null) {
+                        chown($item->getPathname(), $user);
+                    }
                 }
             }
         }
