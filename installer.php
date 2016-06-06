@@ -65,6 +65,10 @@ $config = array(
         'user' => '',
         'pass' => '',
     ),
+    'file' => array(
+        'user' => '',
+        'group' => '',
+    ),
     'upload_dir' => 'media',
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
@@ -275,6 +279,13 @@ class WordpressInstaller
 
     public function chown($path, $user = null, $group = null, $recursive = false)
     {
+        global $config;
+        if ($user === null && empty($config['file']['user']) === false) {
+            $user = $config['file']['user'];
+        }
+        if ($group === null && empty($config['file']['group']) === false) {
+            $group = $config['file']['group'];
+        }
         if ($user === null && $group === null) {
             return null;
         }
@@ -355,6 +366,7 @@ class WordpressInstaller
             $this->unlink('./wp.zip');
             $this->createUploadDir();
             $this->chmod('./wordpress', true);
+            $this->chown('./wordpress', null, null, true);
         }
     }
 
@@ -367,6 +379,7 @@ class WordpressInstaller
         sleep(5);
         $this->unlink('./theme.zip');
         $this->chmod('./wordpress/wp-content/themes/', true);
+        $this->chown('./wordpress/wp-content/themes/', null, null, true);
     }
 
     public function removeThemes($themes)
@@ -386,6 +399,7 @@ class WordpressInstaller
         sleep(5);
         $this->unlink('./plugin.zip');
         $this->chmod('./wordpress/wp-content/plugins/', true);
+        $this->chown('./wordpress/wp-content/plugins/', null, null, true);
     }
 
     public function removePlugins($plugins)
@@ -498,6 +512,7 @@ class WordpressInstaller
             }
             file_put_contents(WP_CONFIG, $config);
             $this->chmod(WP_CONFIG);
+            $this->chown(WP_CONFIG);
         }
     }
 
@@ -526,7 +541,8 @@ class WordpressInstaller
             $htaccess .= 'RewriteRule ^(.*)$ ' . $this->getUrlPath() . '/wordpress/$1 [L]' . "\n";
             $htaccess .= '</IfModule>' . "\n";
             file_put_contents('.htaccess', $htaccess);
-            chmod('.htaccess', 0666);
+            $this->chmod('.htaccess');
+            $this->chown('.htaccess');
         }
     }
 
@@ -602,7 +618,8 @@ class WordpressInstaller
             $htaccess .= '' . "\n";
             $htaccess .= '# END WordPress' . "\n";
             file_put_contents('./wordpress/.htaccess', $htaccess);
-            chmod('./wordpress/.htaccess', 0666);
+            $this->chmod('./wordpress/.htaccess');
+            $this->chown('./wordpress/.htaccess');
         }
     }
 
