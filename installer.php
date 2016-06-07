@@ -261,23 +261,23 @@ class WordpressInstaller
         return is_writable(__DIR__);
     }
 
-    public function chmod($path, $recursive = false)
+    public function chmod($path, $recursive = false, $mod = array(0666, 0777))
     {
-        chmod($path, is_file($path) ? 0666 : 0777);
+        chmod($path, is_file($path) ? $mod[0] : $mod[1]);
         if ($recursive === true) {
             $dir = new DirectoryIterator($path);
             foreach ($dir as $item) {
                 if ($item->isDir() && !$item->isDot()) {
-                    chmod($item->getPathname(), 0777);
-                    $this->chmod($item->getPathname(), true);
+                    chmod($item->getPathname(), $mod[1]);
+                    $this->chmod($item->getPathname(), true, $mod);
                 } elseif ($item->isFile()) {
-                    chmod($item->getPathname(), 0666);
+                    chmod($item->getPathname(), $mod[0]);
                 }
             }
         }
     }
 
-    public function chown($path, $user = null, $group = null, $recursive = false)
+    public function chown($path, $recursive = false, $user = null, $group = null)
     {
         global $config;
         if ($user === null && empty($config['file']['user']) === false) {
@@ -299,7 +299,7 @@ class WordpressInstaller
             $dir = new DirectoryIterator($path);
             foreach ($dir as $item) {
                 if ($item->isDir() && !$item->isDot()) {
-                    $this->chown($item->getPathname(), $user, $group, true);
+                    $this->chown($item->getPathname(), true, $user, $group);
                     if ($group !== null) {
                         chgrp($item->getPathname(), $group);
                     }
@@ -366,7 +366,7 @@ class WordpressInstaller
             $this->unlink('./wp.zip');
             $this->createUploadDir();
             $this->chmod('./wordpress', true);
-            $this->chown('./wordpress', null, null, true);
+            $this->chown('./wordpress', true);
         }
     }
 
@@ -379,7 +379,7 @@ class WordpressInstaller
         sleep(5);
         $this->unlink('./theme.zip');
         $this->chmod('./wordpress/wp-content/themes/', true);
-        $this->chown('./wordpress/wp-content/themes/', null, null, true);
+        $this->chown('./wordpress/wp-content/themes/', true);
     }
 
     public function removeThemes($themes)
@@ -399,7 +399,7 @@ class WordpressInstaller
         sleep(5);
         $this->unlink('./plugin.zip');
         $this->chmod('./wordpress/wp-content/plugins/', true);
-        $this->chown('./wordpress/wp-content/plugins/', null, null, true);
+        $this->chown('./wordpress/wp-content/plugins/', true);
     }
 
     public function removePlugins($plugins)
