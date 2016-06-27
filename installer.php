@@ -44,13 +44,13 @@ $config = array(
         /** @link https://de.wordpress.org/releases/ */
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
         '4.5.3-de_DE' => 'https://de.wordpress.org/wordpress-4.5.3-de_DE.zip',
-        '4.4.3-de_DE' => 'https://de.wordpress.org/wordpress-4.4.3-de_DE.zip',
-        '4.3.4-de_DE' => 'https://de.wordpress.org/wordpress-4.3.4-de_DE.zip',
+        '4.4.4-de_DE' => 'https://de.wordpress.org/wordpress-4.4.4-de_DE.zip',
+        '4.3.5-de_DE' => 'https://de.wordpress.org/wordpress-4.3.5-de_DE.zip',
         '4.2.8-de_DE' => 'https://de.wordpress.org/wordpress-4.2.8-de_DE.zip',
         '4.1.11-de_DE' => 'https://de.wordpress.org/wordpress-4.1.11-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://nl.wordpress.org/latest-nl_NL.zip',
-        '4.5.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.2-nl_NL.zip',
+        '4.5.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.2-nl_NL.zip',
         '4.4.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
         '4.3.4-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.4-nl_NL.zip',
         '4.2.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.2.8-nl_NL.zip',
@@ -1254,11 +1254,11 @@ void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&&"get"in e&&null!=
                     <option value="4.2.9">WordPress 4.2.9 (english)</option>
                     <option value="4.1.12">WordPress 4.1.12 (english)</option>
                     <option value="4.5.3-de_DE">WordPress 4.5.3 (deutsch)</option>
-                    <option value="4.4.3-de_DE">WordPress 4.4.3 (deutsch)</option>
-                    <option value="4.3.4-de_DE">WordPress 4.3.4 (deutsch)</option>
+                    <option value="4.4.4-de_DE">WordPress 4.4.4 (deutsch)</option>
+                    <option value="4.3.5-de_DE">WordPress 4.3.5 (deutsch)</option>
                     <option value="4.2.8-de_DE">WordPress 4.2.8 (deutsch)</option>
                     <option value="4.1.11-de_DE">WordPress 4.1.11 (deutsch)</option>
-                    <option value="4.5.2-nl_NL">WordPress 4.5.2 (nederlandse)</option>
+                    <option value="4.5.3-nl_NL">WordPress 4.5.3 (nederlandse)</option>
                     <option value="4.4.2-nl_NL">WordPress 4.4.2 (nederlandse)</option>
                     <option value="4.3.4-nl_NL">WordPress 4.3.4 (nederlandse)</option>
                     <option value="4.2.8-nl_NL">WordPress 4.2.8 (nederlandse)</option>
