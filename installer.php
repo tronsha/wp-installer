@@ -50,7 +50,7 @@ $config = array(
         '4.1.11-de_DE' => 'https://de.wordpress.org/wordpress-4.1.11-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://nl.wordpress.org/latest-nl_NL.zip',
-        '4.5.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.2-nl_NL.zip',
+        '4.5.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.3-nl_NL.zip',
         '4.4.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
         '4.3.4-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.4-nl_NL.zip',
         '4.2.8-nl_NL' => 'https://nl.wordpress.org/wordpress-4.2.8-nl_NL.zip',
