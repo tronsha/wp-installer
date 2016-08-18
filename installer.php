@@ -36,6 +36,7 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
+        '4.6' => 'https://wordpress.org/wordpress-4.6.zip',
         '4.5.3' => 'https://wordpress.org/wordpress-4.5.3.zip',
         '4.4.4' => 'https://wordpress.org/wordpress-4.4.4.zip',
         '4.3.5' => 'https://wordpress.org/wordpress-4.3.5.zip',
@@ -43,6 +44,7 @@ $config = array(
         '4.1.12' => 'https://wordpress.org/wordpress-4.1.12.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest-de_DE' => 'https://de.wordpress.org/latest-de_DE.zip',
+        '4.6-de_DE' => 'https://de.wordpress.org/wordpress-4.6-de_DE.zip',
         '4.5.3-de_DE' => 'https://de.wordpress.org/wordpress-4.5.3-de_DE.zip',
         '4.4.4-de_DE' => 'https://de.wordpress.org/wordpress-4.4.4-de_DE.zip',
         '4.3.5-de_DE' => 'https://de.wordpress.org/wordpress-4.3.5-de_DE.zip',
@@ -50,6 +52,7 @@ $config = array(
         '4.1.11-de_DE' => 'https://de.wordpress.org/wordpress-4.1.11-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest-nl_NL' => 'https://nl.wordpress.org/latest-nl_NL.zip',
+        '4.6-nl_NL' => 'https://nl.wordpress.org/wordpress-4.6-nl_NL.zip',
         '4.5.3-nl_NL' => 'https://nl.wordpress.org/wordpress-4.5.3-nl_NL.zip',
         '4.4.2-nl_NL' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
         '4.3.4-nl_NL' => 'https://nl.wordpress.org/wordpress-4.3.4-nl_NL.zip',
@@ -1248,16 +1251,19 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                     <option value="latest-de_DE" selected>WordPress (deutsch)</option>
                     <option value="latest-nl_NL">WordPress (nederlandse)</option>
                     <option value="nightly-build">Nightly Build</option>
+                    <option value="4.6">WordPress 4.6 (english)</option>
                     <option value="4.5.3">WordPress 4.5.3 (english)</option>
                     <option value="4.4.4">WordPress 4.4.4 (english)</option>
                     <option value="4.3.5">WordPress 4.3.5 (english)</option>
                     <option value="4.2.9">WordPress 4.2.9 (english)</option>
                     <option value="4.1.12">WordPress 4.1.12 (english)</option>
+                    <option value="4.6-de_DE">WordPress 4.6 (deutsch)</option>
                     <option value="4.5.3-de_DE">WordPress 4.5.3 (deutsch)</option>
                     <option value="4.4.4-de_DE">WordPress 4.4.4 (deutsch)</option>
                     <option value="4.3.5-de_DE">WordPress 4.3.5 (deutsch)</option>
                     <option value="4.2.8-de_DE">WordPress 4.2.8 (deutsch)</option>
                     <option value="4.1.11-de_DE">WordPress 4.1.11 (deutsch)</option>
+                    <option value="4.6-nl_NL">WordPress 4.6 (nederlandse)</option>
                     <option value="4.5.3-nl_NL">WordPress 4.5.3 (nederlandse)</option>
                     <option value="4.4.2-nl_NL">WordPress 4.4.2 (nederlandse)</option>
                     <option value="4.3.4-nl_NL">WordPress 4.3.4 (nederlandse)</option>
