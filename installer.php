@@ -189,8 +189,10 @@ if (!defined('__DIR__')) {
 /* DIRECTORY_SEPARATOR */
 define('DS', DIRECTORY_SEPARATOR);
 
-define('WP_CONFIG', './wordpress/wp-config.php');
-define('WP_CONFIG_SAMPLE', './wordpress/wp-config-sample.php');
+define('WP_PATH', './wordpress/');
+
+define('WP_CONFIG', WP_PATH . 'wp-config.php');
+define('WP_CONFIG_SAMPLE', WP_PATH . 'wp-config-sample.php');
 
 class WordpressInstaller
 {
@@ -357,7 +359,7 @@ class WordpressInstaller
 
     public function createUploadDir()
     {
-        mkdir('./wordpress/' . $this->wpUploadDir);
+        mkdir(WP_PATH . $this->wpUploadDir);
     }
 
     public function installWordpress($lang = 'en')
@@ -378,11 +380,11 @@ class WordpressInstaller
         if ($src !== null) {
             $this->download($src, './theme.zip');
         }
-        $this->unzip('./theme.zip', './wordpress/wp-content/themes/');
+        $this->unzip('./theme.zip', WP_PATH . 'wp-content/themes/');
         sleep(5);
         $this->unlink('./theme.zip');
-        $this->chmod('./wordpress/wp-content/themes/', true);
-        $this->chown('./wordpress/wp-content/themes/', true);
+        $this->chmod(WP_PATH . 'wp-content/themes/', true);
+        $this->chown(WP_PATH . 'wp-content/themes/', true);
     }
 
     public function removeThemes($themes)
@@ -398,11 +400,11 @@ class WordpressInstaller
         if ($src !== null) {
             $this->download($src, './plugin.zip');
         }
-        $this->unzip('./plugin.zip', './wordpress/wp-content/plugins/');
+        $this->unzip('./plugin.zip', WP_PATH . 'wp-content/plugins/');
         sleep(5);
         $this->unlink('./plugin.zip');
-        $this->chmod('./wordpress/wp-content/plugins/', true);
-        $this->chown('./wordpress/wp-content/plugins/', true);
+        $this->chmod(WP_PATH . 'wp-content/plugins/', true);
+        $this->chown(WP_PATH . 'wp-content/plugins/', true);
     }
 
     public function removePlugins($plugins)
@@ -607,7 +609,7 @@ class WordpressInstaller
     public function setPermalinkToPostname($structure = '/%postname%/')
     {
         $GLOBALS['wp_rewrite']->set_permalink_structure($structure);
-        if (file_exists('./wordpress/.htaccess') === false) {
+        if (file_exists(WP_PATH . '.htaccess') === false) {
             $htaccess = '' . "\n";
             $htaccess .= '# BEGIN WordPress' . "\n";
             $htaccess .= '<IfModule mod_rewrite.c>' . "\n";
@@ -620,9 +622,9 @@ class WordpressInstaller
             $htaccess .= '</IfModule>' . "\n";
             $htaccess .= '' . "\n";
             $htaccess .= '# END WordPress' . "\n";
-            file_put_contents('./wordpress/.htaccess', $htaccess);
-            $this->chmod('./wordpress/.htaccess');
-            $this->chown('./wordpress/.htaccess');
+            file_put_contents(WP_PATH . '.htaccess', $htaccess);
+            $this->chmod(WP_PATH . '.htaccess');
+            $this->chown(WP_PATH . '.htaccess');
         }
     }
 
@@ -782,7 +784,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 $_POST['admin_email'],
                 $_POST['blog_public']
             );
-            require_once './wordpress/wp-load.php';
+            require_once WP_PATH . 'wp-load.php';
             $installer->setBlogDescription($_POST['weblog_description']);
             $installer->rewriteSubdirectory(false);
             $installer->rewriteSubdirectory(true, false);
@@ -799,14 +801,14 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 }
             }
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'activate' && isset($_POST['theme']) === true) {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->switchTheme($_POST['theme']);
             }
             if (isset($_GET['theme']) === true && $_GET['theme'] == 'remove' && isset($_POST['themes']) === true) {
-                require_once './wordpress/wp-load.php';
-                require_once './wordpress/wp-admin/includes/admin.php';
-                require_once './wordpress/wp-admin/includes/class-wp-filesystem-base.php';
-                require_once './wordpress/wp-admin/includes/class-wp-filesystem-direct.php';
+                require_once WP_PATH . 'wp-load.php';
+                require_once WP_PATH . 'wp-admin/includes/admin.php';
+                require_once WP_PATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+                require_once WP_PATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
                 $installer->removeThemes($_POST['themes']);
             }
             $step = 4;
@@ -826,42 +828,42 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                 }
             }
             if (isset($_GET['plugin']) === true && $_GET['plugin'] == 'remove' && isset($_POST['plugins']) === true) {
-                require_once './wordpress/wp-load.php';
-                require_once './wordpress/wp-admin/includes/admin.php';
-                require_once './wordpress/wp-admin/includes/class-wp-filesystem-base.php';
-                require_once './wordpress/wp-admin/includes/class-wp-filesystem-direct.php';
+                require_once WP_PATH . 'wp-load.php';
+                require_once WP_PATH . 'wp-admin/includes/admin.php';
+                require_once WP_PATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+                require_once WP_PATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
                 $installer->removePlugins($_POST['plugins']);
             }
             $step = 6;
         }
         if ($_GET['step'] == 7) {
             if (isset($_GET['user']) === true && $_GET['user'] == 'add' && isset($_POST['name']) === true && isset($_POST['password']) === true && isset($_POST['email']) === true && isset($_POST['role']) === true) {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->addUser($_POST['name'], $_POST['password'], $_POST['email'], $_POST['role']);
             }
             $step = 7;
         }
         if ($_GET['step'] == 8) {
             if (isset($_GET['permalink']) === true && $_GET['permalink'] == 'save') {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->setPermalinkToPostname($_POST['selection']);
             }
             $step = 8;
         }
         if ($_GET['step'] == 9) {
             if (isset($_GET['set']) === true && $_GET['set'] == 'yearmonth') {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->setYearMonthFolders($_POST['uploads_use_yearmonth_folders']);
             }
             if (isset($_GET['set']) === true && $_GET['set'] == 'widgets') {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->cleanUpWidgets();
             }
             $step = 9;
         }
         if ($_GET['step'] == 10) {
             if (isset($_POST['frontpage'])) {
-                require_once './wordpress/wp-load.php';
+                require_once WP_PATH . 'wp-load.php';
                 $installer->setFrontPage($_POST['frontpage'], $_POST['content']);
             }
             $step = 10;
@@ -890,7 +892,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         }
     }
     if ($step > 3) {
-        require_once './wordpress/wp-load.php';
+        require_once WP_PATH . 'wp-load.php';
     }
 }
 ?><!doctype html>
@@ -1312,8 +1314,8 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         <div class="box">
             <h2>Install Theme</h2>
             <?php
-            require_once './wordpress/wp-admin/includes/admin.php';
-            require_once './wordpress/wp-admin/includes/theme-install.php';
+            require_once WP_PATH . 'wp-admin/includes/admin.php';
+            require_once WP_PATH . 'wp-admin/includes/theme-install.php';
             install_themes_upload();
             ?>
             <script type="application/javascript">
@@ -1372,7 +1374,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 5): ?>
         <?php
-        require_once './wordpress/wp-admin/includes/admin.php';
+        require_once WP_PATH . 'wp-admin/includes/admin.php';
         ?>
         <form id="step5back" class="back" action="./installer.php?step=4" method="post">
             <input type="submit" name="back" value="Back">
@@ -1382,12 +1384,12 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 6): ?>
         <?php
-        require_once './wordpress/wp-admin/includes/admin.php';
+        require_once WP_PATH . 'wp-admin/includes/admin.php';
         ?>
         <div class="box">
             <h2>Install Plugin</h2>
             <?php
-            require_once './wordpress/wp-admin/includes/plugin-install.php';
+            require_once WP_PATH . 'wp-admin/includes/plugin-install.php';
             install_plugins_upload();
             ?>
             <script type="application/javascript">
@@ -1434,7 +1436,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 7): ?>
         <?php
-        require_once './wordpress/wp-admin/includes/admin.php';
+        require_once WP_PATH . 'wp-admin/includes/admin.php';
         ?>
         <form id="step7user" action="./installer.php?step=7&amp;user=add" method="post">
             <div class="box">
@@ -1462,7 +1464,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
         </form>
     <?php elseif ($step == 8): ?>
     <?php
-        require_once './wordpress/wp-admin/includes/admin.php';
+        require_once WP_PATH . 'wp-admin/includes/admin.php';
         $structures = array(
             0 => '',
             1 => $prefix . '/%year%/%monthnum%/%day%/%postname%/',
