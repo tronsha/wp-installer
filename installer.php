@@ -1257,13 +1257,15 @@ if (($errormessage = $installer->checkSystem()) !== null) {
             <div class="box">
                 <h2>Language</h2>
                 <select name="lang">
-                    <option value="latest">WordPress (english)</option>
-                    <option value="latest-de_DE" selected>WordPress (deutsch)</option>
-                    <option value="latest-nl_NL">WordPress (nederlands)</option>
-                    <option value="latest-fr_FR">WordPress (français)</option>
-                    <option value="latest-es_ES">WordPress (español)</option>
                     <option value="nightly-build">Nightly Build</option>
-                    <optgroup label="WordPress (english)">
+                    <optgroup label="WordPress latest">
+                        <option value="latest">WordPress (english)</option>
+                        <option value="latest-de_DE" selected>WordPress (deutsch)</option>
+                        <option value="latest-nl_NL">WordPress (nederlands)</option>
+                        <option value="latest-fr_FR">WordPress (français)</option>
+                        <option value="latest-es_ES">WordPress (español)</option>
+                    </optgroup>
+                    <optgroup label="WordPress - English">
                         <option value="4.6.1">WordPress 4.6.1 (english)</option>
                         <option value="4.5.4">WordPress 4.5.4 (english)</option>
                         <option value="4.4.5">WordPress 4.4.5 (english)</option>
@@ -1272,7 +1274,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                         <option value="4.1.13">WordPress 4.1.13 (english)</option>
                         <option value="4.0.13">WordPress 4.0.13 (english)</option>
                     </optgroup>
-                    <optgroup label="WordPress (deutsch)">
+                    <optgroup label="WordPress - Deutsch">
                         <option value="4.6.1-de_DE">WordPress 4.6.1 (deutsch)</option>
                         <option value="4.5.4-de_DE">WordPress 4.5.4 (deutsch)</option>
                         <option value="4.4.5-de_DE">WordPress 4.4.5 (deutsch)</option>
@@ -1281,7 +1283,7 @@ if (($errormessage = $installer->checkSystem()) !== null) {
                         <option value="4.1.13-de_DE">WordPress 4.1.13 (deutsch)</option>
                         <option value="4.0.12-de_DE">WordPress 4.0.12 (deutsch)</option>
                     </optgroup>
-                    <optgroup label="WordPress (nederlands)">
+                    <optgroup label="WordPress - Nederlands">
                         <option value="4.6-nl_NL">WordPress 4.6 (nederlands)</option>
                         <option value="4.5.3-nl_NL">WordPress 4.5.3 (nederlands)</option>
                         <option value="4.4.2-nl_NL">WordPress 4.4.2 (nederlands)</option>
