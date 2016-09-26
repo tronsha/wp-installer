@@ -83,6 +83,12 @@ $config = array(
     'clacks_overhead' => 'GNU Terry Pratchett',
 );
 
+//$wpEnglishContent = file_get_contents('https://wordpress.org/download/release-archive/');
+//preg_match_all("/<a href='(https:\/\/wordpress\.org\/wordpress\-([0-9\.]+)\.zip)'>zip<\/a>/", $wpEnglishContent, $matchesEnglish, PREG_SET_ORDER);
+//foreach ($matchesEnglish as $data) {
+//    $config['src'][$data[2]] = $data[1];
+//}
+
 $themes = array(
 );
 
