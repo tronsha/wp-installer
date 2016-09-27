@@ -330,7 +330,8 @@ class WordpressInstaller
         }
     }
 
-    public function getDownloadLinkArray() {
+    public function getDownloadLinkArray()
+    {
         $wpContent = file_get_contents( 'https://wordpress.org/download/release-archive/' );
         preg_match_all( "/<a href='(https:\/\/wordpress\.org\/wordpress\-([0-9\.]+)\.zip)'>zip<\/a>/", $wpContent, $matches, PREG_SET_ORDER );
         $array = array();
