@@ -36,6 +36,7 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
+        '4.7' => 'https://wordpress.org/wordpress-4.7.zip',
         '4.6' => 'https://wordpress.org/wordpress-4.6.1.zip',
         '4.5' => 'https://wordpress.org/wordpress-4.5.4.zip',
         '4.4' => 'https://wordpress.org/wordpress-4.4.5.zip',
@@ -45,6 +46,7 @@ $config = array(
         '4.0' => 'https://wordpress.org/wordpress-4.0.13.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest.de' => 'https://de.wordpress.org/latest-de_DE.zip',
+        '4.7.de' => 'https://de.wordpress.org/wordpress-4.7-de_DE.zip',
         '4.6.de' => 'https://de.wordpress.org/wordpress-4.6.1-de_DE.zip',
         '4.5.de' => 'https://de.wordpress.org/wordpress-4.5.4-de_DE.zip',
         '4.4.de' => 'https://de.wordpress.org/wordpress-4.4.5-de_DE.zip',
@@ -54,6 +56,7 @@ $config = array(
         '4.0.de' => 'https://de.wordpress.org/wordpress-4.0.12-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest.nl' => 'https://nl.wordpress.org/latest-nl_NL.zip',
+        '4.7.nl' => 'https://nl.wordpress.org/wordpress-4.7-nl_NL.zip',
         '4.6.nl' => 'https://nl.wordpress.org/wordpress-4.6.1-nl_NL.zip',
         '4.5.nl' => 'https://nl.wordpress.org/wordpress-4.5.3-nl_NL.zip',
         '4.4.nl' => 'https://nl.wordpress.org/wordpress-4.4.2-nl_NL.zip',
@@ -1277,6 +1280,7 @@ void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b
                         <option value="latest.es">WordPress (español)</option>
                     </optgroup>
                     <optgroup label="WordPress - English">
+                        <option value="4.7">WordPress 4.7 (english)</option>
                         <option value="4.6">WordPress 4.6 (english)</option>
                         <option value="4.5">WordPress 4.5 (english)</option>
                         <option value="4.4">WordPress 4.4 (english)</option>
@@ -1286,6 +1290,7 @@ void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b
                         <option value="4.0">WordPress 4.0 (english)</option>
                     </optgroup>
                     <optgroup label="WordPress - Deutsch">
+                        <option value="4.7.de">WordPress 4.7 (deutsch)</option>
                         <option value="4.6.de">WordPress 4.6 (deutsch)</option>
                         <option value="4.5.de">WordPress 4.5 (deutsch)</option>
                         <option value="4.4.de">WordPress 4.4 (deutsch)</option>
@@ -1295,6 +1300,7 @@ void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b
                         <option value="4.0.de">WordPress 4.0 (deutsch)</option>
                     </optgroup>
                     <optgroup label="WordPress - Nederlands">
+                        <option value="4.7.nl">WordPress 4.7 (nederlands)</option>
                         <option value="4.6.nl">WordPress 4.6 (nederlands)</option>
                         <option value="4.5.nl">WordPress 4.5 (nederlands)</option>
                         <option value="4.4.nl">WordPress 4.4 (nederlands)</option>
