@@ -2,7 +2,7 @@
 /**
  * WordPress Installer
  * @author Stefan Hüsges
- * @copyright 2014-2016 Stefan Hüsges
+ * @copyright 2014-2017 Stefan Hüsges
  * @license MIT
  * @link https://github.com/tronsha/wp-installer
  */
