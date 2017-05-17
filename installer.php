@@ -36,14 +36,14 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
-        '4.7' => 'https://wordpress.org/wordpress-4.7.4.zip',
-        '4.6' => 'https://wordpress.org/wordpress-4.6.5.zip',
-        '4.5' => 'https://wordpress.org/wordpress-4.5.8.zip',
-        '4.4' => 'https://wordpress.org/wordpress-4.4.9.zip',
-        '4.3' => 'https://wordpress.org/wordpress-4.3.10.zip',
-        '4.2' => 'https://wordpress.org/wordpress-4.2.14.zip',
-        '4.1' => 'https://wordpress.org/wordpress-4.1.17.zip',
-        '4.0' => 'https://wordpress.org/wordpress-4.0.17.zip',
+        '4.7' => 'https://wordpress.org/wordpress-4.7.5.zip',
+        '4.6' => 'https://wordpress.org/wordpress-4.6.6.zip',
+        '4.5' => 'https://wordpress.org/wordpress-4.5.9.zip',
+        '4.4' => 'https://wordpress.org/wordpress-4.4.10.zip',
+        '4.3' => 'https://wordpress.org/wordpress-4.3.11.zip',
+        '4.2' => 'https://wordpress.org/wordpress-4.2.15.zip',
+        '4.1' => 'https://wordpress.org/wordpress-4.1.18.zip',
+        '4.0' => 'https://wordpress.org/wordpress-4.0.18.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest.de' => 'https://de.wordpress.org/latest-de_DE.zip',
         '4.7.de' => 'https://de.wordpress.org/wordpress-4.7.4-de_DE.zip',
