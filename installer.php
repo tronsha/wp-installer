@@ -36,6 +36,7 @@ $config = array(
     'src' => array(
         /** @link https://wordpress.org/download/release-archive/ */
         'latest' => 'https://wordpress.org/latest.zip',
+        '4.8' => 'https://wordpress.org/wordpress-4.8.zip',
         '4.7' => 'https://wordpress.org/wordpress-4.7.5.zip',
         '4.6' => 'https://wordpress.org/wordpress-4.6.6.zip',
         '4.5' => 'https://wordpress.org/wordpress-4.5.9.zip',
@@ -46,6 +47,7 @@ $config = array(
         '4.0' => 'https://wordpress.org/wordpress-4.0.18.zip',
         /** @link https://de.wordpress.org/releases/ */
         'latest.de' => 'https://de.wordpress.org/latest-de_DE.zip',
+        '4.8.de' => 'https://de.wordpress.org/wordpress-4.8-de_DE.zip',
         '4.7.de' => 'https://de.wordpress.org/wordpress-4.7.5-de_DE.zip',
         '4.6.de' => 'https://de.wordpress.org/wordpress-4.6.6-de_DE.zip',
         '4.5.de' => 'https://de.wordpress.org/wordpress-4.5.9-de_DE.zip',
@@ -56,6 +58,7 @@ $config = array(
         '4.0.de' => 'https://de.wordpress.org/wordpress-4.0.12-de_DE.zip',
         /** @link https://nl.wordpress.org/releases/ */
         'latest.nl' => 'https://nl.wordpress.org/latest-nl_NL.zip',
+        '4.8.nl' => 'https://nl.wordpress.org/wordpress-4.8-nl_NL.zip',
         '4.7.nl' => 'https://nl.wordpress.org/wordpress-4.7.5-nl_NL.zip',
         '4.6.nl' => 'https://nl.wordpress.org/wordpress-4.6.1-nl_NL.zip',
         '4.5.nl' => 'https://nl.wordpress.org/wordpress-4.5.3-nl_NL.zip',
@@ -1310,6 +1313,7 @@ a.removeEventListener("load",S),r.ready()}"complete"===d.readyState||"loading"!=
                         <option value="latest.es">WordPress (español)</option>
                     </optgroup>
                     <optgroup label="WordPress - English">
+                        <option value="4.8">WordPress 4.8 (english)</option>
                         <option value="4.7">WordPress 4.7 (english)</option>
                         <option value="4.6">WordPress 4.6 (english)</option>
                         <option value="4.5">WordPress 4.5 (english)</option>
@@ -1320,6 +1324,7 @@ a.removeEventListener("load",S),r.ready()}"complete"===d.readyState||"loading"!=
                         <option value="4.0">WordPress 4.0 (english)</option>
                     </optgroup>
                     <optgroup label="WordPress - Deutsch">
+                        <option value="4.8.de">WordPress 4.8 (deutsch)</option>
                         <option value="4.7.de">WordPress 4.7 (deutsch)</option>
                         <option value="4.6.de">WordPress 4.6 (deutsch)</option>
                         <option value="4.5.de">WordPress 4.5 (deutsch)</option>
@@ -1330,6 +1335,7 @@ a.removeEventListener("load",S),r.ready()}"complete"===d.readyState||"loading"!=
                         <option value="4.0.de">WordPress 4.0 (deutsch)</option>
                     </optgroup>
                     <optgroup label="WordPress - Nederlands">
+                        <option value="4.8.nl">WordPress 4.8 (nederlands)</option>
                         <option value="4.7.nl">WordPress 4.7 (nederlands)</option>
                         <option value="4.6.nl">WordPress 4.6 (nederlands)</option>
                         <option value="4.5.nl">WordPress 4.5 (nederlands)</option>
